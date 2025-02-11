@@ -1,0 +1,7 @@
+{
+  "name": "Spoti HiFi",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
