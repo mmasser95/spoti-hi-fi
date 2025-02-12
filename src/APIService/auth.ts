@@ -18,7 +18,10 @@ export default class Auth {
             let err = await res.text()
             throw new Error(err)
         }
-        let data = await res.json()
+        let data: {
+            token: string,
+            username: string
+        } = await res.json()
         return data
     }
 }
