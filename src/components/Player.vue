@@ -22,7 +22,9 @@ import { onMounted, ref, watch } from 'vue';
 import { Howl } from 'howler';
 import { IonButton, IonButtons, IonIcon } from '@ionic/vue';
 import { play, pause, stop, playSkipBack, playSkipForward } from 'ionicons/icons';
-const url = defineModel<string>()
+import { MediaSession } from '@jofr/capacitor-media-session'
+import { Song } from '@/types/Song';
+const song = defineModel<Song>()
 const player = ref<Howl>()
 const isPlaying = ref(false)
 const isMid = ref(false)
@@ -32,12 +34,12 @@ const emit = defineEmits<{
     next: []
 }>()
 
-watch(url, (value) => {
-    if (!!value && value !== "") {
+watch(song, (value) => {
+    if (!!value && value.url !== "") {
         if (!!player.value)
             player.value.unload()
         player.value = new Howl({
-            src: value
+            src: value.url
         })
         if (isPlaying.value) {
             player.value.play()
@@ -49,9 +51,9 @@ watch(url, (value) => {
 })
 
 const playAudio = () => {
-    if (!!url.value) {
-        isPlaying.value = true
+    if (!!song.value) {
         isMid.value = true
+        isPlaying.value = true
         player.value?.play()
     }
 }
@@ -60,8 +62,8 @@ const pauseAudio = () => {
     player.value?.pause()
 }
 const stopAudio = () => {
-    isPlaying.value = false
     isMid.value = false
+    isPlaying.value = false
     player.value?.stop()
 }
 
@@ -72,10 +74,17 @@ const next = () => {
     emit('next')
 }
 onMounted(() => {
-    if (!!url.value && url.value !== "")
+    if (!!song.value && song.value.url !== "")
         player.value = new Howl({
-            src: url.value
+            src: song.value.url
         })
+})
+
+watch(isPlaying, (v) => {
+    const playbackState = isMid.value ? (v ? "playing" : "paused") : "none"
+    MediaSession.setPlaybackState({
+        playbackState
+    })
 })
 </script>
 <style lang="css" scoped></style>

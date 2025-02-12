@@ -1,10 +1,15 @@
+import { Song } from "@/types/Song";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 export const usePlaylist = defineStore("Playlist", () => {
-    const playlist = ref<string[]>([])
+    const playlist = ref<Song[]>([])
     const currentIndex = ref<number>(0)
-    const currentUrl = computed(() => playlist.value ? playlist.value[currentIndex.value] : "")
+    const currentSong = computed(() => playlist.value ? playlist.value[currentIndex.value] : {
+        url: "",
+        title: "",
+        artist: ""
+    })
     const next = () => {
         if (playlist.value) {
             let index = currentIndex.value
@@ -22,12 +27,12 @@ export const usePlaylist = defineStore("Playlist", () => {
         }
     }
 
-    const addToPlaylist = (url: string) => {
-        playlist.value?.push(url)
+    const addToPlaylist = (song: Song) => {
+        playlist.value?.push(song)
     }
 
     return {
-        currentUrl,
+        currentSong,
         next,
         prev,
         addToPlaylist
