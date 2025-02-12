@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "6.2.0",
+    "@types/howler": "^2.2.12",
     "@vitejs/plugin-legacy": "^5.0.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
