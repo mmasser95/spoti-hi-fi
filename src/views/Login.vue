@@ -1,0 +1,69 @@
+<template>
+    <ion-page>
+        <ion-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="12" size-sm="2" size-md="3"></ion-col>
+                    <ion-col size="12" size-sm="8" size-md="6">
+                        <form @submit.prevent="doLogin">
+                            <ion-row>
+                                <ion-col>
+                                    <ion-input label="URL" v-model="url" label-placement="floating"></ion-input>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col>
+                                    <ion-input label="Username" v-model="username"
+                                        label-placement="floating"></ion-input>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col>
+                                    <ion-input label="Password" v-model="password"
+                                        :type="showPassword ? 'text' : 'password'" label-placement="floating">
+                                        <ion-button fill="clear" slot="end" aria-label="Show/hide"
+                                            @click="() => showPassword = !showPassword">
+                                            <ion-icon slot="icon-only" :icon="showPassword ? eye : eyeOff"
+                                                aria-hidden="true"></ion-icon>
+                                        </ion-button>
+                                    </ion-input>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col></ion-col>
+                                <ion-col>
+                                    <ion-button type="submit" expand="block">Log In</ion-button>
+                                </ion-col>
+                                <ion-col></ion-col>
+                            </ion-row>
+                        </form>
+                    </ion-col>
+                    <ion-col size="12" size-sm="2" size-md="3"></ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-content>
+    </ion-page>
+</template>
+<script lang="ts" setup>
+import Auth from '@/APIService/auth';
+import router from '@/router';
+import { useAuth } from '@/store/useAuth';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonInput, IonButton, IonIcon } from '@ionic/vue';
+import { eye, eyeOff } from 'ionicons/icons';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+const { token, url } = storeToRefs(useAuth())
+
+const showPassword = ref<boolean>(false)
+const username = ref<string>("")
+const password = ref<string>("")
+
+const doLogin = async () => {
+    let data = await Auth.login(username.value, password.value)
+    console.log(data);
+    token.value = data.token
+    router.push('/tabs')
+}
+
+</script>
+<style scoped></style>
