@@ -11,13 +11,14 @@
           <ion-title size="large">Tab 1</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <ExploreContainer name="Tab 1 page" />
+      <Reproducer />
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
+import Reproducer from '@/components/Reproducer.vue';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import ExploreContainer from '@/components/ExploreContainer.vue';
+
+
 </script>
