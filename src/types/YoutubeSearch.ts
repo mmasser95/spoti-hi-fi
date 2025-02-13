@@ -1,4 +1,5 @@
 export interface YoutubeTrack {
+    id:string,
     url: string,
     description: string | null,
     duration_formatted: string,
