@@ -4,21 +4,21 @@
             <!-- Input de búsqueda con selector -->
             <ion-row class="ion-justify-content-center ion-align-items-center">
                 <ion-col size="12" size-md="4">
-                    <ion-input v-model="query" placeholder="Buscar canción o video"></ion-input>
+                    <ion-input v-model="query" placeholder="Buscar canción"></ion-input>
                 </ion-col>
-                <ion-col size="auto">
+                <!-- <ion-col size="auto">
                     <ion-segment v-model="searchSource">
                         <ion-segment-button value="spotify">Spotify</ion-segment-button>
                         <ion-segment-button value="youtube">YouTube</ion-segment-button>
                     </ion-segment>
-                </ion-col>
+                </ion-col> -->
             </ion-row>
 
             <!-- Resultados -->
             <ion-row class="ion-justify-content-center">
                 <ion-col v-if="searchSource === 'spotify'" v-for="item in resultsSpotify" :key="item.id" size="6"
                     size-sm="4" size-md="3" size-lg="2">
-                    <SpotifyCard :song="item" />
+                    <SpotifyCard @click="openSongModal(item)" :song="item" />
                 </ion-col>
                 <ion-col v-if="searchSource === 'youtube'" v-for="item in resultsYoutube" :key="item.id" size="6"
                     size-sm="4" size-md="3" size-lg="2">
@@ -31,13 +31,14 @@
 
 <script lang="ts" setup>
 import { External } from '@/APIService/external';
-import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton } from '@ionic/vue';
+import { IonContent, modalController, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton } from '@ionic/vue';
 import debounce from 'lodash/debounce';
 import { ref, watch } from 'vue';
 import SpotifyCard from '@/components/SpotifyCard.vue';
 import YoutubeCard from '@/components/YoutubeCard.vue';
 import { SpotifyTrack } from '@/types/SpotifySearch';
 import { YoutubeTrack } from '@/types/YoutubeSearch';
+import SongModal from '@/components/SongModal.vue';
 
 const query = ref("");
 const searchSource = ref<"spotify" | "youtube">("spotify"); // Controla la fuente de búsqueda
@@ -62,6 +63,18 @@ watch(query, () => {
 watch(searchSource, () => {
     searchWithoutDebounce(query.value)
 })
+
+const openSongModal = async (song: SpotifyTrack) => {
+    const modal = await modalController.create({
+        component: SongModal,
+        componentProps: {
+            song: song
+        }
+    });
+
+    await modal.present();
+};
+
 </script>
 
 <style scoped>
