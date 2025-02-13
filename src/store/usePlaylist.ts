@@ -56,15 +56,15 @@ export const usePlaylist = defineStore("Playlist", () => {
     MediaSession.setActionHandler({ action: "play" }, () => {
         playAudio()
     })
-    
+
     MediaSession.setActionHandler({ action: "pause" }, () => {
         pauseAudio()
     })
-    
+
     MediaSession.setActionHandler({ action: "nexttrack" }, () => {
         next()
     })
-    
+
     MediaSession.setActionHandler({ action: "previoustrack" }, () => {
         prev()
     })
@@ -81,6 +81,7 @@ export const usePlaylist = defineStore("Playlist", () => {
         MediaSession.setMetadata({
             title: currentSong.value.title,
             artist: currentSong.value.artist || "Desconocido",
+            artwork: [{ src: currentSong.value.artwork || "/generic-cover.webp" }]
         })
     }
 
@@ -91,7 +92,7 @@ export const usePlaylist = defineStore("Playlist", () => {
         })
     })
 
-    watch(currentSong,(value)=>{
+    watch(currentSong, (value) => {
         if (!!value && value.url !== "") {
             if (!!player.value)
                 player.value.unload()
@@ -99,6 +100,7 @@ export const usePlaylist = defineStore("Playlist", () => {
                 src: value.url,
                 html5: true
             })
+            updateMediaSession()
             if (isPlaying.value) {
                 player.value.play()
             } else {
@@ -109,11 +111,13 @@ export const usePlaylist = defineStore("Playlist", () => {
     })
 
     onMounted(() => {
-        if (!!currentSong.value && currentSong.value.url !== "")
+        if (!!currentSong.value && currentSong.value.url !== ""){
             player.value = new Howl({
                 src: currentSong.value.url,
                 html5: true
             })
+            updateMediaSession()
+        }
     })
 
     return {

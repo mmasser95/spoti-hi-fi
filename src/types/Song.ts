@@ -1,6 +1,6 @@
 export interface Song {
     url: string,
     title: string,
-    artist: string,
+    artist?: string,
     artwork?: string
 }
