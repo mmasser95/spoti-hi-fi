@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Spoti HiFi</string>
+    <string name="title_activity_main">Spoti HiFi</string>
+    <string name="package_name">spoti.hifi.mmasser95</string>
+    <string name="custom_url_scheme">spoti.hifi.mmasser95</string>
+</resources>
