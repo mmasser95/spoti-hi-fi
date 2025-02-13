@@ -16,12 +16,12 @@
 
             <!-- Resultados -->
             <ion-row class="ion-justify-content-center">
-                <ion-col v-if="searchSource === 'spotify'" v-for="item in resultsSpotify" :key="item.id" size="12"
-                    size-sm="6" size-md="4" size-lg="3">
+                <ion-col v-if="searchSource === 'spotify'" v-for="item in resultsSpotify" :key="item.id" size="6"
+                    size-sm="4" size-md="3" size-lg="2">
                     <SpotifyCard :song="item" />
                 </ion-col>
-                <ion-col v-if="searchSource === 'youtube'" v-for="item in resultsYoutube" :key="item.id" size="12"
-                    size-sm="6" size-md="4" size-lg="3">
+                <ion-col v-if="searchSource === 'youtube'" v-for="item in resultsYoutube" :key="item.id" size="6"
+                    size-sm="4" size-md="3" size-lg="2">
                     <YoutubeCard :video="item" />
                 </ion-col>
             </ion-row>
