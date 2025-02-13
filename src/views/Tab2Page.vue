@@ -11,11 +11,13 @@
           <ion-title size="large">Tab 2</ion-title>
         </ion-toolbar>
       </ion-header>
-
+      <Search />
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
+import Search from '@/components/Search.vue';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
+
 </script>

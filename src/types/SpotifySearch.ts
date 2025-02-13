@@ -1,4 +1,4 @@
-interface SpotifyTrack {
+export interface SpotifyTrack {
     album: {
         album_type: string;
         artists: {
@@ -69,5 +69,5 @@ export interface SpotifySearch{
     offset:number,
     previous:string|null
     total:number,
-    tracks:SpotifyTrack[]
+    items:SpotifyTrack[]
 }
