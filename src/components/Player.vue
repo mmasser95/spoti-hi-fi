@@ -37,17 +37,24 @@
           <ion-icon :class="{ active: isRepeating }" :icon="repeat"></ion-icon>
         </ion-button>
       </ion-row>
+      <ion-row class="modal-button-container">
+        <ion-col class="ion-text-center">
+          <ion-button @click="showPlaylist">
+            <ion-icon :icon="options"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </ion-card>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed, watch } from "vue";
-import { IonButton, IonCard, IonGrid, IonRow, IonCol, IonIcon, IonImg } from "@ionic/vue";
-import { play, pause, playSkipBack, playSkipForward, shuffle, repeat } from "ionicons/icons";
+import { IonButton, IonCard, IonGrid, IonRow, IonCol, IonIcon, IonImg, modalController } from "@ionic/vue";
+import { play, pause, playSkipBack, playSkipForward, shuffle, repeat, options } from "ionicons/icons";
 import { usePlaylist } from "@/store/usePlaylist";
 import { storeToRefs } from "pinia";
-
+import MyPlaylist from "@/components/MyPlaylist.vue";
 const store = usePlaylist();
 const { isPlaying, currentSong, duration, currentTime, isShuffling, isRepeating } = storeToRefs(store);
 const { prev, playAudio, pauseAudio, next, toggleShuffle, toggleRepeat, seek } = store;
@@ -67,6 +74,14 @@ const formatTime = (time: number) => {
   const sec = Math.floor(time % 60).toString().padStart(2, "0");
   return `${min}:${sec}`;
 };
+
+const showPlaylist = async () => {
+  const modal= await modalController.create({
+    component:MyPlaylist,
+  })
+  modal.present()
+}
+
 </script>
 
 <style scoped>
