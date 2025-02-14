@@ -60,14 +60,15 @@ export interface SpotifyTrack {
     track_number: number;
     type: string;
     uri: string;
+    isDownloaded?: boolean
 }
 
-export interface SpotifySearch{
-    href:string,
-    limit:number,
-    next:string|null,
-    offset:number,
-    previous:string|null
-    total:number,
-    items:SpotifyTrack[]
+export interface SpotifySearch {
+    href: string,
+    limit: number,
+    next: string | null,
+    offset: number,
+    previous: string | null
+    total: number,
+    items: SpotifyTrack[]
 }

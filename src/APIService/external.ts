@@ -3,7 +3,8 @@ import { storeToRefs } from "pinia";
 import { ref, Ref } from "vue";
 import { getHeaders } from "./utils";
 import { YoutubeTrack } from "@/types/YoutubeSearch";
-import { SpotifySearch } from "@/types/SpotifySearch";
+import { SpotifySearch, SpotifyTrack } from "@/types/SpotifySearch";
+import { LocalSong } from "@/types/LocalSong";
 
 export class External {
     // private static url: Ref<string> = storeToRefs(useAuth()).url 
@@ -39,7 +40,7 @@ export class External {
             let err = await req.text()
             throw new Error(`Error: ${err}`);
         }
-        let data: { tracks: SpotifySearch } = await req.json()
+        let data: { items: SpotifyTrack[] } = await req.json()
         return data
     }
 
@@ -49,7 +50,7 @@ export class External {
             let err = await req.text()
             throw new Error(`Error: ${err}`);
         }
-        let data = await req.json()
+        let data: LocalSong[] = await req.json()
         return data
     }
 

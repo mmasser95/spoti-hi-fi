@@ -27,11 +27,10 @@
 
 <script lang="ts" setup>
 import { External } from '@/APIService/external';
-import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton } from '@ionic/vue';
+import { IonContent, IonGrid, IonRow, IonCol, IonInput } from '@ionic/vue';
 import debounce from 'lodash/debounce';
 import { ref, watch } from 'vue';
 import SpotifyCard from '@/components/SpotifyCard.vue';
-import YoutubeCard from '@/components/YoutubeCard.vue';
 import { SpotifyTrack } from '@/types/SpotifySearch';
 import { YoutubeTrack } from '@/types/YoutubeSearch';
 
@@ -45,7 +44,7 @@ const searchWithoutDebounce = async (v: string) => {
     let res;
     if (searchSource.value === "spotify") {
         res = await External.searchSpotify(v);
-        resultsSpotify.value = res.tracks.items;
+        resultsSpotify.value = res.items;
     } else {
         res = await External.searchYoutube(v);
         resultsYoutube.value = res;
