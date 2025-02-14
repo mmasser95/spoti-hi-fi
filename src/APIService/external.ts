@@ -39,7 +39,40 @@ export class External {
             let err = await req.text()
             throw new Error(`Error: ${err}`);
         }
-        let data: SpotifySearch = await req.json()
+        let data: { tracks: SpotifySearch } = await req.json()
+        return data
+    }
+
+    public static async getLocalSongs() {
+        let req = await fetch(`${this.url.value}/songs`)
+        if (!req.ok) {
+            let err = await req.text()
+            throw new Error(`Error: ${err}`);
+        }
+        let data = await req.json()
+        return data
+    }
+
+    public static async downloadMp3(url: string, youtubeId: string, spotifyId: string, title: string, artists: {
+        spotifyId: string,
+        name: string
+    }[]) {
+        let req = await fetch(`${this.url.value}/download`, {
+            method: "POST",
+            headers: getHeaders(),
+            body: JSON.stringify({
+                url,
+                youtubeId,
+                spotifyId,
+                title,
+                artists
+            })
+        })
+        if (!req.ok) {
+            let err = await req.text()
+            throw new Error(`Error: ${err}`);
+        }
+        let data = await req.json()
         return data
     }
 }

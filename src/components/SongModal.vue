@@ -28,7 +28,7 @@
         <!-- Mostrar los resultados de YouTube -->
         <ion-list>
             <ion-item v-for="(result, index) in youtubeResults" :key="index">
-                <YoutubeCard :video="result"></YoutubeCard>
+                <YoutubeCard :video="result" :artists="artistsProps" :spotify-id="song.id" :title="song.name"></YoutubeCard>
             </ion-item>
         </ion-list>
     </ion-content>
@@ -38,13 +38,19 @@
 import { External } from '@/APIService/external';
 import { SpotifyTrack } from '@/types/SpotifySearch';
 import { YoutubeTrack } from '@/types/YoutubeSearch';
-import { IonHeader,IonList,IonContent, modalController, IonToolbar, IonTitle, IonButtons, IonButton, IonItem, IonLabel, IonText } from '@ionic/vue';
+import { IonHeader, IonList, IonContent, modalController, IonToolbar, IonTitle, IonButtons, IonButton, IonItem, IonLabel, IonText } from '@ionic/vue';
 import { computed, onMounted, ref } from 'vue';
 import YoutubeCard from './YoutubeCard.vue';
 const props = defineProps<{ song: SpotifyTrack }>()
 const artistsNames = computed(() =>
     props.song.artists.map(artist => artist.name).join(", ")
 );
+const artistsProps = computed(() => props.song.artists.map(artist => {
+    return {
+        name: artist.name,
+        spotifyId: artist.id
+    }
+}))
 const youtubeResults = ref<YoutubeTrack[]>()
 const formattedDuration = computed(() => {
     const minutes = Math.floor(props.song.duration_ms / 60000);

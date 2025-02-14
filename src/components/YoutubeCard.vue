@@ -14,18 +14,27 @@
             <ion-badge v-else color="medium">{{ video.duration_formatted }}</ion-badge>
             <ion-badge v-if="video.private" color="warning">🔒 Privado</ion-badge>
         </ion-card-content>
-        <ion-button expand="full" fill="outline" :href="video.url" target="_blank">
-            Ver en YouTube
+        <ion-button expand="full" fill="outline" @click="downloadMp3">
+            Descargar audio
         </ion-button>
     </ion-card>
 </template>
 
 <script lang="ts" setup>
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonBadge, IonButton, IonImg } from '@ionic/vue';
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonBadge, IonButton, IonImg, loadingController } from '@ionic/vue';
 import { computed } from 'vue';
 import type { YoutubeTrack } from '@/types/YoutubeSearch';
+import { External } from '@/APIService/external';
 
-const props = defineProps<{ video: YoutubeTrack }>();
+const props = defineProps<{
+    video: YoutubeTrack,
+    spotifyId: string,
+    title: string,
+    artists: {
+        spotifyId: string,
+        name: string
+    }[]
+}>();
 
 // Formatea las vistas en formato legible
 const formattedViews = computed(() => {
@@ -36,6 +45,22 @@ const formattedViews = computed(() => {
     }
     return props.video.views + ' vistas';
 });
+
+const downloadMp3 = async () => {
+    const loader = await loadingController.create({
+        message: `Descargando ${props.title}...`,
+        spinner: 'circles'
+    })
+    await loader.present()
+    try {
+        let data = await External.downloadMp3(props.video.url, props.video.id, props.spotifyId, props.title, props.artists)
+
+    } catch (error) {
+        console.error(error);
+    } finally {
+        await loader.dismiss()
+    }
+}
 </script>
 
 <style scoped>
@@ -44,10 +69,12 @@ const formattedViews = computed(() => {
     height: auto;
     border-radius: 8px 8px 0 0;
 }
+
 ion-card-content p {
     font-size: 0.9rem;
     color: var(--ion-color-medium);
 }
+
 ion-badge {
     margin-right: 5px;
 }

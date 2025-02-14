@@ -18,11 +18,7 @@
             <ion-row class="ion-justify-content-center">
                 <ion-col v-if="searchSource === 'spotify'" v-for="item in resultsSpotify" :key="item.id" size="6"
                     size-sm="4" size-md="3" size-lg="2">
-                    <SpotifyCard @click="openSongModal(item)" :song="item" />
-                </ion-col>
-                <ion-col v-if="searchSource === 'youtube'" v-for="item in resultsYoutube" :key="item.id" size="6"
-                    size-sm="4" size-md="3" size-lg="2">
-                    <YoutubeCard :video="item" />
+                    <SpotifyCard :song="item" />
                 </ion-col>
             </ion-row>
         </ion-grid>
@@ -31,14 +27,13 @@
 
 <script lang="ts" setup>
 import { External } from '@/APIService/external';
-import { IonContent, modalController, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton } from '@ionic/vue';
+import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton } from '@ionic/vue';
 import debounce from 'lodash/debounce';
 import { ref, watch } from 'vue';
 import SpotifyCard from '@/components/SpotifyCard.vue';
 import YoutubeCard from '@/components/YoutubeCard.vue';
 import { SpotifyTrack } from '@/types/SpotifySearch';
 import { YoutubeTrack } from '@/types/YoutubeSearch';
-import SongModal from '@/components/SongModal.vue';
 
 const query = ref("");
 const searchSource = ref<"spotify" | "youtube">("spotify"); // Controla la fuente de búsqueda
@@ -64,16 +59,7 @@ watch(searchSource, () => {
     searchWithoutDebounce(query.value)
 })
 
-const openSongModal = async (song: SpotifyTrack) => {
-    const modal = await modalController.create({
-        component: SongModal,
-        componentProps: {
-            song: song
-        }
-    });
 
-    await modal.present();
-};
 
 </script>
 

@@ -15,7 +15,7 @@
             <p><strong>Álbum:</strong> {{ song.album.name }}</p>
             <p><strong>Duración:</strong> {{ formattedDuration }}</p>
             <p><strong>Popularidad:</strong> {{ song.popularity }}/100</p>
-            <ion-button fill="outline" color="primary" :href="song.external_urls.spotify" target="_blank">
+            <ion-button  @click="openSongModal(song)" fill="outline" color="primary">
                 Descargar
             </ion-button>
         </ion-card-content>
@@ -24,12 +24,13 @@
 
 <script lang="ts" setup>
 import { SpotifyTrack } from '@/types/SpotifySearch';
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonImg, IonButton } from '@ionic/vue';
+import { IonCard, IonCardContent, modalController, IonCardHeader, IonCardSubtitle, IonCardTitle, IonImg, IonButton } from '@ionic/vue';
 import { computed } from 'vue';
+import SongModal from '@/components/SongModal.vue';
 
 const props = defineProps<{ song: SpotifyTrack }>();
 
-const artistsNames = computed(() => 
+const artistsNames = computed(() =>
     props.song.artists.map(artist => artist.name).join(", ")
 );
 
@@ -38,6 +39,17 @@ const formattedDuration = computed(() => {
     const seconds = ((props.song.duration_ms % 60000) / 1000).toFixed(0);
     return `${minutes}:${seconds.padStart(2, '0')}`;
 });
+
+const openSongModal = async (song: SpotifyTrack) => {
+    const modal = await modalController.create({
+        component: SongModal,
+        componentProps: {
+            song: song
+        }
+    });
+
+    await modal.present();
+};
 </script>
 
 <style scoped>
@@ -46,6 +58,7 @@ ion-img {
     height: auto;
     border-radius: 8px 8px 0 0;
 }
+
 ion-card-content p {
     margin: 5px 0;
 }
