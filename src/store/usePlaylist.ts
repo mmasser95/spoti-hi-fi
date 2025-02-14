@@ -10,22 +10,25 @@ export const usePlaylist = defineStore("Playlist", () => {
     const isMid = ref(false)
     const playlist = ref<Song[]>([])
     const currentIndex = ref<number>(0)
+    const currentTime = ref(0)
     const currentSong = computed(() => playlist.value ? playlist.value[currentIndex.value] : {
         url: "",
         title: "",
         artist: ""
     })
-
+    const isShuffling = ref(false)
+    const duration = ref(0)
+    let animationFrame: number | null = null;
     const playAudio = () => {
         if (!!currentSong.value) {
             isMid.value = true
-            isPlaying.value = true
+            // isPlaying.value = true
             player.value?.play()
         }
     }
 
     const pauseAudio = () => {
-        isPlaying.value = false
+        // isPlaying.value = false
         player.value?.pause()
     }
 
@@ -53,6 +56,12 @@ export const usePlaylist = defineStore("Playlist", () => {
         }
     }
 
+    const toggleShuffle = () => { }
+    const toggleRepeat = () => { }
+    const seek = (to: number) => {
+        player.value?.seek(to)
+    }
+
     MediaSession.setActionHandler({ action: "play" }, () => {
         playAudio()
     })
@@ -69,8 +78,10 @@ export const usePlaylist = defineStore("Playlist", () => {
         prev()
     })
     MediaSession.setActionHandler({ action: "seekto" }, (details) => {
-        if (details.seekTime)
+        if (details.seekTime && player.value) {
             player.value?.seek(details.seekTime)
+            currentTime.value = details.seekTime
+        }
     })
 
     const addToPlaylist = (song: Song) => {
@@ -78,11 +89,12 @@ export const usePlaylist = defineStore("Playlist", () => {
     }
 
     const updateMediaSession = () => {
-        MediaSession.setMetadata({
-            title: currentSong.value.title,
-            artist: currentSong.value.artist || "Desconocido",
-            artwork: [{ src: currentSong.value.artwork || "/generic-cover.webp" }]
-        })
+        if (currentSong.value)
+            MediaSession.setMetadata({
+                title: currentSong.value.title || "Desconocido",
+                artist: currentSong.value.artist || "Desconocido",
+                artwork: [{ src: currentSong.value.artwork || "generic-cover.webp" }],
+            })
     }
 
     watch(isPlaying, (v) => {
@@ -91,17 +103,37 @@ export const usePlaylist = defineStore("Playlist", () => {
             playbackState
         })
     })
-
+    const loadTrack = (value: { url: string, title: string, artist?: string, artwork?: string }) => {
+        player.value = new Howl({
+            src: value.url,
+            html5: true,
+            onload: () => {
+                duration.value = player.value?.duration() || 0
+            },
+            onplay: () => {
+                isPlaying.value = true
+                updateMediaSession()
+                updateTime()
+            },
+            onpause: () => {
+                isPlaying.value = false;
+                updateMediaSession()
+                if (animationFrame) cancelAnimationFrame(animationFrame)
+            },
+            onend: () => {
+                isPlaying.value = false
+                player.value?.seek(0)
+                if (animationFrame) cancelAnimationFrame(animationFrame)
+            }
+        })
+    }
     watch(currentSong, (value) => {
         if (!!value && value.url !== "") {
             if (!!player.value)
                 player.value.unload()
-            player.value = new Howl({
-                src: value.url,
-                html5: true
-            })
+            loadTrack(value)
             updateMediaSession()
-            if (isPlaying.value) {
+            if (isPlaying.value && player.value) {
                 player.value.play()
             } else {
                 if (isMid.value)
@@ -111,14 +143,23 @@ export const usePlaylist = defineStore("Playlist", () => {
     })
 
     onMounted(() => {
-        if (!!currentSong.value && currentSong.value.url !== ""){
-            player.value = new Howl({
-                src: currentSong.value.url,
-                html5: true
-            })
+        if (!!currentSong.value && currentSong.value.url !== "") {
+            loadTrack(currentSong.value)
             updateMediaSession()
         }
     })
+
+    const updateTime = () => {
+        if (!player.value) return;
+
+        currentTime.value = player.value.seek() as number;
+        MediaSession.setPositionState({
+            duration: player.value.duration(),
+            playbackRate: 1.0,
+            position: currentTime.value
+        })
+        animationFrame = requestAnimationFrame(updateTime);
+    };
 
     return {
         currentSong,
@@ -130,6 +171,12 @@ export const usePlaylist = defineStore("Playlist", () => {
         next,
         prev,
         addToPlaylist,
-        updateMediaSession
+        updateMediaSession,
+        toggleRepeat,
+        toggleShuffle,
+        seek,
+        currentTime,
+        isShuffling,
+        duration
     }
 })

@@ -59,7 +59,7 @@
   const { isPlaying, currentSong, duration, currentTime, isShuffling } = storeToRefs(store);
   const { prev, playAudio, pauseAudio, next, toggleShuffle, toggleRepeat, seek } = store;
   
-  const defaultCover = "/public/generic-cover.webp"; // Imagen por defecto
+  const defaultCover = "generic-cover.webp"; // Imagen por defecto
   
   const togglePlay = () => (isPlaying.value ? pauseAudio() : playAudio());
   const progress = computed(() => (duration.value ? (currentTime.value / duration.value) * 100 : 0));
