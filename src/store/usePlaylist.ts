@@ -17,6 +17,7 @@ export const usePlaylist = defineStore("Playlist", () => {
         artist: ""
     })
     const isShuffling = ref(false)
+    const isRepeating = ref(false)
     const duration = ref(0)
     let animationFrame: number | null = null;
     const playAudio = () => {
@@ -41,23 +42,30 @@ export const usePlaylist = defineStore("Playlist", () => {
     const next = () => {
         if (playlist.value) {
             let index = currentIndex.value
-            index += 1
-            currentIndex.value = index % playlist.value.length
+            if (isShuffling.value) {
+                index = Math.floor(Math.random() * playlist.value.length);
+            } else {
+                index += 1
+                index %= playlist.value.length
+            }
+            currentIndex.value = index
         }
     }
 
     const prev = () => {
         if (playlist.value) {
             let index = currentIndex.value
-            index -= 1
-            if (index < 0)
-                index = playlist.value?.length - 1
+            if (isShuffling.value) {
+                index = Math.floor(Math.random() * playlist.value.length);
+            } else {
+                index -= 1;
+                if (index < 0) index = playlist.value.length - 1;
+            }
+
             currentIndex.value = index
         }
     }
 
-    const toggleShuffle = () => { }
-    const toggleRepeat = () => { }
     const seek = (to: number) => {
         player.value?.seek(to)
     }
@@ -124,6 +132,9 @@ export const usePlaylist = defineStore("Playlist", () => {
                 isPlaying.value = false
                 player.value?.seek(0)
                 if (animationFrame) cancelAnimationFrame(animationFrame)
+                if(!isRepeating)
+                    next()
+                playAudio()
             }
         })
     }
@@ -161,6 +172,13 @@ export const usePlaylist = defineStore("Playlist", () => {
         animationFrame = requestAnimationFrame(updateTime);
     };
 
+    const toggleShuffle = () => {
+        isShuffling.value = !isShuffling.value
+    }
+    const toggleRepeat = () => {
+        isRepeating.value = !isRepeating.value
+    }
+
     return {
         currentSong,
         isPlaying,
@@ -177,6 +195,7 @@ export const usePlaylist = defineStore("Playlist", () => {
         seek,
         currentTime,
         isShuffling,
+        isRepeating,
         duration
     }
 })
