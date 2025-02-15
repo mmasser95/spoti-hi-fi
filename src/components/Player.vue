@@ -1,10 +1,15 @@
 <template>
   <ion-card class="player-container">
     <ion-grid>
-      <ion-row class="player-header">
-        <ion-col size="auto">
+      <ion-row class="ion-justify-content-center" >
+        <ion-col size="8"
+        size-sm="4" size-md="3" size-lg="2">
           <ion-img :src="currentSong?.artwork || defaultCover" class="album-cover"></ion-img>
         </ion-col>
+      </ion-row>
+      <ion-row class="player-header">
+        <!-- <ion-col size="auto">
+        </ion-col> -->
         <ion-col>
           <h3 class="track-title">{{ currentSong?.title || "Sin título" }}</h3>
           <p class="track-artist">{{ currentSong?.artist || "Desconocido" }}</p>
@@ -20,20 +25,20 @@
       </ion-row>
 
       <ion-row class="controls">
-        <ion-button :color="isShuffling ? 'primary' : 'medium'" @click="toggleShuffle">
+        <ion-button size="small" :color="isShuffling ? 'primary' : 'medium'" @click="toggleShuffle">
           <ion-icon :icon="shuffle"></ion-icon>
         </ion-button>
-        <ion-button @click="prev">
+        <ion-button size="small" @click="prev">
           <ion-icon :icon="playSkipBack"></ion-icon>
         </ion-button>
-        <ion-button class="play-pause-btn" @click="togglePlay">
+        <ion-button @click="togglePlay">
           <ion-icon v-if="!isPlaying" :icon="play"></ion-icon>
           <ion-icon v-else :icon="pause"></ion-icon>
         </ion-button>
-        <ion-button @click="next">
+        <ion-button size="small"  @click="next">
           <ion-icon :icon="playSkipForward"></ion-icon>
         </ion-button>
-        <ion-button :color="isRepeating ? 'primary' : 'medium'" @click="toggleRepeat">
+        <ion-button size="small" :color="isRepeating ? 'primary' : 'medium'" @click="toggleRepeat">
           <ion-icon :icon="repeat"></ion-icon>
         </ion-button>
       </ion-row>
@@ -96,8 +101,8 @@ const showPlaylist = async () => {
 }
 
 .album-cover {
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  /* height: 60px; */
   border-radius: 8px;
 }
 
