@@ -61,7 +61,6 @@ export const usePlaylist = defineStore("Playlist", () => {
                 index -= 1;
                 if (index < 0) index = playlist.value.length - 1;
             }
-
             currentIndex.value = index
         }
     }

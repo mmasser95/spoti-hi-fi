@@ -12,5 +12,14 @@ export interface LocalSong {
         spotifyId: string,
         createdAt: Date,
         updatedAt: Date
-    }[]
+    }[],
+    album:{
+        id:number,
+        name:string,
+        coverImage:string,
+        description:string,
+        spotifyId:string,
+        createdAt:Date,
+        updatedAt:Date
+    }
 }

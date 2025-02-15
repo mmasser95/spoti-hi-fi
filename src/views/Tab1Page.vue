@@ -32,7 +32,8 @@ onMounted(async () => {
     addToPlaylist({
       artist: song.artists.map((artist) => artist.name).join(", "),
       url: `${url.value}/${song.filePath.split("/")[1]}`,
-      title: song.title
+      title: song.title,
+      artwork:song.album.coverImage
     })
   }
 })
