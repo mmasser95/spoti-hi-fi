@@ -20,8 +20,8 @@
       </ion-row>
 
       <ion-row class="controls">
-        <ion-button color="medium" @click="toggleShuffle">
-          <ion-icon :icon="shuffle" :class="{ active: isShuffling }"></ion-icon>
+        <ion-button :color="isShuffling ? 'primary' : 'medium'" @click="toggleShuffle">
+          <ion-icon :icon="shuffle"></ion-icon>
         </ion-button>
         <ion-button @click="prev">
           <ion-icon :icon="playSkipBack"></ion-icon>
@@ -33,8 +33,8 @@
         <ion-button @click="next">
           <ion-icon :icon="playSkipForward"></ion-icon>
         </ion-button>
-        <ion-button color="medium" @click="toggleRepeat">
-          <ion-icon :class="{ active: isRepeating }" :icon="repeat"></ion-icon>
+        <ion-button :color="isRepeating ? 'primary' : 'medium'" @click="toggleRepeat">
+          <ion-icon :icon="repeat"></ion-icon>
         </ion-button>
       </ion-row>
       <ion-row class="modal-button-container">
@@ -76,8 +76,10 @@ const formatTime = (time: number) => {
 };
 
 const showPlaylist = async () => {
-  const modal= await modalController.create({
-    component:MyPlaylist,
+  const modal = await modalController.create({
+    component: MyPlaylist,
+    breakpoints: [0, 0.33, 0.66, 1],
+    initialBreakpoint: 0.33,
   })
   await modal.present()
 }
