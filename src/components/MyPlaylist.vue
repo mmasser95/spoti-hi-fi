@@ -12,8 +12,8 @@
 
     <ion-content>
         <ion-list>
-            <ion-reorder-group :disabled="false" @ionItemReorder="reorderPlaylist">
-                <ion-item v-for="(song, index) in playlist" :key="index">
+            <ion-reorder-group :disabled="false" @ionItemReorder="reorderPlaylist($event)">
+                <ion-item v-for="(song) in playlist" :key="song.url">
                     <ion-label>
                         <h2>{{ song.title }}</h2>
                         <p>{{ song.artist }}</p>
@@ -34,7 +34,7 @@ import { close } from "ionicons/icons";
 
 
 const isOpen = ref(true);
-const { playlist } = storeToRefs(usePlaylist());
+const { playlist, currentIndex } = storeToRefs(usePlaylist());
 
 const dismiss = async () => {
     isOpen.value = false;
@@ -42,7 +42,9 @@ const dismiss = async () => {
 };
 
 // Reordenar la lista de reproducción
-const reorderPlaylist = (event:ItemReorderCustomEvent) => {
+const reorderPlaylist = (event: ItemReorderCustomEvent) => {
+    if (currentIndex.value == event.detail.from)
+        currentIndex.value = event.detail.to
     const movedItem = playlist.value.splice(event.detail.from, 1)[0];
     playlist.value.splice(event.detail.to, 0, movedItem);
     event.detail.complete();

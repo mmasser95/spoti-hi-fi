@@ -197,6 +197,7 @@ export const usePlaylist = defineStore("Playlist", () => {
         isShuffling,
         isRepeating,
         duration,
-        playlist
+        playlist,
+        currentIndex
     }
 })

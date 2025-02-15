@@ -79,7 +79,7 @@ const showPlaylist = async () => {
   const modal= await modalController.create({
     component:MyPlaylist,
   })
-  modal.present()
+  await modal.present()
 }
 
 </script>
