@@ -2,23 +2,23 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Tab 1</ion-title>
+        <ion-title>Player</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Tab 1</ion-title>
+          <ion-title size="large">Player</ion-title>
         </ion-toolbar>
       </ion-header>
-      <Reproducer />
+      <Player/>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
 import { External } from '@/APIService/external';
-import Reproducer from '@/components/Reproducer.vue';
+import Player from '@/components/Player.vue';
 import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
