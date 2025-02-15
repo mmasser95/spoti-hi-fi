@@ -7,8 +7,7 @@ import { SpotifySearch, SpotifyTrack } from "@/types/SpotifySearch";
 import { LocalSong } from "@/types/LocalSong";
 
 export class External {
-    // private static url: Ref<string> = storeToRefs(useAuth()).url 
-    private static url: Ref<string> = ref("http://localhost:3333")
+    private static url: Ref<string> = storeToRefs(useAuth()).url 
 
     public static async searchYoutube(query: string) {
         console.log(this.url.value);
@@ -57,7 +56,15 @@ export class External {
     public static async downloadMp3(url: string, youtubeId: string, spotifyId: string, title: string, artists: {
         spotifyId: string,
         name: string
-    }[]) {
+    }[],album:{
+        spotifyId:string,
+        name:string,
+        coverImage:string,
+        artists:{
+            spotifyId:string,
+            name:string
+        }[]
+    }) {
         let req = await fetch(`${this.url.value}/download`, {
             method: "POST",
             headers: getHeaders(),
@@ -66,7 +73,8 @@ export class External {
                 youtubeId,
                 spotifyId,
                 title,
-                artists
+                artists,
+                album
             })
         })
         if (!req.ok) {

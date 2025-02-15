@@ -33,7 +33,16 @@ const props = defineProps<{
     artists: {
         spotifyId: string,
         name: string
-    }[]
+    }[],
+    album: {
+        spotifyId: string,
+        name: string,
+        coverImage:string,
+        artists: {
+            spotifyId: string,
+            name: string
+        }[]
+    },
 }>();
 
 // Formatea las vistas en formato legible
@@ -53,8 +62,7 @@ const downloadMp3 = async () => {
     })
     await loader.present()
     try {
-        let data = await External.downloadMp3(props.video.url, props.video.id, props.spotifyId, props.title, props.artists)
-
+        let data = await External.downloadMp3(props.video.url, props.video.id, props.spotifyId, props.title, props.artists,props.album)
     } catch (error) {
         console.error(error);
     } finally {
