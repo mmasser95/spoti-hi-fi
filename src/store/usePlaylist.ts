@@ -108,7 +108,7 @@ export const usePlaylist = defineStore("Playlist", () => {
     }
 
     watch(isPlaying, (v) => {
-        const playbackState = isMid.value ? (v ? "playing" : "paused") : "none"
+        const playbackState = v ? "playing" : "paused"
         MediaSession.setPlaybackState({
             playbackState
         })

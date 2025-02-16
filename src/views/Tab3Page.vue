@@ -11,7 +11,7 @@
           <ion-title size="large">Explore</ion-title>
         </ion-toolbar>
       </ion-header>
-      <SearchLocal/>
+      <SearchLocal />
     </ion-content>
   </ion-page>
 </template>

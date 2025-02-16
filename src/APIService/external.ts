@@ -4,7 +4,7 @@ import { ref, Ref } from "vue";
 import { getHeaders } from "./utils";
 import { YoutubeTrack } from "@/types/YoutubeSearch";
 import { SpotifySearch, SpotifyTrack } from "@/types/SpotifySearch";
-import { LocalSong } from "@/types/LocalSong";
+import { LocalSong } from "@/types/LocalElements";
 
 export class External {
     private static url: Ref<string> = storeToRefs(useAuth()).url 
