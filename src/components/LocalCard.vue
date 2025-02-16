@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
-import { LocalSong } from '@/types/LocalSong';
+import { LocalSong } from '@/types/LocalElements';
 import { IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton, IonIcon } from '@ionic/vue';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';

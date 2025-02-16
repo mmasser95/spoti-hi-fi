@@ -24,7 +24,7 @@ import { IonContent, IonGrid, IonRow, IonCol, IonInput } from '@ionic/vue';
 import debounce from 'lodash/debounce';
 import { onMounted, ref, watch } from 'vue';
 import LocalCard from '@/components/LocalCard.vue';
-import { LocalSong } from '@/types/LocalSong';
+import { LocalSong } from '@/types/LocalElements';
 
 
 const query = ref("");
