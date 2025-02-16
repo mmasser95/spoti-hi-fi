@@ -2,11 +2,6 @@
     <ion-header>
         <ion-toolbar>
             <ion-title class="ion-text-center">Playlist</ion-title>
-            <ion-buttons slot="end">
-                <ion-button @click="dismiss" slot="icon-only">
-                    <ion-icon :icon="close"></ion-icon>
-                </ion-button>
-            </ion-buttons>
         </ion-toolbar>
     </ion-header>
 
@@ -14,8 +9,8 @@
         <ion-list>
             <ion-reorder-group :disabled="false" @ionItemReorder="reorderPlaylist($event)">
                 <ion-item v-for="(song, index) in playlist" :key="song.url"
-                    :class="{ 'playing': song.url === currentSong.url }" @click="() => selectSong(index)">
-                    <ion-label :class="{ 'playing': song.url === currentSong.url }">
+                    :class="{ 'playing': song.url === currentSong.url }">
+                    <ion-label :class="{ 'playing': song.url === currentSong.url }" @click="selectSong(index)">
                         <h2>{{ song.title }}</h2>
                         <p>{{ song.artist }}</p>
                     </ion-label>
@@ -44,10 +39,15 @@ const dismiss = async () => {
 
 // Reordenar la lista de reproducción
 const reorderPlaylist = (event: ItemReorderCustomEvent) => {
-    if (currentIndex.value == event.detail.from)
-        currentIndex.value = event.detail.to
+    const currentUrl = currentSong.value.url
+
     const movedItem = playlist.value.splice(event.detail.from, 1)[0];
     playlist.value.splice(event.detail.to, 0, movedItem);
+
+    const newIndex = playlist.value.findIndex(song => song.url === currentUrl)
+    if (newIndex !== -1)
+        currentIndex.value = newIndex
+
     event.detail.complete();
 };
 const selectSong = (index: number) => {
