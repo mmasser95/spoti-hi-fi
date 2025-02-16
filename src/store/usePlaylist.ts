@@ -131,7 +131,7 @@ export const usePlaylist = defineStore("Playlist", () => {
                 isPlaying.value = false
                 player.value?.seek(0)
                 if (animationFrame) cancelAnimationFrame(animationFrame)
-                if(!isRepeating)
+                if(!isRepeating.value)
                     next()
                 playAudio()
             }
