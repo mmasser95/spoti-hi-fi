@@ -84,7 +84,7 @@ const showPlaylist = async () => {
   const modal = await modalController.create({
     component: MyPlaylist,
     breakpoints: [0, 0.33, 0.66, 1],
-    initialBreakpoint: 0.33,
+    initialBreakpoint: 0.66,
   })
   await modal.present()
 }

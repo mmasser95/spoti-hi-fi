@@ -139,7 +139,7 @@ export const usePlaylist = defineStore("Playlist", () => {
                 if (!!mySto.value) clearInterval(mySto.value)
                 if (!isRepeating.value)
                     next()
-                playAudio()
+                setTimeout(playAudio, 500)
             }
         })
     }
