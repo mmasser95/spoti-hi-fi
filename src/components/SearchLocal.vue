@@ -36,14 +36,16 @@
                     <ion-row class="ion-justify-content-center">
                         <ion-col v-for="item in resultsArtists" :key="item.id" size="6" size-sm="4" size-md="3"
                             size-lg="2">
-
+                            <ArtistCard :artist="item" />
                         </ion-col>
                     </ion-row>
                 </ion-segment-content>
                 <ion-segment-content id="album">
                     <ion-row class="ion-justify-content-center">
                         <ion-col v-for="item in resultsAlbums" :key="item.id" size="6" size-sm="4" size-md="3"
-                            size-lg="2"></ion-col>
+                            size-lg="2">
+                            <AlbumCard :album="item" />
+                        </ion-col>
                     </ion-row>
                 </ion-segment-content>
             </ion-segment-view>
@@ -57,13 +59,15 @@ import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentBu
 import debounce from 'lodash/debounce';
 import { computed, onMounted, ref, watch } from 'vue';
 import LocalCard from '@/components/LocalCard.vue';
-import { LocalAlbum, LocalArtist, LocalSong } from '@/types/LocalElements';
-
+import { LocalSong } from '@/types/LocalElements';
+import ArtistCard from '@/components/ArtistCard.vue';
+import { AlbumResult, ArtistResult } from '@/types/SearchResults';
+import AlbumCard from '@/components/AlbumCard.vue';
 
 const query = ref("");
 const resultsSongs = ref<LocalSong[]>()
-const resultsArtists = ref<LocalArtist[]>()
-const resultsAlbums = ref<LocalAlbum[]>()
+const resultsArtists = ref<ArtistResult[]>()
+const resultsAlbums = ref<AlbumResult[]>()
 const searchPlaceHolder = computed(() =>
     searchType.value == 'song'
         ? "Buscar canción"
@@ -74,9 +78,15 @@ const searchType = ref<"artist" | "album" | "song">("song")
 
 
 const searchWithoutDebounce = async (v: string) => {
-    if (!v) return;
-    resultsSongs.value = await External.getLocalSongs()
+    if (searchType.value == 'song')
+        resultsSongs.value = await External.searchSongs(v)
+    if (searchType.value == 'artist')
+        resultsArtists.value = await External.searchArtists(v)
+    if (searchType.value == 'album')
+        resultsAlbums.value = await External.searchAlbums(v)
 }
+
+
 const search = debounce(searchWithoutDebounce, 600);
 
 watch(query, () => {
@@ -85,7 +95,11 @@ watch(query, () => {
 
 watch(searchType, () => query.value = "")
 
-onMounted(() => searchWithoutDebounce("s"))
+onMounted(async () => {
+    resultsSongs.value = await External.searchSongs("")
+    resultsAlbums.value = await External.searchAlbums("")
+    resultsArtists.value = await External.searchArtists("")
+})
 </script>
 
 <style scoped></style>
