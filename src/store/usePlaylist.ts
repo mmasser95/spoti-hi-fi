@@ -19,6 +19,9 @@ export const usePlaylist = defineStore("Playlist", () => {
     const isShuffling = ref(false)
     const isRepeating = ref(false)
     const duration = ref(0)
+
+    const mySto = ref()
+
     let animationFrame: number | null = null;
     const playAudio = () => {
         if (!!currentSong.value) {
@@ -121,17 +124,20 @@ export const usePlaylist = defineStore("Playlist", () => {
                 isPlaying.value = true
                 updateMediaSession()
                 updateTime()
+                mySto.value = setInterval(updateTimeMediaSession, 1000)
             },
             onpause: () => {
                 isPlaying.value = false;
                 updateMediaSession()
                 if (animationFrame) cancelAnimationFrame(animationFrame)
+                if (!!mySto.value) clearInterval(mySto.value)
             },
             onend: () => {
                 isPlaying.value = false
                 player.value?.seek(0)
                 if (animationFrame) cancelAnimationFrame(animationFrame)
-                if(!isRepeating.value)
+                if (!!mySto.value) clearInterval(mySto.value)
+                if (!isRepeating.value)
                     next()
                 playAudio()
             }
@@ -170,6 +176,15 @@ export const usePlaylist = defineStore("Playlist", () => {
         })
         animationFrame = requestAnimationFrame(updateTime);
     };
+
+    const updateTimeMediaSession = () => {
+        if (!player.value) return
+        MediaSession.setPositionState({
+            duration: player.value.duration(),
+            playbackRate: 1.0,
+            position: currentTime.value
+        })
+    }
 
     const toggleShuffle = () => {
         isShuffling.value = !isShuffling.value
