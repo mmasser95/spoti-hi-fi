@@ -8,7 +8,7 @@
         <ion-card-content>
             <ion-badge></ion-badge>
             <ion-button expand="block" fill="outline" @click="showAlbum">Ver Album</ion-button>
-            <ion-button expand="block">Añadir Album</ion-button>
+            <ion-button expand="block" @click="addAlbumToPlaylist">Añadir Album</ion-button>
         </ion-card-content>
     </ion-card>
 </template>
@@ -17,7 +17,11 @@ import { AlbumResult } from '@/types/SearchResults';
 import { IonCard, IonImg, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonBadge, IonButton, modalController } from '@ionic/vue';
 import { computed } from 'vue';
 import ViewAlbum from '@/components/ViewAlbum.vue';
-
+import { usePlaylist } from '@/store/usePlaylist';
+import { storeToRefs } from 'pinia';
+import { useAuth } from '@/store/useAuth';
+const { addToPlaylist } = usePlaylist()
+const { url: base_url } = storeToRefs(useAuth())
 const props = defineProps<{ album: AlbumResult }>()
 
 const artistsNames = computed(() => props.album.artists
@@ -32,5 +36,15 @@ const showAlbum = async () => {
         }
     })
     await modal.present()
+}
+const addAlbumToPlaylist = () => {
+    for (const song of props.album.songs) {
+        addToPlaylist({
+            artist: artistsNames.value,
+            url: `${base_url.value}/${song.filePath.split("/")[1]}`,
+            title: song.title,
+            artwork: props.album.coverImage
+        })
+    }
 }
 </script>
