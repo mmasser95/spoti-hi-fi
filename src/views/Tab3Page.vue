@@ -11,17 +11,13 @@
           <ion-title size="large">Explore</ion-title>
         </ion-toolbar>
       </ion-header>
-
+      <SearchLocal/>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { External } from '@/APIService/external';
+import SearchLocal from '@/components/SearchLocal.vue';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/vue';
 
-const getLocal = async () => {
-  let data = await External.getLocalSongs()
-  console.log(data);
-}
 </script>

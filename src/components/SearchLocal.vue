@@ -10,9 +10,8 @@
 
             <!-- Resultados -->
             <ion-row class="ion-justify-content-center">
-                <ion-col v-if="searchSource === 'spotify'" v-for="item in resultsSpotify" :key="item.id" size="6"
-                    size-sm="4" size-md="3" size-lg="2">
-                    <SpotifyCard :song="item" />
+                <ion-col v-for="item in results" :key="item.id" size="6" size-sm="4" size-md="3" size-lg="2">
+                    <LocalCard :song="item" />
                 </ion-col>
             </ion-row>
         </ion-grid>
@@ -23,37 +22,25 @@
 import { External } from '@/APIService/external';
 import { IonContent, IonGrid, IonRow, IonCol, IonInput } from '@ionic/vue';
 import debounce from 'lodash/debounce';
-import { ref, watch } from 'vue';
-import SpotifyCard from '@/components/SpotifyCard.vue';
-import { SpotifyTrack } from '@/types/SpotifySearch';
-import { YoutubeTrack } from '@/types/YoutubeSearch';
+import { onMounted, ref, watch } from 'vue';
+import LocalCard from '@/components/LocalCard.vue';
+import { LocalSong } from '@/types/LocalSong';
+
 
 const query = ref("");
-const searchSource = ref<"spotify" | "youtube">("spotify"); // Controla la fuente de búsqueda
-const resultsSpotify = ref<(SpotifyTrack)[]>([]);
-const resultsYoutube = ref<(YoutubeTrack)[]>([]);
+const results = ref<LocalSong[]>()
 
 const searchWithoutDebounce = async (v: string) => {
     if (!v) return;
-    let res;
-    if (searchSource.value === "spotify") {
-        res = await External.searchSpotify(v);
-        resultsSpotify.value = res.items;
-    } else {
-        res = await External.searchYoutube(v);
-        resultsYoutube.value = res;
-    }
+    results.value = await External.getLocalSongs()
 }
 const search = debounce(searchWithoutDebounce, 600);
+
 watch(query, () => {
     search(query.value);
 });
-watch(searchSource, () => {
-    searchWithoutDebounce(query.value)
-})
 
-
-
+onMounted(() => searchWithoutDebounce("s"))
 </script>
 
 <style scoped>
