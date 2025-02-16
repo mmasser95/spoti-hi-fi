@@ -169,11 +169,6 @@ export const usePlaylist = defineStore("Playlist", () => {
         if (!player.value) return;
 
         currentTime.value = player.value.seek() as number;
-        MediaSession.setPositionState({
-            duration: player.value.duration(),
-            playbackRate: 1.0,
-            position: currentTime.value
-        })
         animationFrame = requestAnimationFrame(updateTime);
     };
 
