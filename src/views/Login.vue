@@ -2,8 +2,7 @@
     <ion-page>
         <ion-content>
             <ion-grid>
-                <ion-row>
-                    <ion-col size="12" size-sm="2" size-md="3"></ion-col>
+                <ion-row class="ion-justify-content-center">
                     <ion-col size="12" size-sm="8" size-md="6">
                         <form @submit.prevent="doLogin">
                             <ion-row>
@@ -29,16 +28,13 @@
                                     </ion-input>
                                 </ion-col>
                             </ion-row>
-                            <ion-row>
-                                <ion-col></ion-col>
-                                <ion-col>
+                            <ion-row class="ion-justify-content-center">
+                                <ion-col size="12" size-md="6">
                                     <ion-button type="submit" expand="block">Log In</ion-button>
                                 </ion-col>
-                                <ion-col></ion-col>
                             </ion-row>
                         </form>
                     </ion-col>
-                    <ion-col size="12" size-sm="2" size-md="3"></ion-col>
                 </ion-row>
             </ion-grid>
         </ion-content>
@@ -52,7 +48,7 @@ import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonInput, IonButton, IonI
 import { eye, eyeOff } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-const { token, url } = storeToRefs(useAuth())
+const { token, url, username: fullName } = storeToRefs(useAuth())
 
 const showPassword = ref<boolean>(false)
 const username = ref<string>("")
@@ -60,8 +56,8 @@ const password = ref<string>("")
 
 const doLogin = async () => {
     let data = await Auth.login(username.value, password.value)
-    console.log(data);
-    token.value = data.token
+    token.value = data.token.token
+    fullName.value = data.$attributes.fullName
     router.push('/tabs')
 }
 

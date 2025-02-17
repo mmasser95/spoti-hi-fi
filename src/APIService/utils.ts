@@ -1,6 +1,11 @@
-export const getHeaders = () => {
-    return {
-        "Content-Type": "application/json",
-    }
+import { useAuth } from "@/store/useAuth"
+import { storeToRefs } from "pinia"
 
-}
+export const getHeaders = () => ({
+    "Content-Type": "application/json",
+})
+
+export const getAuthHeaders = () => ({
+    ...getHeaders(),
+    "Authorization": `Bearer ${storeToRefs(useAuth()).token.value}`
+})
