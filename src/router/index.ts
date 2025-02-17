@@ -7,7 +7,8 @@ import { useAuth } from '@/store/useAuth';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
-    component: () => import("@/views/Login.vue")
+    component: () => import("@/views/Login.vue"),
+    name: "Login"
   },
   {
     path: '/',
@@ -51,9 +52,14 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  const { isAuth } = useAuth()
-  if (to.meta.requiresAuth && !isAuth)
+router.beforeEach(async (to, from, next) => {
+  const store = useAuth()
+  const { isAuth } = storeToRefs(store)
+  const { loadUserData } = store
+  if (!isAuth.value)
+    await loadUserData()
+
+  if (to.meta.requiresAuth && !isAuth.value)
     next('/login')
   else
     next()

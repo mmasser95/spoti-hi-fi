@@ -48,7 +48,9 @@ import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonInput, IonButton, IonI
 import { eye, eyeOff } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-const { token, url, username: fullName } = storeToRefs(useAuth())
+const store = useAuth()
+const { url } = storeToRefs(store)
+const { login } = store
 
 const showPassword = ref<boolean>(false)
 const username = ref<string>("")
@@ -56,8 +58,7 @@ const password = ref<string>("")
 
 const doLogin = async () => {
     let data = await Auth.login(username.value, password.value)
-    token.value = data.token.token
-    fullName.value = data.$attributes.fullName
+    await login(data.token.token, data.$attributes.fullName)
     router.push('/tabs')
 }
 
