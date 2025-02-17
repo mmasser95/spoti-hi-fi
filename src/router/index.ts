@@ -52,8 +52,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = storeToRefs(useAuth()).token
-  const isAuth = !!token.value && token.value === ""
+  const { isAuth } = useAuth()
   if (to.meta.requiresAuth && !isAuth)
     next('/login')
   else

@@ -8,8 +8,6 @@
         </ion-col>
       </ion-row>
       <ion-row class="player-header">
-        <!-- <ion-col size="auto">
-        </ion-col> -->
         <ion-col>
           <h3 class="track-title">{{ currentSong?.title || "Sin título" }}</h3>
           <p class="track-artist">{{ currentSong?.artist || "Desconocido" }}</p>
