@@ -17,6 +17,12 @@
           <ion-icon aria-hidden="true" :icon="search" />
           <ion-label>Explore</ion-label>
         </ion-tab-button>
+
+        <ion-tab-button tab="tab4" href="/tabs/tab4">
+          <ion-icon aria-hidden="true" :icon="cog" />
+          <ion-label>Settings</ion-label>
+        </ion-tab-button>
+
       </ion-tab-bar>
     </ion-tabs>
   </ion-page>
@@ -24,5 +30,5 @@
 
 <script setup lang="ts">
 import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet } from '@ionic/vue';
-import { cloudDownload, musicalNotes, search } from 'ionicons/icons';
+import { cloudDownload, musicalNotes, search, cog } from 'ionicons/icons';
 </script>

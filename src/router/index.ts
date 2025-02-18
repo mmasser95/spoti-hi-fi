@@ -42,6 +42,13 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        path: 'tab4',
+        component: () => import('@/views/Tab4Page.vue'),
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   }
