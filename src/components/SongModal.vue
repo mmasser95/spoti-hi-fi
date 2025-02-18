@@ -3,7 +3,9 @@
         <ion-toolbar>
             <ion-title>{{ song.name }}</ion-title>
             <ion-buttons slot="end">
-                <ion-button @click="dismiss">Cerrar</ion-button>
+                <ion-button @click="dismiss">
+                    <ion-icon :icon="close"/>
+                </ion-button>
             </ion-buttons>
         </ion-toolbar>
     </ion-header>
@@ -28,7 +30,8 @@
         <!-- Mostrar los resultados de YouTube -->
         <ion-list>
             <ion-item v-for="(result, index) in youtubeResults" :key="index">
-                <YoutubeCard :video="result" :album="album" :artists="artistsProps" :spotify-id="song.id" :title="song.name"></YoutubeCard>
+                <YoutubeCard :video="result" :album="album" :artists="artistsProps" :spotify-id="song.id"
+                    :title="song.name"></YoutubeCard>
             </ion-item>
         </ion-list>
     </ion-content>
@@ -38,9 +41,10 @@
 import { External } from '@/APIService/external';
 import { SpotifyTrack } from '@/types/SpotifySearch';
 import { YoutubeTrack } from '@/types/YoutubeSearch';
-import { IonHeader, IonList, IonContent, modalController, IonToolbar, IonTitle, IonButtons, IonButton, IonItem, IonLabel, IonText } from '@ionic/vue';
+import { IonHeader, IonList, IonContent, modalController, IonToolbar, IonTitle, IonButtons, IonButton, IonItem, IonLabel, IonText, IonIcon } from '@ionic/vue';
 import { computed, onMounted, ref } from 'vue';
 import YoutubeCard from './YoutubeCard.vue';
+import { close } from 'ionicons/icons';
 const props = defineProps<{ song: SpotifyTrack }>()
 const artistsNames = computed(() =>
     props.song.artists.map(artist => artist.name).join(", ")
@@ -60,13 +64,13 @@ const formattedDuration = computed(() => {
 const dismiss = () => {
     modalController.dismiss(null, 'cancel')
 }
-const album=computed(()=>({
-    spotifyId:props.song.album.id,
-    name:props.song.album.name,
-    coverImage:props.song.album.images[0].url,
-    artists:props.song.album.artists.map((artist)=>({
-        spotifyId:artist.id,
-        name:artist.name,
+const album = computed(() => ({
+    spotifyId: props.song.album.id,
+    name: props.song.album.name,
+    coverImage: props.song.album.images[0].url,
+    artists: props.song.album.artists.map((artist) => ({
+        spotifyId: artist.id,
+        name: artist.name,
     }))
 }))
 onMounted(async () => {
