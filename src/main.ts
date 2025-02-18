@@ -45,5 +45,5 @@ const app = createApp(App)
 router.isReady().then(() => {
   initDb().then(() =>
     app.mount('#app')
-  )
+  ).catch(err => alert(err))
 });
