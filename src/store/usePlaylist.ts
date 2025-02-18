@@ -95,7 +95,11 @@ export const usePlaylist = defineStore("Playlist", () => {
     })
 
     const addToPlaylist = (song: Song) => {
-        playlist.value?.push(song)
+        if (!playlist.value.some(s => s.url === song.url)) {
+            playlist.value.push(song);
+        } else {
+            console.log("La canción ya está en la playlist");
+        }
     }
 
     const updateMediaSession = () => {

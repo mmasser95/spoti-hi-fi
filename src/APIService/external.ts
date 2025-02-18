@@ -144,12 +144,12 @@ export class External {
     }
 
     public static async getSongsOfArtist(id: number) {
-        let req = await fetch(`${this.url.value}/artists/${id}`)
+        let req = await fetch(`${this.url.value}/artist/${id}/songs`)
         if (!req.ok) {
             let err = await req.text()
             throw new Error(err);
         }
-        let data: ArtistResult = await req.json()
+        let data: LocalSong[] = await req.json()
         return data
     }
 }
