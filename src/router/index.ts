@@ -66,6 +66,10 @@ router.beforeEach(async (to, from, next) => {
   if (!isAuth.value)
     await loadUserData()
 
+  if (!!isAuth.value && to.name === "Login") {
+    next('/tabs')
+    return
+  }
   if (to.meta.requiresAuth && !isAuth.value)
     next('/login')
   else
