@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonImg, IonList, IonItem, IonLabel, IonButton, IonBadge, modalController } from '@ionic/vue';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonImg, IonList, IonItem, IonLabel, IonButton, IonBadge, modalController, IonIcon, IonButtons } from '@ionic/vue';
 import { addCircleOutline, close } from 'ionicons/icons';
 import { AlbumResult } from '@/types/SearchResults';
 import { usePlaylist } from '@/store/usePlaylist';
