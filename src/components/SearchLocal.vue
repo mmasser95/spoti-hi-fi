@@ -1,6 +1,6 @@
 <template>
     <ion-content>
-        <ion-refresher slot="fixed" @ionRefresh="handleRefresh($event)">
+        <ion-refresher v-if="!!serverError" slot="fixed" @ionRefresh="handleRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <ion-grid>
@@ -8,6 +8,7 @@
             <ion-row class="ion-justify-content-center ion-align-items-center">
                 <ion-col size="12" size-md="4">
                     <ion-input v-model="query" :placeholder="searchPlaceHolder"></ion-input>
+                    <ion-toggle v-model="serverError" :enable-on-off-labels="true">Local</ion-toggle>
                 </ion-col>
             </ion-row>
             <ion-row class="ion-justify-content-center ion-align-items-center" v-if="!serverError">
@@ -63,7 +64,7 @@
 
 <script lang="ts" setup>
 import { External } from '@/APIService/external';
-import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton, IonLabel, IonSegmentContent, IonSegmentView, RefresherCustomEvent, IonRefresher, IonRefresherContent } from '@ionic/vue';
+import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton, IonLabel, IonSegmentContent, IonSegmentView, RefresherCustomEvent, IonRefresher, IonRefresherContent, IonToggle } from '@ionic/vue';
 import debounce from 'lodash/debounce';
 import { computed, onMounted, ref, watch } from 'vue';
 import LocalCard from '@/components/LocalCard.vue';
@@ -118,6 +119,16 @@ onMounted(async () => {
         console.warn("No se pudo conectar al servidor")
         serverError.value = true
         localSongs.value = await getElements()
+    }
+})
+
+watch(serverError, async (v) => {
+    if (v) {
+        if (!localSongs.value)
+            localSongs.value = await getElements()
+        else
+            if (localSongs.value.length < 1)
+                localSongs.value = await getElements()
     }
 })
 

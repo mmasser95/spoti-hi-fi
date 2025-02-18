@@ -20,21 +20,23 @@ export const saveSong = async (fileName: string, data: Blob) => {
 }
 
 export const insertSong = async (id: number, title: string, artist: string, fileName: string, artwork: string) => {
+    const sqlite = new SQLiteConnection(CapacitorSQLite)
+    const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
     try {
-        const sqlite = new SQLiteConnection(CapacitorSQLite)
-        const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
         await db.open()
-        await db.execute(`INSERT INTO songs (id, title, artist, url, artwork) VALUES ('${id}', '${title}', '${artist}', '${fileName}', '${artwork}');`)
+        await db.run(`INSERT INTO songs (id, title, artist, url, artwork) VALUES ('${id}', '${sanitizeString(title)}', '${sanitizeString(artist)}', '${fileName}', '${artwork}');`)
         await sqlite.closeAllConnections()
     } catch (error) {
         alert(`Error: ${error}`)
+    }finally{
+        await db.close()
     }
 }
 
 export const getElements = async () => {
+    const sqlite = new SQLiteConnection(CapacitorSQLite)
+    const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
     try {
-        const sqlite = new SQLiteConnection(CapacitorSQLite)
-        const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
         await db.open()
         const results = await db.query("SELECT * FROM songs")
         if (results.values) {
@@ -53,6 +55,8 @@ export const getElements = async () => {
         }
     } catch (error) {
         alert(`Error: ${error}`)
+    }finally{
+        await db.close()
     }
 }
 
@@ -72,3 +76,9 @@ export const getFile = async (filePath: string): Promise<string | null> => {
         return null;
     }
 };
+function sanitizeString(str:string) {
+    return str
+      .replace(/'/g, "")   // Escapar comillas simples para SQLite
+      .replace(/[\x00-\x1F\x7F]/g, ""); // Eliminar caracteres de control
+  }
+  
