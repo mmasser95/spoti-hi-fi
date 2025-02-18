@@ -1,6 +1,9 @@
 <template>
     <ion-content>
-        <ion-refresher v-if="!!serverError" slot="fixed" @ionRefresh="handleRefresh($event)">
+        <ion-refresher v-if="!serverError" slot="fixed" @ionRefresh="handleRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
+        <ion-refresher v-else slot="fixed" @ionRefresh="handleRefresh2($event)">
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <ion-grid>
@@ -134,6 +137,10 @@ watch(serverError, async (v) => {
 
 const handleRefresh = async (event: RefresherCustomEvent) => {
     await searchWithoutDebounce(query.value)
+    event.target.complete()
+}
+const handleRefresh2 = async (event: RefresherCustomEvent) => {
+    localSongs.value=await getElements()
     event.target.complete()
 }
 </script>
