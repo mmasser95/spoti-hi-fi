@@ -8,10 +8,12 @@
         <ion-card-content>
             <ion-badge v-if="isInPlaylist" color="warning">Añadida</ion-badge>
             <ion-button @click="addIt" v-else>Añadir</ion-button>
+            <ion-button @click="descargar">Descargar</ion-button>
         </ion-card-content>
     </ion-card>
 </template>
 <script lang="ts" setup>
+import { getElements, insertSong, saveSong } from '@/composables/useLocalSystem';
 import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
 import { LocalSong } from '@/types/LocalElements';
@@ -28,19 +30,29 @@ const props = defineProps<{
     song: LocalSong
 }>()
 
+const fileName = computed(() => props.song.filePath.split("/")[1])
+const myUrl = computed(() => `${base_url.value}/${fileName.value}`)
+
 const artistsNames = computed(() => props.song.artists
     .map(artist => artist.name)
     .join(", "))
 const isInPlaylist = computed(() => playlist.value
     .map(song => song.url)
-    .some(url => url == `${base_url.value}/${props.song.filePath.split("/")[1]}`))
+    .some(url => url == myUrl.value))
 
 const addIt = () => {
     addToPlaylist({
         artist: artistsNames.value,
-        url: `${base_url.value}/${props.song.filePath.split("/")[1]}`,
+        url: myUrl.value,
         title: props.song.title,
         artwork: props.song.album.coverImage
     })
+}
+
+const descargar = async () => {
+    const req = await fetch(myUrl.value)
+    const blob = await req.blob()
+    await saveSong(fileName.value, blob)
+    await insertSong(props.song.id, props.song.title, artistsNames.value, fileName.value, props.song.album.coverImage)
 }
 </script>

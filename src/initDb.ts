@@ -30,11 +30,13 @@ export default async () => {
   
     // Crear tabla si no existe
     await db.execute(`
+      --DROP TABLE songs;
       CREATE TABLE IF NOT EXISTS songs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         artist TEXT NOT NULL,
-        file_path TEXT NOT NULL
+        url TEXT NOT NULL,
+        artwork TEXT NOT NULL
       );
     `);
     console.log("Tabla songs verificada/creada.");

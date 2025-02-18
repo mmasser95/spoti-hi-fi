@@ -10,7 +10,7 @@
                     <ion-input v-model="query" :placeholder="searchPlaceHolder"></ion-input>
                 </ion-col>
             </ion-row>
-            <ion-row class="ion-justify-content-center ion-align-items-center">
+            <ion-row class="ion-justify-content-center ion-align-items-center" v-if="!serverError">
                 <ion-col size="12" size-md="4">
                     <ion-segment value="song" v-model="searchType">
                         <ion-segment-button value="song" content-id="song">
@@ -26,7 +26,7 @@
                 </ion-col>
             </ion-row>
             <!-- Resultados -->
-            <ion-segment-view>
+            <ion-segment-view v-if="!serverError">
                 <ion-segment-content id="song">
                     <ion-row class="ion-justify-content-center">
                         <ion-col v-for="item in resultsSongs" :key="item.id" size="6" size-sm="4" size-md="3"
@@ -52,6 +52,11 @@
                     </ion-row>
                 </ion-segment-content>
             </ion-segment-view>
+            <ion-row class="ion-justify-content-center" v-if="!!serverError">
+                <ion-col v-for="item in localSongs" :key="item.url" size="6" size-sm="4" size-md="3" size-lg="2">
+                    <DeviceSongCard :song="item" />
+                </ion-col>
+            </ion-row>
         </ion-grid>
     </ion-content>
 </template>
@@ -66,11 +71,17 @@ import { LocalSong } from '@/types/LocalElements';
 import ArtistCard from '@/components/ArtistCard.vue';
 import { AlbumResult, ArtistResult } from '@/types/SearchResults';
 import AlbumCard from '@/components/AlbumCard.vue';
+import { getElements } from '@/composables/useLocalSystem';
+import { Song } from '@/types/Song';
+import DeviceSongCard from '@/components/DeviceSongCard.vue';
+
 
 const query = ref("");
 const resultsSongs = ref<LocalSong[]>()
+const localSongs = ref<Song[]>()
 const resultsArtists = ref<ArtistResult[]>()
 const resultsAlbums = ref<AlbumResult[]>()
+const serverError = ref<boolean>(false)
 const searchPlaceHolder = computed(() =>
     searchType.value == 'song'
         ? "Buscar canción"
@@ -99,10 +110,17 @@ watch(query, () => {
 watch(searchType, () => query.value = "")
 
 onMounted(async () => {
-    resultsSongs.value = await External.searchSongs("")
-    resultsAlbums.value = await External.searchAlbums("")
-    resultsArtists.value = await External.searchArtists("")
+    try {
+        resultsSongs.value = await External.searchSongs("")
+        resultsAlbums.value = await External.searchAlbums("")
+        resultsArtists.value = await External.searchArtists("")
+    } catch (error) {
+        console.warn("No se pudo conectar al servidor")
+        serverError.value = true
+        localSongs.value = await getElements()
+    }
 })
+
 const handleRefresh = async (event: RefresherCustomEvent) => {
     await searchWithoutDebounce(query.value)
     event.target.complete()
