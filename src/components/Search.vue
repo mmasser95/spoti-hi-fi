@@ -1,5 +1,8 @@
 <template>
     <ion-content>
+        <ion-refresher slot="fixed" @ionRefresh="handleRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
         <ion-grid>
             <!-- Input de búsqueda con selector -->
             <ion-row class="ion-justify-content-center ion-align-items-center">
@@ -21,7 +24,7 @@
 
 <script lang="ts" setup>
 import { External } from '@/APIService/external';
-import { IonContent, IonGrid, IonRow, IonCol, IonInput } from '@ionic/vue';
+import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonRefresher, IonRefresherContent, RefresherCustomEvent } from '@ionic/vue';
 import debounce from 'lodash/debounce';
 import { ref, watch } from 'vue';
 import SpotifyCard from '@/components/SpotifyCard.vue';
@@ -52,7 +55,10 @@ watch(searchSource, () => {
     searchWithoutDebounce(query.value)
 })
 
-
+const handleRefresh = async (event: RefresherCustomEvent) => {
+    await searchWithoutDebounce(query.value)
+    event.target.complete()
+}
 
 </script>
 

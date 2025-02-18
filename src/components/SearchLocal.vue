@@ -1,5 +1,8 @@
 <template>
     <ion-content>
+        <ion-refresher slot="fixed" @ionRefresh="handleRefresh($event)">
+            <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
         <ion-grid>
             <!-- Input de búsqueda con selector -->
             <ion-row class="ion-justify-content-center ion-align-items-center">
@@ -55,7 +58,7 @@
 
 <script lang="ts" setup>
 import { External } from '@/APIService/external';
-import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton, IonLabel, IonSegmentContent, IonSegmentView } from '@ionic/vue';
+import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton, IonLabel, IonSegmentContent, IonSegmentView, RefresherCustomEvent } from '@ionic/vue';
 import debounce from 'lodash/debounce';
 import { computed, onMounted, ref, watch } from 'vue';
 import LocalCard from '@/components/LocalCard.vue';
@@ -100,6 +103,10 @@ onMounted(async () => {
     resultsAlbums.value = await External.searchAlbums("")
     resultsArtists.value = await External.searchArtists("")
 })
+const handleRefresh = async (event: RefresherCustomEvent) => {
+    await searchWithoutDebounce(query.value)
+    event.target.complete()
+}
 </script>
 
 <style scoped></style>
