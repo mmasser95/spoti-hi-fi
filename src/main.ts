@@ -34,6 +34,7 @@ import '@ionic/vue/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 import { createPinia } from 'pinia';
+import initDb from './initDb';
 
 
 const app = createApp(App)
@@ -42,5 +43,7 @@ const app = createApp(App)
   .use(createPinia());
 
 router.isReady().then(() => {
-  app.mount('#app');
+  initDb().then(() =>
+    app.mount('#app')
+  )
 });
