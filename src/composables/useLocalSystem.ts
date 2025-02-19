@@ -9,7 +9,7 @@ export const saveSong = async (fileName: string, data: Blob) => {
             const base64Data = reader.result?.toString().split(',')[1];
             if (base64Data)
                 await Filesystem.writeFile({
-                    path: `${fileName}`,
+                    path: `${sanitizeString(fileName)}`,
                     data: base64Data,
                     directory: Directory.Data
                 })
@@ -24,12 +24,12 @@ export const insertSong = async (id: number, title: string, artist: string, file
     const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
     try {
         await db.open()
-        await db.run(`INSERT INTO songs (id, title, artist, url, artwork) VALUES ('${id}', '${sanitizeString(title)}', '${sanitizeString(artist)}', '${fileName}', '${artwork}');`)
-        await sqlite.closeAllConnections()
+        await db.run(`INSERT INTO songs (id, title, artist, url, artwork) VALUES ('${id}', '${sanitizeString(title)}', '${sanitizeString(artist)}', '${sanitizeString(fileName)}', '${artwork}');`)
     } catch (error) {
         alert(`Error: ${error}`)
-    }finally{
-        await db.close()
+    } finally {
+        await sqlite.closeAllConnections()
+        // await db.close()
     }
 }
 
@@ -55,8 +55,9 @@ export const getElements = async () => {
         }
     } catch (error) {
         alert(`Error: ${error}`)
-    }finally{
-        await db.close()
+    } finally {
+        await sqlite.closeAllConnections()
+        // await db.close()
     }
 }
 
@@ -76,9 +77,8 @@ export const getFile = async (filePath: string): Promise<string | null> => {
         return null;
     }
 };
-function sanitizeString(str:string) {
+function sanitizeString(str: string) {
     return str
-      .replace(/'/g, "")   // Escapar comillas simples para SQLite
-      .replace(/[\x00-\x1F\x7F]/g, ""); // Eliminar caracteres de control
-  }
-  
+        .replace(/'/g, "")   // Escapar comillas simples para SQLite
+        .replace(/[\x00-\x1F\x7F]/g, ""); // Eliminar caracteres de control
+}
