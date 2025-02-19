@@ -8,11 +8,14 @@
       </ion-row>
       <ion-row class="player-header">
         <ion-col>
-          <h3 class="track-title">{{ currentSong?.title || "Sin título" }}</h3>
-          <p class="track-artist">{{ currentSong?.artist || "Desconocido" }}</p>
+          <ion-text color="primary">
+            <h3 class="track-title">{{ currentSong?.title || "Sin título" }}</h3>
+          </ion-text>
+          <ion-text color="medium">
+            <p class="track-artist">{{ currentSong?.artist || "Desconocido" }}</p>
+          </ion-text>
         </ion-col>
       </ion-row>
-
       <ion-row class="progress-container">
         <input type="range" min="0" max="100" v-model="progress" @input="seekTo" class="styled-range" />
         <div class="time-info">
@@ -113,7 +116,6 @@ const showPlaylist = async () => {
 
 .track-artist {
   font-size: 14px;
-  color: #aaa;
 }
 
 .progress-container {
