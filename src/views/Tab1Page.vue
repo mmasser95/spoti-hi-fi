@@ -2,13 +2,13 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Player</ion-title>
+        <ion-title></ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Player</ion-title>
+          <ion-title size="large"></ion-title>
         </ion-toolbar>
       </ion-header>
       <Player/>

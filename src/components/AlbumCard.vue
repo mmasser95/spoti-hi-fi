@@ -5,10 +5,14 @@
             <ion-card-title>{{ album.name }}</ion-card-title>
             <ion-card-subtitle>{{ artistsNames }}</ion-card-subtitle>
         </ion-card-header>
-        <ion-card-content>
+        <ion-card-content class="flex-align-center">
             <ion-badge></ion-badge>
-            <ion-button expand="block" fill="outline" @click="showAlbum">Ver Album</ion-button>
-            <ion-button expand="block" @click="addAlbumToPlaylist">Añadir Album</ion-button>
+            <ion-button fill="outline" shape="round" @click="showAlbum">
+                <ion-icon slot="icon-only" :icon="eyeOutline"/>
+            </ion-button>
+            <ion-button fill="outline" shape="round" @click="addAlbumToPlaylist">
+                <ion-icon slot="icon-only" :icon="add"/>
+            </ion-button>
         </ion-card-content>
     </ion-card>
 </template>
@@ -20,6 +24,7 @@ import ViewAlbum from '@/components/ViewAlbum.vue';
 import { usePlaylist } from '@/store/usePlaylist';
 import { storeToRefs } from 'pinia';
 import { useAuth } from '@/store/useAuth';
+import { add, eyeOutline } from 'ionicons/icons';
 const { addToPlaylist } = usePlaylist()
 const { url: base_url } = storeToRefs(useAuth())
 const props = defineProps<{ album: AlbumResult }>()

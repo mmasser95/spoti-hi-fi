@@ -11,9 +11,13 @@
             <ion-card-subtitle>
                 {{ artist.spotifyId }}
             </ion-card-subtitle>
-            <ion-card-content>
-                <ion-button fill="outline" @click="ver">Ver artista</ion-button>
-                <ion-button @click="getSongs">Añadir artista</ion-button>
+            <ion-card-content class="flex-align-center">
+                <ion-button fill="outline" shape="round" @click="ver">
+                    <ion-icon slot="icon-only" :icon="eyeOutline"/>
+                </ion-button>
+                <ion-button fill="outline" shape="round" @click="getSongs">
+                    <ion-icon slot="icon-only" :icon="add"/>
+                </ion-button>
             </ion-card-content>
         </ion-card-header>
     </ion-card>
@@ -24,6 +28,7 @@ import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
 import { AlbumResult, ArtistResult } from '@/types/SearchResults';
 import { IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton } from '@ionic/vue';
+import { add, eye, eyeOutline } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
 
 interface ExtendedArtist extends ArtistResult {

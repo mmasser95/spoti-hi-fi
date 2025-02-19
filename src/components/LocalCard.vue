@@ -5,10 +5,14 @@
             <ion-card-title>{{ song.title }}</ion-card-title>
             <ion-card-subtitle>{{ artistsNames }}</ion-card-subtitle>
         </ion-card-header>
-        <ion-card-content>
-            <ion-badge v-if="isInPlaylist" color="warning">Añadida</ion-badge>
-            <ion-button @click="addIt" v-else>Añadir</ion-button>
-            <ion-button @click="descargar">Descargar</ion-button>
+        <ion-card-content class="flex-align-center">
+            <ion-badge v-if="isInPlaylist" color="primary">Añadida</ion-badge>
+            <ion-button fill="outline" shape="round" @click="addIt" v-else>
+                <ion-icon slot="icon-only" :icon="add" />
+            </ion-button>
+            <ion-button shape="round" fill="outline" @click="descargar">
+                <ion-icon slot="icon-only" :icon="downloadOutline" />
+            </ion-button>
         </ion-card-content>
     </ion-card>
 </template>
@@ -18,6 +22,7 @@ import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
 import { LocalSong } from '@/types/LocalElements';
 import { IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton, IonIcon } from '@ionic/vue';
+import { add, download, downloadOutline } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
@@ -56,3 +61,12 @@ const descargar = async () => {
     await insertSong(props.song.id, props.song.title, artistsNames.value, fileName.value, props.song.album.coverImage)
 }
 </script>
+
+<style>
+.flex-align-center {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+</style>
