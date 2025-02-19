@@ -1,9 +1,8 @@
 <template>
   <ion-card class="player-container">
     <ion-grid>
-      <ion-row class="ion-justify-content-center" >
-        <ion-col size="8"
-        size-sm="4" size-md="3" size-lg="2">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="8" size-sm="4" size-md="3" size-lg="2">
           <ion-img :src="currentSong?.artwork || defaultCover" class="album-cover"></ion-img>
         </ion-col>
       </ion-row>
@@ -15,7 +14,7 @@
       </ion-row>
 
       <ion-row class="progress-container">
-        <input type="range" min="0" max="100" v-model="progress" @input="seekTo" class="progress-bar" />
+        <input type="range" min="0" max="100" v-model="progress" @input="seekTo" class="styled-range" />
         <div class="time-info">
           <span>{{ formatTime(currentTime) }}</span>
           <span>{{ formatTime(duration) }}</span>
@@ -23,27 +22,29 @@
       </ion-row>
 
       <ion-row class="controls">
-        <ion-button size="small" :color="isShuffling ? 'primary' : 'medium'" @click="toggleShuffle">
-          <ion-icon :icon="shuffle"></ion-icon>
+        <ion-button shape="round" :fill="isShuffling ? 'outline' : 'clear'" size="small"
+          :color="isShuffling ? 'primary' : 'medium'" @click="toggleShuffle">
+          <ion-icon slot="icon-only" :icon="shuffle"></ion-icon>
         </ion-button>
-        <ion-button size="small" @click="prev">
-          <ion-icon :icon="playSkipBack"></ion-icon>
+        <ion-button shape="round" fill="clear" size="small" @click="prev">
+          <ion-icon slot="icon-only" :icon="playSkipBack"></ion-icon>
         </ion-button>
-        <ion-button @click="togglePlay">
-          <ion-icon v-if="!isPlaying" :icon="play"></ion-icon>
-          <ion-icon v-else :icon="pause"></ion-icon>
+        <ion-button shape="round" @click="togglePlay" fill="clear">
+          <ion-icon slot="icon-only" v-if="!isPlaying" :icon="play"></ion-icon>
+          <ion-icon slot="icon-only" v-else :icon="pause"></ion-icon>
         </ion-button>
-        <ion-button size="small"  @click="next">
-          <ion-icon :icon="playSkipForward"></ion-icon>
+        <ion-button shape="round" size="small" fill="clear" @click="next">
+          <ion-icon slot="icon-only" :icon="playSkipForward"></ion-icon>
         </ion-button>
-        <ion-button size="small" :color="isRepeating ? 'primary' : 'medium'" @click="toggleRepeat">
-          <ion-icon :icon="repeat"></ion-icon>
+        <ion-button shape="round" :fill="isRepeating ? 'outline' : 'clear'" size="small"
+          :color="isRepeating ? 'primary' : 'medium'" @click="toggleRepeat">
+          <ion-icon slot="icon-only" :icon="repeat"></ion-icon>
         </ion-button>
       </ion-row>
       <ion-row class="modal-button-container">
         <ion-col class="ion-text-center">
-          <ion-button @click="showPlaylist">
-            <ion-icon :icon="options"></ion-icon>
+          <ion-button fill="outline" shape="round" @click="showPlaylist">
+            <ion-icon slot="icon-only" :icon="options"></ion-icon>
           </ion-button>
         </ion-col>
       </ion-row>
@@ -53,7 +54,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch } from "vue";
-import { IonButton, IonCard, IonGrid, IonRow, IonCol, IonIcon, IonImg, modalController } from "@ionic/vue";
+import { IonButton, IonCard, IonGrid, IonRange, IonRow, IonCol, IonIcon, IonImg, modalController } from "@ionic/vue";
 import { play, pause, playSkipBack, playSkipForward, shuffle, repeat, options } from "ionicons/icons";
 import { usePlaylist } from "@/store/usePlaylist";
 import { storeToRefs } from "pinia";
@@ -120,23 +121,7 @@ const showPlaylist = async () => {
   padding: 10px 0;
 }
 
-.progress-bar {
-  width: 100%;
-  appearance: none;
-  height: 4px;
-  background: #777;
-  border-radius: 4px;
-  outline: none;
-}
 
-.progress-bar::-webkit-slider-thumb {
-  appearance: none;
-  width: 12px;
-  height: 12px;
-  background: #fff;
-  border-radius: 50%;
-  cursor: pointer;
-}
 
 .time-info {
   display: flex;
@@ -161,5 +146,50 @@ const showPlaylist = async () => {
 .active {
   color: #1d54b9;
   /* Color verde de Spotify */
+}
+.styled-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #777;
+  outline: none;
+  transition: background 0.2s;
+}
+
+/* WebKit (Chrome, Safari) */
+.styled-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #777;
+}
+
+.styled-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -4px;
+  position: relative;
+  box-shadow: -100vw 0 0 100vw #1db954; /* Esto colorea la izquierda */
+}
+
+/* Firefox */
+.styled-range::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: #777;
+}
+
+.styled-range::-moz-range-progress {
+  background: #1db954;
+  height: 6px;
+  border-radius: 5px;
 }
 </style>
