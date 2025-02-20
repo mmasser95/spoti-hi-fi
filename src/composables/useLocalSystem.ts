@@ -57,8 +57,25 @@ export const getElements = async () => {
         alert(`Error: ${error}`)
     } finally {
         await sqlite.closeAllConnections()
-        // await db.close()
     }
+}
+
+export const getIds = async () => {
+    const sqlite = new SQLiteConnection(CapacitorSQLite)
+    const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
+    try {
+        await db.open()
+        const results = await db.query("SELECT id FROM songs")
+        if (results.values) {
+            let data: number[] = results.values.map((row: any) => row.id);
+            return data
+        }
+    } catch (error) {
+        alert(`Error: ${error}`)
+    } finally {
+        await sqlite.closeAllConnections()
+    }
+
 }
 
 export const getFile = async (filePath: string): Promise<string | null> => {
