@@ -13,10 +13,10 @@
             </ion-card-subtitle>
             <ion-card-content class="flex-align-center">
                 <ion-button fill="outline" shape="round" @click="ver">
-                    <ion-icon slot="icon-only" :icon="eyeOutline"/>
+                    <ion-icon slot="icon-only" :icon="eyeOutline" />
                 </ion-button>
                 <ion-button fill="outline" shape="round" @click="getSongs">
-                    <ion-icon slot="icon-only" :icon="add"/>
+                    <ion-icon slot="icon-only" :icon="add" />
                 </ion-button>
             </ion-card-content>
         </ion-card-header>
@@ -27,7 +27,7 @@ import { External } from '@/APIService/external';
 import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
 import { AlbumResult, ArtistResult } from '@/types/SearchResults';
-import { IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton } from '@ionic/vue';
+import { IonCard, IonImg, IonCardHeader, IonIcon, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton } from '@ionic/vue';
 import { add, eye, eyeOutline } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
 

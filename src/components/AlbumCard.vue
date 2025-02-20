@@ -8,17 +8,17 @@
         <ion-card-content class="flex-align-center">
             <ion-badge></ion-badge>
             <ion-button fill="outline" shape="round" @click="showAlbum">
-                <ion-icon slot="icon-only" :icon="eyeOutline"/>
+                <ion-icon slot="icon-only" :icon="eyeOutline" />
             </ion-button>
             <ion-button fill="outline" shape="round" @click="addAlbumToPlaylist">
-                <ion-icon slot="icon-only" :icon="add"/>
+                <ion-icon slot="icon-only" :icon="add" />
             </ion-button>
         </ion-card-content>
     </ion-card>
 </template>
 <script lang="ts" setup>
 import { AlbumResult } from '@/types/SearchResults';
-import { IonCard, IonImg, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonBadge, IonButton, modalController } from '@ionic/vue';
+import { IonCard, IonImg, IonIcon, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonBadge, IonButton, modalController } from '@ionic/vue';
 import { computed } from 'vue';
 import ViewAlbum from '@/components/ViewAlbum.vue';
 import { usePlaylist } from '@/store/usePlaylist';

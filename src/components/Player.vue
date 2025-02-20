@@ -57,7 +57,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch } from "vue";
-import { IonButton, IonCard, IonGrid, IonRange, IonRow, IonCol, IonIcon, IonImg, modalController } from "@ionic/vue";
+import { IonButton, IonCard, IonGrid, IonText, IonRange, IonRow, IonCol, IonIcon, IonImg, modalController } from "@ionic/vue";
 import { play, pause, playSkipBack, playSkipForward, shuffle, repeat, options } from "ionicons/icons";
 import { usePlaylist } from "@/store/usePlaylist";
 import { storeToRefs } from "pinia";
@@ -97,7 +97,7 @@ const showPlaylist = async () => {
 .player-container {
   padding: 15px;
   border-radius: 15px;
-  background: #1e1e1e;
+  /* background: #1e1e1e; */
   color: white;
   text-align: center;
 }
@@ -149,6 +149,7 @@ const showPlaylist = async () => {
   color: #1d54b9;
   /* Color verde de Spotify */
 }
+
 .styled-range {
   -webkit-appearance: none;
   appearance: none;
@@ -178,7 +179,8 @@ const showPlaylist = async () => {
   cursor: pointer;
   margin-top: -4px;
   position: relative;
-  box-shadow: -100vw 0 0 100vw #1db954; /* Esto colorea la izquierda */
+  /* box-shadow: -100vw 0 0 100vw #1db954; */
+  /* Esto colorea la izquierda */
 }
 
 /* Firefox */
