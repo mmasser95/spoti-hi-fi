@@ -6,7 +6,7 @@
         </ion-card-header>
         <ion-card-content class="flex-align-center">
             <ion-button shape="round" fill="outline" color="primary">
-                <ion-icon slot="icon-only" :icon="add" />
+                <ion-icon slot="icon-only" :icon="musicalNoteOutline" />
             </ion-button>
             <ion-button shape="round" fill="outline" color="danger" @click="deletePlaylist">
                 <ion-icon slot="icon-only" :icon="trashOutline" />
@@ -18,7 +18,7 @@
 import Playlist from '@/APIService/playlist';
 import { LocalPlaylist } from '@/types/Playlist';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, IonButtons, IonIcon, alertController } from '@ionic/vue';
-import { add, eye, trashOutline } from 'ionicons/icons';
+import { add, eye, musicalNoteOutline, trashOutline } from 'ionicons/icons';
 const props = defineProps<{ playlist: LocalPlaylist }>()
 const emit = defineEmits<{
     delete: []

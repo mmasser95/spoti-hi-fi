@@ -68,10 +68,10 @@ const isInPlaylist = (song: any) => {
 // Función para añadir canción a la playlist
 const addIt = (song: AlbumResult['songs'][0]) => {
     addToPlaylist({
-        artist: artistsNames.value,
+        artist: song.artists.map(a => a.name).join(', '),
         url: `${url.value}/${song.filePath.split("/")[1]}`,
         title: song.title,
-        artwork: props.album.coverImage
+        artwork: song.album.coverImage
     })
 };
 const dismiss = async () => {
