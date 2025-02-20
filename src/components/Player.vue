@@ -100,6 +100,7 @@ const showPlaylist = async () => {
   /* background: #1e1e1e; */
   color: white;
   text-align: center;
+  margin: 30px ;
 }
 
 .album-cover {

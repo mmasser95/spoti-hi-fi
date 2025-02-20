@@ -15,19 +15,23 @@
             <p><strong>Álbum:</strong> {{ song.album.name }}</p>
             <p><strong>Duración:</strong> {{ formattedDuration }}</p>
             <p><strong>Popularidad:</strong> {{ song.popularity }}/100</p>
-            <ion-button v-if="!song.isDownloaded" @click="openSongModal(song)" fill="outline" color="primary">
-                Descargar
-            </ion-button>
-            <ion-badge v-else color="danger">Descargado</ion-badge>
+            <div class="flex-align-center">
+                <ion-button fill="outline" shape="round" v-if="!song.isDownloaded" @click="openSongModal(song)"
+                    color="primary">
+                    <ion-icon :icon="download" slot="icon-only" />
+                </ion-button>
+                <ion-badge v-else color="danger">Descargado</ion-badge>
+            </div>
         </ion-card-content>
     </ion-card>
 </template>
 
 <script lang="ts" setup>
 import { SpotifyTrack } from '@/types/SpotifySearch';
-import { IonCard, IonCardContent,IonBadge, modalController, IonCardHeader, IonCardSubtitle, IonCardTitle, IonImg, IonButton } from '@ionic/vue';
+import { IonCard, IonCardContent, IonBadge, modalController, IonCardHeader, IonCardSubtitle, IonCardTitle, IonImg, IonButton, IonIcon } from '@ionic/vue';
 import { computed } from 'vue';
 import SongModal from '@/components/SongModal.vue';
+import { download } from 'ionicons/icons';
 
 const props = defineProps<{ song: SpotifyTrack }>();
 
