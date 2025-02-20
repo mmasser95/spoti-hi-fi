@@ -12,11 +12,11 @@
                 {{ artist.spotifyId }}
             </ion-card-subtitle>
             <ion-card-content class="flex-align-center">
+                <ion-button fill="outline" shape="round" @click="addArtistToPlaylist">
+                    <ion-icon slot="icon-only" :icon="musicalNoteOutline" />
+                </ion-button>
                 <ion-button fill="outline" shape="round" @click="ver">
                     <ion-icon slot="icon-only" :icon="eyeOutline" />
-                </ion-button>
-                <ion-button fill="outline" shape="round" @click="getSongs">
-                    <ion-icon slot="icon-only" :icon="add" />
                 </ion-button>
             </ion-card-content>
         </ion-card-header>
@@ -26,10 +26,11 @@
 import { External } from '@/APIService/external';
 import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
-import { AlbumResult, ArtistResult } from '@/types/SearchResults';
-import { IonCard, IonImg, IonCardHeader, IonIcon, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton } from '@ionic/vue';
-import { add, eye, eyeOutline } from 'ionicons/icons';
+import { ArtistResult } from '@/types/SearchResults';
+import { IonCard, IonImg, IonCardHeader, IonIcon, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton, modalController } from '@ionic/vue';
+import { add, eye, eyeOutline, musicalNote, musicalNoteOutline } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
+import View from './Artist/view.vue';
 
 interface ExtendedArtist extends ArtistResult {
     albums?: {
@@ -39,18 +40,24 @@ interface ExtendedArtist extends ArtistResult {
 const props = defineProps<{ artist: ExtendedArtist }>()
 const { addToPlaylist } = usePlaylist()
 const { url } = storeToRefs(useAuth())
-const ver = () => { }
-const getSongs = async () => {
-    let songs = await External.getSongsOfArtist(props.artist.id)
-    for (const song of songs) {
-        const artist = song.artists.map(artist => artist.name).join(', ')
+const ver = async () => {
+    const modal = await modalController.create({
+        component: View,
+        componentProps: {
+            artist: props.artist
+        }
+    })
+    await modal.present()
+}
+const addArtistToPlaylist = () => {
+    for (const song of props.artist.songs) {
         addToPlaylist({
-            artwork: song.album.coverImage,
-            title: song.title,
+            artist: song.artists.map(a => a.name).join(', '),
             url: `${url.value}/${song.filePath.split("/")[1]}`,
-            artist
+            title: song.title,
+            artwork: song.album.coverImage
         })
-    }
 
+    }
 }
 </script>
