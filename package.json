@@ -24,6 +24,7 @@
     "@ionic/vue": "8.4.2",
     "@ionic/vue-router": "^8.0.0",
     "@jofr/capacitor-media-session": "^4.0.0",
+    "@vueuse/core": "^12.7.0",
     "howler": "^2.2.4",
     "ionicons": "^7.0.0",
     "jeep-sqlite": "2.8.0",
