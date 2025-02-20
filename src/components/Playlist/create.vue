@@ -19,8 +19,10 @@
                         </ion-col>
                     </ion-row>
                     <ion-row>
-                        <ion-col>
-                            <ion-button type="submit"></ion-button>
+                        <ion-col class="ion-text-center">
+                            <ion-button type="submit">
+                                <ion-icon :icon="add" slot="icon-only" />
+                            </ion-button>
                         </ion-col>
                     </ion-row>
                 </form>
@@ -31,7 +33,7 @@
 <script lang="ts" setup>
 import Playlist from '@/APIService/playlist';
 import { IonContent, IonHeader, IonToolbar, IonTitle, IonInput, IonPage, IonButton, IonButtons, modalController } from '@ionic/vue';
-import { close } from 'ionicons/icons';
+import { add, close } from 'ionicons/icons';
 import { ref } from 'vue';
 const nombre = ref("")
 const dismiss = () => {
