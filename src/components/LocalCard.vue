@@ -11,7 +11,7 @@
                 <ion-button fill="outline" shape="round" @click.stop="addToUserPlaylist">
                     <ion-icon slot="icon-only" :icon="add" />
                 </ion-button>
-                <ion-button shape="round" fill="outline" @click.stop="descargar">
+                <ion-button v-if="!isDownloaded(song.id)" shape="round" fill="outline" @click.stop="descargar">
                     <ion-icon slot="icon-only" :icon="downloadOutline" />
                 </ion-button>
             </div>
@@ -29,12 +29,13 @@ import { onLongPress } from '@vueuse/core';
 import { add, close, download, downloadOutline, list, musicalNote, text } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import Create from './Playlist/create.vue';
+import useLocal from '@/store/useLocal';
 
 const store = usePlaylist()
 const { playlist, currentIndex } = storeToRefs(store)
 const { addToPlaylist, changeToLastSongInPlaylist } = store
 const { url: base_url } = storeToRefs(useAuth())
+const { isDownloaded, addIdToDownloaded } = useLocal()
 const cardRef = ref<HTMLElement>()
 const props = defineProps<{
     song: LocalSong
@@ -53,10 +54,7 @@ const isInPlaylist = computed(() => playlist.value
 const playSong = () => {
     if (!isInPlaylist.value) {
         addIt()
-        console.log(currentIndex.value);
         changeToLastSongInPlaylist()
-        console.log(currentIndex.value);
-
     }
 }
 
@@ -74,6 +72,7 @@ const descargar = async () => {
     const blob = await req.blob()
     await saveSong(fileName.value, blob)
     await insertSong(props.song.id, props.song.title, artistsNames.value, fileName.value, props.song.album.coverImage)
+    addIdToDownloaded(props.song.id)
 }
 
 onLongPress(cardRef, async () => {
