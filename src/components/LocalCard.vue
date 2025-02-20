@@ -1,36 +1,41 @@
 <template>
-    <ion-card>
+    <ion-card ref="cardRef" @click="playSong">
         <ion-img :src="song.album.coverImage" :alt="song.title" />
         <ion-card-header>
             <ion-card-title>{{ song.title }}</ion-card-title>
             <ion-card-subtitle>{{ artistsNames }}</ion-card-subtitle>
         </ion-card-header>
-        <ion-card-content class="flex-align-center">
+        <ion-card-content class="ion-text-center">
             <ion-badge v-if="isInPlaylist" color="primary">Añadida</ion-badge>
-            <ion-button fill="outline" shape="round" @click="addIt" v-else>
-                <ion-icon slot="icon-only" :icon="add" />
-            </ion-button>
-            <ion-button shape="round" fill="outline" @click="descargar">
-                <ion-icon slot="icon-only" :icon="downloadOutline" />
-            </ion-button>
+            <div class="flex-align-center">
+                <ion-button fill="outline" shape="round" @click.stop="addToUserPlaylist">
+                    <ion-icon slot="icon-only" :icon="add" />
+                </ion-button>
+                <ion-button shape="round" fill="outline" @click.stop="descargar">
+                    <ion-icon slot="icon-only" :icon="downloadOutline" />
+                </ion-button>
+            </div>
         </ion-card-content>
     </ion-card>
 </template>
 <script lang="ts" setup>
+import Playlist from '@/APIService/playlist';
 import { getElements, insertSong, saveSong } from '@/composables/useLocalSystem';
 import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
 import { LocalSong } from '@/types/LocalElements';
-import { IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton, IonIcon } from '@ionic/vue';
-import { add, download, downloadOutline } from 'ionicons/icons';
+import { IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton, IonIcon, actionSheetController, modalController } from '@ionic/vue';
+import { onLongPress } from '@vueuse/core';
+import { add, close, download, downloadOutline, list, musicalNote, text } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import Create from './Playlist/create.vue';
 
 const store = usePlaylist()
-const { playlist } = storeToRefs(store)
-const { addToPlaylist } = store
+const { playlist, currentIndex } = storeToRefs(store)
+const { addToPlaylist, changeToLastSongInPlaylist } = store
 const { url: base_url } = storeToRefs(useAuth())
-
+const cardRef = ref<HTMLElement>()
 const props = defineProps<{
     song: LocalSong
 }>()
@@ -44,6 +49,16 @@ const artistsNames = computed(() => props.song.artists
 const isInPlaylist = computed(() => playlist.value
     .map(song => song.url)
     .some(url => url == myUrl.value))
+
+const playSong = () => {
+    if (!isInPlaylist.value) {
+        addIt()
+        console.log(currentIndex.value);
+        changeToLastSongInPlaylist()
+        console.log(currentIndex.value);
+
+    }
+}
 
 const addIt = () => {
     addToPlaylist({
@@ -59,6 +74,60 @@ const descargar = async () => {
     const blob = await req.blob()
     await saveSong(fileName.value, blob)
     await insertSong(props.song.id, props.song.title, artistsNames.value, fileName.value, props.song.album.coverImage)
+}
+
+onLongPress(cardRef, async () => {
+    const action = await actionSheetController.create({
+        buttons: [
+            {
+                text: "Reproducir",
+                icon: musicalNote,
+                handler: addIt
+            },
+            {
+                text: "Descargar",
+                icon: download,
+                handler: descargar
+            },
+            {
+                text: "Añadir a playlist",
+                icon: list,
+                handler: addToUserPlaylist
+            },
+            {
+                text: "Cancelar",
+                role: "cancel",
+                icon: close
+            }
+        ]
+    })
+    await action.present()
+})
+const addToUserPlaylist = async () => {
+    const playlists = await Playlist.getAllPlaylists()
+    const buttons: {
+        text: string,
+        icon?: string,
+        handler?: () => void,
+        role?: string
+    }[] = playlists.map(playlist => ({
+        text: playlist.name,
+        icon: list,
+        handler: () => Playlist.addSongToPlaylist(playlist.id, props.song.id)
+    }))
+    // buttons.push({
+    //     text:"Crear nueva playlist",
+    //     icon:add,
+    //     handler:createPlaylist
+    // })
+    buttons.push({
+        text: "Cancelar",
+        role: "cancel"
+    })
+    const action = await actionSheetController.create({
+        buttons
+    })
+    await action.present()
 }
 </script>
 

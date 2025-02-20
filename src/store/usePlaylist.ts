@@ -192,6 +192,10 @@ export const usePlaylist = defineStore("Playlist", () => {
         isRepeating.value = !isRepeating.value
     }
 
+    const changeToLastSongInPlaylist = () => {
+        currentIndex.value = playlist.value.length - 1
+    }
+
     return {
         currentSong,
         isPlaying,
@@ -211,6 +215,7 @@ export const usePlaylist = defineStore("Playlist", () => {
         isRepeating,
         duration,
         playlist,
-        currentIndex
+        currentIndex,
+        changeToLastSongInPlaylist
     }
 })
