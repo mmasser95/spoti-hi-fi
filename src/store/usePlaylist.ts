@@ -153,7 +153,7 @@ export const usePlaylist = defineStore("Playlist", () => {
                 player.value.unload()
             loadTrack(value)
             updateMediaSession()
-            if (isPlaying.value && player.value) {
+            if (player.value) {
                 player.value.play()
             } else {
                 if (isMid.value)
@@ -194,6 +194,7 @@ export const usePlaylist = defineStore("Playlist", () => {
 
     const changeToLastSongInPlaylist = () => {
         currentIndex.value = playlist.value.length - 1
+        if (!isPlaying.value) playAudio()
     }
 
     return {

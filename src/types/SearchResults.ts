@@ -1,18 +1,21 @@
+import { LocalSong } from "./LocalElements"
+
 export interface ArtistResult {
     id: number,
     name: string,
     spotifyId: string,
     createdAt: Date,
     updatedAt: Date,
-    songs: {
-        id: number,
-        title: string,
-        filePath: string,
-        spotifyId: string,
-        youtubeId: string,
-        createdAt: Date,
-        updatedAt: Date,
-    }[]
+    songs: LocalSong[]
+    // songs: {
+    //     id: number,
+    //     title: string,
+    //     filePath: string,
+    //     spotifyId: string,
+    //     youtubeId: string,
+    //     createdAt: Date,
+    //     updatedAt: Date,
+    // }[]
 }
 
 export interface AlbumResult {
@@ -30,13 +33,5 @@ export interface AlbumResult {
         createdAt: Date,
         updatedAt: Date,
     }[],
-    songs: {
-        id: number,
-        title: string,
-        filePath: string,
-        spotifyId: string,
-        youtubeId: string,
-        createdAt: Date,
-        updatedAt: Date,
-    }[]
+    songs:LocalSong[]
 }
