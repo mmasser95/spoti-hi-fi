@@ -16,7 +16,7 @@ export default class Playlist {
             let err = await res.text()
             throw new Error(err)
         }
-        let data: LocalPlaylist[]= await res.json()
+        let data: LocalPlaylist[] = await res.json()
         return data
     }
 
@@ -57,12 +57,21 @@ export default class Playlist {
             let err = await res.text()
             throw new Error(err)
         }
-        let data = await res.json()
-        return data
     }
 
     public static async deletePlaylist(id: number) {
         const res = await fetch(`${this.url.value}/playlists/${id}`, {
+            method: "DELETE",
+            headers: getAuthHeaders()
+        })
+        if (!res.ok) {
+            let err = await res.text()
+            throw new Error(err)
+        }
+    }
+
+    public static async deleteSongFromPlaylist(id: number, idSong: number) {
+        const res = await fetch(`${this.url.value}/playlists/${id}/songs/${idSong}`, {
             method: "DELETE",
             headers: getAuthHeaders()
         })
