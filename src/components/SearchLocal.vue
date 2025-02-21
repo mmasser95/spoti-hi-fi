@@ -68,7 +68,7 @@
                 </ion-segment-content>
             </ion-segment-view>
             <ion-row class="ion-justify-content-center" v-if="!!serverError">
-                <ion-col v-for="item in localSongs" :key="item.url" size="6" size-sm="4" size-md="3" size-lg="2">
+                <ion-col v-for="item in localSongs" :key="item.id" size="6" size-sm="4" size-md="3" size-lg="2">
                     <DeviceSongCard :song="item" />
                 </ion-col>
             </ion-row>

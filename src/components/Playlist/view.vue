@@ -1,13 +1,41 @@
 <template>
-
+    <ion-page>
+        <ion-header>
+            <ion-toolbar>
+                <ion-title>{{ playlist?.name }}</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button @click="dismiss">
+                        <ion-icon :icon="close" slot="icon-only" />
+                    </ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <ion-grid>
+                <ion-row class="ion-justify-content-center">
+                    <ion-col size="6" size-sm="5" size-md="4" size-lg="4" v-for="song in playlist?.songs"
+                        :key="song.id">
+                        <LocalCard :song="song" />
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-content>
+    </ion-page>
 </template>
 <script lang="ts" setup>
 import Playlist from '@/APIService/playlist';
 import { LocalPlaylist } from '@/types/Playlist';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonButton, IonButtons, IonIcon, IonContent, modalController, IonGrid, IonRow, IonCol } from '@ionic/vue';
+import { close } from 'ionicons/icons';
 import { onMounted, ref } from 'vue';
+import LocalCard from '../LocalCard.vue';
+
 const playlist = ref<LocalPlaylist>()
 const props = defineProps<{ id: number }>()
 onMounted(async () => {
     playlist.value = await Playlist.getPlaylist(props.id)
 })
+const dismiss = () => {
+    modalController.dismiss()
+}
 </script>
