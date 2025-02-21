@@ -17,7 +17,7 @@
 import { getFile } from '@/composables/useLocalSystem';
 import { usePlaylist } from '@/store/usePlaylist';
 import { Song } from '@/types/Song';
-import { IonCard, IonImg, IonCardTitle, IonCardContent, IonCardHeader, IonCardSubtitle, IonBadge, IonButton } from '@ionic/vue';
+import { IonCard, IonImg, IonCardTitle, IonIcon, IonCardContent, IonCardHeader, IonCardSubtitle, IonBadge, IonButton } from '@ionic/vue';
 import { add } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted } from 'vue';
@@ -35,6 +35,7 @@ const addIt = async () => {
     const file = await getFile(props.song.url)
     if (file)
         addToPlaylist({
+            id: props.song.id,
             title: props.song.title,
             url: file,
             artwork: props.song.artwork,

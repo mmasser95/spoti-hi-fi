@@ -12,6 +12,7 @@ export const usePlaylist = defineStore("Playlist", () => {
     const currentIndex = ref<number>(0)
     const currentTime = ref(0)
     const currentSong = computed(() => playlist.value ? playlist.value[currentIndex.value] : {
+        id: 0,
         url: "",
         title: "",
         artist: ""
@@ -117,7 +118,7 @@ export const usePlaylist = defineStore("Playlist", () => {
             playbackState
         })
     })
-    const loadTrack = (value: { url: string, title: string, artist?: string, artwork?: string }) => {
+    const loadTrack = (value: { id: number, url: string, title: string, artist?: string, artwork?: string }) => {
         player.value = new Howl({
             src: value.url,
             html5: true,
@@ -153,7 +154,7 @@ export const usePlaylist = defineStore("Playlist", () => {
                 player.value.unload()
             loadTrack(value)
             updateMediaSession()
-            if (player.value) {
+            if (player.value && isPlaying.value) {
                 player.value.play()
             } else {
                 if (isMid.value)

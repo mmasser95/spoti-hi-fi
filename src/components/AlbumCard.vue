@@ -46,7 +46,8 @@ const showAlbum = async () => {
 const addAlbumToPlaylist = () => {
     for (const song of props.album.songs) {
         addToPlaylist({
-            artist: song.artists.map(a=>a.name).join(', '),
+            id: song.id,
+            artist: song.artists.map(a => a.name).join(', '),
             url: `${base_url.value}/${song.filePath.split("/")[1]}`,
             title: song.title,
             artwork: props.album.coverImage

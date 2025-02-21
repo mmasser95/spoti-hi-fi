@@ -41,11 +41,13 @@ export const getElements = async () => {
         const results = await db.query("SELECT * FROM songs")
         if (results.values) {
             let data: {
+                id: number,
                 url: string,
                 artist: string,
                 artwork: string,
                 title: string
             }[] = results.values.map((row: any) => ({
+                id: row.id,
                 url: row.url,
                 artist: row.artist,
                 title: row.title,

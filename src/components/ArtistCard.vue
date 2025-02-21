@@ -23,12 +23,11 @@
     </ion-card>
 </template>
 <script lang="ts" setup>
-import { External } from '@/APIService/external';
 import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
 import { ArtistResult } from '@/types/SearchResults';
 import { IonCard, IonImg, IonCardHeader, IonIcon, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonButton, modalController } from '@ionic/vue';
-import { add, eye, eyeOutline, musicalNote, musicalNoteOutline } from 'ionicons/icons';
+import { eyeOutline, musicalNoteOutline } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
 import View from './Artist/view.vue';
 
@@ -52,6 +51,7 @@ const ver = async () => {
 const addArtistToPlaylist = () => {
     for (const song of props.artist.songs) {
         addToPlaylist({
+            id:song.id,
             artist: song.artists.map(a => a.name).join(', '),
             url: `${url.value}/${song.filePath.split("/")[1]}`,
             title: song.title,

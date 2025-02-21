@@ -60,6 +60,7 @@ const playSong = () => {
 
 const addIt = () => {
     addToPlaylist({
+        id:props.song.id,
         artist: artistsNames.value,
         url: myUrl.value,
         title: props.song.title,

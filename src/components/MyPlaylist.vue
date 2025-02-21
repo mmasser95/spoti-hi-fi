@@ -8,9 +8,9 @@
     <ion-content>
         <ion-list>
             <ion-reorder-group :disabled="false" @ionItemReorder="reorderPlaylist($event)">
-                <ion-item-sliding v-for="(song, index) in playlist" :key="song.url">
-                    <ion-item :class="{ 'playing': song.url === currentSong.url }">
-                        <ion-label :class="{ 'playing': song.url === currentSong.url }" @click="selectSong(index)">
+                <ion-item-sliding v-for="(song, index) in playlist" :key="song.id">
+                    <ion-item :class="{ 'playing': song.id === currentSong.id }">
+                        <ion-label :class="{ 'playing': song.id === currentSong.id }" @click="selectSong(index)">
                             <h2>{{ song.title }}</h2>
                             <p>{{ song.artist }}</p>
                         </ion-label>
@@ -54,6 +54,8 @@ const selectSong = (index: number) => {
     currentIndex.value = index
 }
 const deleteSong = (index: number) => {
+    if (playlist.value.length === 0) return; // Evitar eliminar si la lista ya está vacía
+
     // Si la canción eliminada es la que se está reproduciendo
     if (index === currentIndex.value) {
         // Si hay una siguiente canción en la lista, reproducirla
@@ -63,7 +65,14 @@ const deleteSong = (index: number) => {
         // Si la eliminada era la última, retroceder al anterior si existe
         else if (index > 0) {
             currentIndex.value--;
+        } else {
+            // Si no quedan canciones, resetear el índice y parar la reproducción
+            currentIndex.value = -1;
+            
         }
+    } else if (index < currentIndex.value) {
+        // Si eliminamos una canción antes de la actual, el índice se debe ajustar
+        currentIndex.value--;
     }
 
     // Eliminar la canción de la lista
