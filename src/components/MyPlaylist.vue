@@ -28,7 +28,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
 import { modalController, IonIcon, IonTitle, IonButton, IonButtons, IonToolbar, IonHeader, IonLabel, IonReorder, IonItem, IonReorderGroup, IonList, IonContent, ItemReorderEventDetail, ItemReorderCustomEvent, IonItemOption, IonItemOptions, IonItemSliding } from "@ionic/vue";
 import { usePlaylist } from "@/store/usePlaylist";
 import { storeToRefs } from "pinia";
