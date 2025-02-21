@@ -28,7 +28,7 @@
                 <ion-icon :icon="personAdd" slot="start" />
                 <ion-label>Crear usuario</ion-label>
               </ion-item>
-              <ion-item button lines="full">
+              <ion-item button lines="full" @click="showListUsers">
                 <ion-icon :icon="person" slot="start" />
                 <ion-label>Gestionar usuarios</ion-label>
               </ion-item>
@@ -47,6 +47,7 @@
 
 <script setup lang="ts">
 import Create from '@/components/Users/create.vue';
+import List from '@/components/Users/list.vue';
 import router from '@/router';
 import { useAuth } from '@/store/useAuth';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonGrid, IonRow, IonCol, IonList, IonItem, IonItemDivider, IonIcon, IonLabel, modalController } from '@ionic/vue';
@@ -61,6 +62,12 @@ const showLang = () => { }
 const showCreateUser = async () => {
   const modal = await modalController.create({
     component: Create
+  })
+  await modal.present()
+}
+const showListUsers = async () => {
+  const modal = await modalController.create({
+    component: List
   })
   await modal.present()
 }
