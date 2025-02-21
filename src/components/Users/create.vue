@@ -1,46 +1,34 @@
 <template>
-    <ion-page>
-        <ion-header>
-            <ion-toolbar>
-                <ion-title class="ion-text-center">Crear usuario</ion-title>
-                <ion-buttons slot="end">
-                    <ion-button @click="dismiss">
-                        <ion-icon slot="icon-only" :icon="close" />
-                    </ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-header>
-        <ion-content>
-            <form @submit.prevent="createUser">
-                <ion-grid>
-                    <ion-row class="ion-justify-content-center">
-                        <ion-col>
-                            <ion-item>
-                                <ion-input label="Email" label-placement="floating" />
-                            </ion-item>
-                            <ion-item>
-                                <ion-input label="Password" type="password" label-placement="floating" />
-                            </ion-item>
-                            <ion-item>
-                                <ion-input label="Repeat password" type="password" label-placement="floating" />
-                            </ion-item>
-                            <ion-item>
-                                <ion-input label="Full Name" label-placement="floating" />
-                            </ion-item>
-                            <div class="w-100 flex-align-center">
-                                <ion-button>Crear</ion-button>
-                            </div>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-            </form>
-        </ion-content>
-    </ion-page>
+    <Modal title="Crear usuario">
+        <form @submit.prevent="createUser">
+            <ion-grid>
+                <ion-row class="ion-justify-content-center">
+                    <ion-col>
+                        <ion-item>
+                            <ion-input label="Email" label-placement="floating" />
+                        </ion-item>
+                        <ion-item>
+                            <ion-input label="Password" type="password" label-placement="floating" />
+                        </ion-item>
+                        <ion-item>
+                            <ion-input label="Repeat password" type="password" label-placement="floating" />
+                        </ion-item>
+                        <ion-item>
+                            <ion-input label="Full Name" label-placement="floating" />
+                        </ion-item>
+                        <div class="w-100 flex-align-center">
+                            <ion-button>Crear</ion-button>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </form>
+    </Modal>
 </template>
 <script lang="ts" setup>
 import Auth from '@/APIService/auth';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonButton, IonButtons, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonInput, modalController, IonItem } from '@ionic/vue';
-import { close } from 'ionicons/icons';
+import Modal from '@/layout/modal.vue';
+import { IonButton, IonIcon, IonGrid, IonRow, IonCol, IonInput, modalController, IonItem } from '@ionic/vue';
 import { reactive } from 'vue';
 
 const data = reactive({
