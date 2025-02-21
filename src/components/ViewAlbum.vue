@@ -61,7 +61,7 @@ const { playlist } = storeToRefs(usePlaylist());
 
 // Función para verificar si la canción ya está en la playlist
 const isInPlaylist = (song: any) => {
-    return playlist.value.some(s => s.url === `${url.value}/${song.filePath.split("/")[1]}`);
+    return playlist.value.some(s => s.id === song.id);
 };
 
 

@@ -29,7 +29,7 @@ const props = defineProps<{
 }>()
 
 const isInPlaylist = computed(() => playlist.value
-    .some((song) => song.title === props.song.title && song.artist === props.song.artist))
+    .some((song) => song.id === props.song.id))
 
 const addIt = async () => {
     const file = await getFile(props.song.url)

@@ -48,8 +48,8 @@ const artistsNames = computed(() => props.song.artists
     .map(artist => artist.name)
     .join(", "))
 const isInPlaylist = computed(() => playlist.value
-    .map(song => song.url)
-    .some(url => url == myUrl.value))
+    .map(song => song.id)
+    .some(id => id == props.song.id))
 
 const playSong = () => {
     if (!isInPlaylist.value) {
