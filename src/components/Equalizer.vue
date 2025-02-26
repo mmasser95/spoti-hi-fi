@@ -12,30 +12,11 @@
 <script lang="ts" setup>
 import Modal from '@/layout/modal.vue';
 import { useEq } from '@/store/useEq';
-import { IonLabel, RangeChangeEventDetail, IonButton, IonIcon } from '@ionic/vue';
 import { storeToRefs } from 'pinia';
 import Knob from '@/components/Knob.vue';
 import KnobFreq from '@/components/KnobFreq.vue';
 const { bands } = storeToRefs(useEq())
 
-const linearToLog = (value: number) => 5 + 20 * Math.log10((value + 1) / 100)
-const logToLinear = (value: number) => Math.max(0, (Math.pow(10, (value - 5) / 20) * 100) - 1)
-
-const updateBand = (e: RangeChangeEventDetail, index: number) => {
-    console.log(`Index: ${index}, Valor linear: ${e.value} Valor logaritmico: ${linearToLog((e.value as number))}`);
-    const logValue = linearToLog(e.value as number)
-    bands.value[index].gain = logValue
-}
-
-const formatter = (v: number) => {
-    console.log(v);
-
-    return v.toFixed(2)
-}
-
-const resetAll = () => {
-    bands.value.forEach(band => band.gain = 0)
-}
 
 </script>
 <style scoped>
