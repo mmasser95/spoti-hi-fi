@@ -21,12 +21,17 @@ const { bands } = storeToRefs(useEq())
 </script>
 <style scoped>
 .eq-band {
+    display: flex;
+    flex-flow: row wrap;
+    width:100%;
+    justify-content: center;
+    gap:40px;
     margin: 0px 20px;
 }
 
 .eq-bands{
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
     justify-content: center;
 }
 

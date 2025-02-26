@@ -9,14 +9,14 @@ export const useEq = defineStore("Eq", () => {
         frequency: number,
         type: BiquadFilterType,
         gain: number,
-        minFreq:number,
-        maxFreq:number
+        minFreq: number,
+        maxFreq: number
     }[]>([
-        { id: 0, label: "Bass",maxFreq:400, minFreq:20, frequency: 200, type: "lowshelf", gain: 0 },
-        { id: 1, label: "BassMid",maxFreq:800, minFreq:400, frequency: 500, type: "peaking", gain: 0 },
-        { id: 2, label: "Mid",maxFreq:2500, minFreq:800, frequency: 1000, type: "peaking", gain: 0 },
-        { id: 3, label: "MidHigh",maxFreq:7500, minFreq:2500, frequency: 5000, type: "peaking", gain: 0 },
-        { id: 4, label: "High",maxFreq:20000, minFreq:7500, frequency: 10000, type: "highshelf", gain: 0 },
+        { id: 0, label: "Bass", maxFreq: 400, minFreq: 20, frequency: 200, type: "lowshelf", gain: 0 },
+        { id: 1, label: "BassMid", maxFreq: 800, minFreq: 400, frequency: 500, type: "peaking", gain: 0 },
+        { id: 2, label: "Mid", maxFreq: 2500, minFreq: 800, frequency: 1000, type: "peaking", gain: 0 },
+        { id: 3, label: "MidHigh", maxFreq: 7500, minFreq: 2500, frequency: 5000, type: "peaking", gain: 0 },
+        { id: 4, label: "High", maxFreq: 20000, minFreq: 7500, frequency: 10000, type: "highshelf", gain: 0 },
     ]);
 
     watch(bands, (newBands) => {
