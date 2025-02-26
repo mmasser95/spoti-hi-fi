@@ -3,7 +3,7 @@
         <div class="eq-bands">
             <div class="eq-band" v-for="(band, index) in bands" :key="band.id">
                 <KnobFreq v-model="band.frequency" :label="band.label" :min="band.minFreq" :max="band.maxFreq"/>
-                <Knob v-model="band.gain" :min-db="-35" :max-db="5" :label="band.label"/>
+                <Knob v-model="band.gain" :min-db="-100" :max-db="7.5" :label="band.label"/>
             </div>
         </div>
     </Modal>
