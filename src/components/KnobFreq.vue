@@ -11,77 +11,70 @@
         <div class="knob" @mousedown="startDrag" @touchstart="startDrag">
             <div class="knob-value">
                 <p>{{ label }}</p>
-                {{ (formatValue ?? defaultFormat)(logValue) }}
+                <div v-if="model">{{ formatFreq(model) }}</div>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, Ref, ref } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps<{
-    // modelValue: number; // Valor en dB
-    minDb?: number; // Mínimo en dB (por defecto -60)
-    maxDb?: number; // Máximo en dB (por defecto 5)
+    min?: number; // Frecuencia mínima (por defecto 20 Hz)
+    max?: number; // Frecuencia máxima (por defecto 20 kHz)
     size?: number; // Tamaño en píxeles (por defecto 100)
-    label:string;
-    formatValue?: (value: number) => string; // Formateador opcional
+    label: string;
 }>();
 
 const model = defineModel({
     type: Number
-})
+});
 
 const emit = defineEmits(["update:modelValue"]);
 
-// 🛠️ Valores por defecto
-const minDb = props.minDb ?? -60;
-const maxDb = props.maxDb ?? 5;
+// 📌 **Valores por defecto**
+const minFreq = props.min ?? 20;
+const maxFreq = props.max ?? 20000;
 const size = props.size ?? 100;
-
-// 🔄 **Conversión Logarítmica**
-const linearToLog = (value: number) =>
-    minDb + (Math.log10(1 + (value * 9) / 100) * (maxDb - minDb));
-
-const logToLinear = (value: number) =>
-    ((Math.pow(10, (value - minDb) / (maxDb - minDb)) - 1) / 9) * 100;
-
-// 📈 **Valor logarítmico computado**
-const logValue = ref(0)
 
 // 🎯 **Arco SVG de progreso**
 const progressArc = computed(() => {
-    if(!model.value) model.value=0
-    // 🔹 Normalizamos el valor en un rango [0,1]
-    let percentage = (model.value - minDb) / (maxDb - minDb);
-    percentage = Math.max(0, Math.min(1, percentage)); // Limitamos entre 0 y 1
+    if (!model.value) model.value = 1000; // Frecuencia por defecto: 1 kHz
 
-    // 🔹 Convertimos el porcentaje en un ángulo de -135° a +135°
+    // 🔹 Normalizar en un rango logarítmico [0,1]
+    let percentage = (Math.log10(model.value) - Math.log10(minFreq)) / (Math.log10(maxFreq) - Math.log10(minFreq));
+    percentage = Math.max(0, Math.min(1, percentage)); // Clampeamos a [0,1]
+
+    // 🔹 Convertimos el porcentaje en ángulo (-135° a +135°)
     const startAngle = -220;
-    const endAngle = startAngle + percentage * 270; // Máximo es +135°
+    const endAngle = startAngle + percentage * 270;
 
-    // 🔹 Definimos parámetros del arco
+    // 🔹 Parámetros del arco
     const radius = 40;
     const cx = 50;
     const cy = 50;
 
-    // 🔹 Calculamos el punto inicial del arco (-135°)
+    // 🔹 Calculamos los puntos del arco
     const xStart = cx + radius * Math.cos(startAngle * Math.PI / 180);
     const yStart = cy + radius * Math.sin(startAngle * Math.PI / 180);
-
-    // 🔹 Calculamos el punto final del arco (según porcentaje)
     const xEnd = cx + radius * Math.cos(endAngle * Math.PI / 180);
     const yEnd = cy + radius * Math.sin(endAngle * Math.PI / 180);
 
-    // 🔹 Determinar si es un arco grande (> 180°)
+    // 🔹 Determinar si el arco es grande (> 180°)
     const largeArcFlag = percentage > 0.66 ? 1 : 0;
 
-    // 🔹 Devuelve el arco SVG
     return `M ${xStart},${yStart} A ${radius},${radius} 0 ${largeArcFlag} 1 ${xEnd},${yEnd}`;
 });
 
+// 🎛 **Conversión entre Lineal ↔ Logarítmico**
+const linearToLogFreq = (value: number) => {
+    return Math.pow(10, Math.log10(minFreq) + (value / 100) * (Math.log10(maxFreq) - Math.log10(minFreq)));
+};
 
+const logToLinearFreq = (value: number) => {
+    return ((Math.log10(value) - Math.log10(minFreq)) / (Math.log10(maxFreq) - Math.log10(minFreq))) * 100;
+};
 
 // 📦 **Manejo del arrastre**
 const startDrag = (event: MouseEvent | TouchEvent) => {
@@ -93,20 +86,18 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
     };
 
     const { y: startY } = getPosition(event);
-    const startValue = model.value??0;
-    
+    const startValue = model.value ?? 1000;
+
     const onMove = (moveEvent: MouseEvent | TouchEvent) => {
         const { y: moveY } = getPosition(moveEvent);
-        const delta = (startY - moveY) * 0.5;
+        const delta = (startY - moveY) * 0.5; // Sensibilidad
 
         let newLinearValue = Math.min(
-            Math.max(logToLinear(startValue) + delta, 0),
+            Math.max(logToLinearFreq(startValue) + delta, 0),
             100
         );
 
-        emit("update:modelValue", linearToLog(newLinearValue));
-        logValue.value = linearToLog(newLinearValue)
-
+        emit("update:modelValue", linearToLogFreq(newLinearValue));
     };
 
     const onEnd = () => {
@@ -122,8 +113,10 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
     document.addEventListener("touchend", onEnd);
 };
 
-// 📏 **Formateador por defecto**
-const defaultFormat = (value: number) => `${value.toFixed(1)} dB`;
+// 📏 **Formateador de Frecuencia**
+const formatFreq = (value: number) => {
+    return value >= 1000 ? `${(value / 1000).toFixed(1)} kHz` : `${Math.round(value)} Hz`;
+};
 </script>
 
 <style scoped>

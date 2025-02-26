@@ -1,21 +1,10 @@
 <template>
     <Modal title="Ecualizador">
-        <div class="w-100 flex-align-center mt-2">
-            <ion-button color="danger" fill="outline" shape="round" @click="resetAll">
-                <ion-icon :icon="refresh" slot="icon-only" />
-            </ion-button>
-        </div>
-        <!-- <ion-range v-for="(band, index) in bands" label-placement="stacked" :label="band.label" :key="band.frequency"
-            :min="0" :max="100" pin :pin-formatter="formatter" :value="logToLinear(band.gain)"
-            @ion-change="(e) => updateBand(e.detail, index)" /> -->
-        <div class="eq-band" v-for="(band, index) in bands" :key="band.id">
-            <ion-label class="eq-info">{{ band.label }} __ {{ band.gain.toFixed(2) }}dB __ <ion-button size="small"
-                    fill="outline" shape="round" @click="() => band.gain = 0">
-                    <ion-icon slot="icon-only" :icon="refresh" />
-                </ion-button>
-            </ion-label>
-
-            <Knob v-model="band.gain" :min-db="-35" :max-db="5" :format-value="formatter" />
+        <div class="eq-bands">
+            <div class="eq-band" v-for="(band, index) in bands" :key="band.id">
+                <KnobFreq v-model="band.frequency" :label="band.label" :min="band.minFreq" :max="band.maxFreq"/>
+                <Knob v-model="band.gain" :min-db="-35" :max-db="5" :label="band.label"/>
+            </div>
         </div>
     </Modal>
 </template>
@@ -26,8 +15,7 @@ import { useEq } from '@/store/useEq';
 import { IonLabel, RangeChangeEventDetail, IonButton, IonIcon } from '@ionic/vue';
 import { storeToRefs } from 'pinia';
 import Knob from '@/components/Knob.vue';
-import { refresh } from 'ionicons/icons';
-
+import KnobFreq from '@/components/KnobFreq.vue';
 const { bands } = storeToRefs(useEq())
 
 const linearToLog = (value: number) => 5 + 20 * Math.log10((value + 1) / 100)
@@ -55,10 +43,10 @@ const resetAll = () => {
     margin: 0px 20px;
 }
 
-.eq-info {
+.eq-bands{
     display: flex;
-    align-items: center;
-    gap: 10px
+    flex-flow: row wrap;
+    justify-content: center;
 }
 
 ion-range {
