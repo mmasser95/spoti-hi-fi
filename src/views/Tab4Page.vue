@@ -52,12 +52,18 @@ import router from '@/router';
 import { useAuth } from '@/store/useAuth';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonGrid, IonRow, IonCol, IonList, IonItem, IonItemDivider, IonIcon, IonLabel, modalController } from '@ionic/vue';
 import { barcode, language, logOut, person, personAdd, settings } from 'ionicons/icons';
+import Equalizer from '@/components/Equalizer.vue';
 const { logout } = useAuth()
 const doLogout = async () => {
   await logout()
   router.push('/')
 }
-const showEq = () => { }
+const showEq = async() => { 
+  const modal=await modalController.create({
+    component:Equalizer
+  })
+  await modal.present()
+}
 const showLang = () => { }
 const showCreateUser = async () => {
   const modal = await modalController.create({

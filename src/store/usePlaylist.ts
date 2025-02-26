@@ -1,8 +1,9 @@
 import { Song } from "@/types/Song";
 import { MediaSession } from "@jofr/capacitor-media-session";
 import { Howl } from "howler";
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch } from "vue";
+import { useEq } from "./useEq";
 
 export const usePlaylist = defineStore("Playlist", () => {
     const player = ref<Howl>()
@@ -22,6 +23,10 @@ export const usePlaylist = defineStore("Playlist", () => {
     const duration = ref(0)
 
     const mySto = ref()
+
+    const eqStore = useEq()
+    const { initFilters } = eqStore
+    const { audioCtx } = storeToRefs(eqStore)
 
     let animationFrame: number | null = null;
     const playAudio = () => {
@@ -121,11 +126,25 @@ export const usePlaylist = defineStore("Playlist", () => {
     const loadTrack = (value: { id: number, url: string, title: string, artist?: string, artwork?: string }) => {
         player.value = new Howl({
             src: value.url,
+            format:["mp3"],
             html5: true,
+            xhr:{
+                withCredentials: false
+            },
             onload: () => {
                 duration.value = player.value?.duration() || 0
+                if (player.value) {
+                    //@ts-ignore
+                    player.value._sounds[0]._node.crossOrigin="anonymous" //IMPORTANT PER A REPRODUIR AUDIO PER STREAMING
+                    //@ts-ignore
+                    let audioNode = audioCtx.value!.createMediaElementSource(player.value._sounds[0]._node);
+                    initFilters(audioNode)
+                }
             },
             onplay: () => {
+                if (audioCtx.value?.state === "suspended") {
+                    audioCtx.value.resume();  // Reanudar el contexto si está suspendido
+                }
                 isPlaying.value = true
                 updateMediaSession()
                 updateTime()
