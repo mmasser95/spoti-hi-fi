@@ -12,13 +12,13 @@
                             </ion-row>
                             <ion-row>
                                 <ion-col>
-                                    <ion-input label="Username" v-model="username"
+                                    <ion-input :label="t('login.email')" v-model="username"
                                         label-placement="floating"></ion-input>
                                 </ion-col>
                             </ion-row>
                             <ion-row>
                                 <ion-col>
-                                    <ion-input label="Password" v-model="password"
+                                    <ion-input :label="t('login.password')" v-model="password"
                                         :type="showPassword ? 'text' : 'password'" label-placement="floating">
                                         <ion-button fill="clear" slot="end" aria-label="Show/hide"
                                             @click="() => showPassword = !showPassword">
@@ -30,7 +30,7 @@
                             </ion-row>
                             <ion-row class="ion-justify-content-center">
                                 <ion-col size="12" size-md="6">
-                                    <ion-button type="submit" expand="block">Log In</ion-button>
+                                    <ion-button type="submit" expand="block">{{ t('login.submit') }}</ion-button>
                                 </ion-col>
                             </ion-row>
                         </form>
@@ -48,10 +48,11 @@ import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonInput, IonButton, IonI
 import { eye, eyeOff } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 const store = useAuth()
 const { url } = storeToRefs(store)
 const { login } = store
-
+const { t } = useI18n()
 const showPassword = ref<boolean>(false)
 const username = ref<string>("")
 const password = ref<string>("")

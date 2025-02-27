@@ -2,7 +2,7 @@
     <ion-card @click="viewPlaylist">
         <ion-card-header>
             <ion-card-title>{{ playlist.name }}</ion-card-title>
-            <ion-card-subtitle>{{ playlist.user.email }} -- {{ playlist.createdAt }}</ion-card-subtitle>
+            <ion-card-subtitle>{{ playlist.user.email }}</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content class="flex-align-center">
             <ion-button shape="round" fill="outline" color="primary" @click.stop="addIt">
@@ -23,6 +23,8 @@ import View from './view.vue';
 import { usePlaylist } from '@/store/usePlaylist';
 import { storeToRefs } from 'pinia';
 import { useAuth } from '@/store/useAuth';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n()
 const { addToPlaylist } = usePlaylist()
 const { url } = storeToRefs(useAuth())
 const props = defineProps<{ playlist: LocalPlaylist }>()
@@ -31,10 +33,10 @@ const emit = defineEmits<{
 }>()
 const deletePlaylist = async () => {
     const alert = await alertController.create({
-        header: 'Eliminar playlist?',
-        subHeader: 'Estas seguro?',
-        message: 'Esta acción no se puede deshacer',
-        buttons: [{ text: 'Si', role: 'si' }, { text: 'No', role: 'no' }]
+        header: t('playlist.delete.header'),
+        subHeader: t('playlist.delete.subheader'),
+        message: t('playlist.delete.message'),
+        buttons: [{ text: t('yes'), role: 'si' }, { text: t('no'), role: 'no' }]
     })
     alert.onDidDismiss().then(async ({ role }) => {
         if (role == 'si') {

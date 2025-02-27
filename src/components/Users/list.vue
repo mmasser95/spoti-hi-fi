@@ -1,5 +1,5 @@
 <template>
-    <Modal title="Gestionar usuarios">
+    <Modal :title="t('tab4.manage.users')">
         <ion-list>
             <ion-item v-for="user in users" :key="user.id">
                 <ion-label>{{ user.fullName }}</ion-label>
@@ -19,10 +19,12 @@
 import Auth from '@/APIService/auth';
 import Modal from '@/layout/modal.vue';
 import { User } from '@/types/User';
-import { IonList, IonItem, IonButton, IonButtons } from '@ionic/vue';
+import { IonList, IonItem, IonButton, IonLabel, IonIcon, IonButtons } from '@ionic/vue';
 import { pencilOutline, trashOutline } from 'ionicons/icons';
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n()
 const users = ref<User[]>()
 onMounted(async () => {
     users.value = await Auth.listUsers()

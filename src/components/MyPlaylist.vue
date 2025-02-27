@@ -1,7 +1,7 @@
 <template>
     <ion-header>
         <ion-toolbar>
-            <ion-title class="ion-text-center">Playlist</ion-title>
+            <ion-title class="ion-text-center">{{ t('playlist') }}</ion-title>
         </ion-toolbar>
     </ion-header>
 
@@ -28,11 +28,13 @@
 </template>
 
 <script lang="ts" setup>
-import { modalController, IonIcon, IonTitle, IonButton, IonButtons, IonToolbar, IonHeader, IonLabel, IonReorder, IonItem, IonReorderGroup, IonList, IonContent, ItemReorderEventDetail, ItemReorderCustomEvent, IonItemOption, IonItemOptions, IonItemSliding } from "@ionic/vue";
+import { IonIcon, IonTitle, IonButton, IonButtons, IonToolbar, IonHeader, IonLabel, IonReorder, IonItem, IonReorderGroup, IonList, IonContent, ItemReorderEventDetail, ItemReorderCustomEvent, IonItemOption, IonItemOptions, IonItemSliding } from "@ionic/vue";
 import { usePlaylist } from "@/store/usePlaylist";
 import { storeToRefs } from "pinia";
-import { close, trash } from "ionicons/icons";
+import { trash } from "ionicons/icons";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n()
 
 const { playlist, currentIndex, currentSong } = storeToRefs(usePlaylist());
 
@@ -67,7 +69,7 @@ const deleteSong = (index: number) => {
         } else {
             // Si no quedan canciones, resetear el índice y parar la reproducción
             currentIndex.value = -1;
-            
+
         }
     } else if (index < currentIndex.value) {
         // Si eliminamos una canción antes de la actual, el índice se debe ajustar

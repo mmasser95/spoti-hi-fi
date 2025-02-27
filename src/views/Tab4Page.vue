@@ -2,13 +2,13 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Settings</ion-title>
+        <ion-title>{{ t('tab4.title') }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Settings</ion-title>
+          <ion-title size="large">{{ t('tab4.title') }}</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-grid>
@@ -17,25 +17,25 @@
             <ion-list>
               <ion-item button @click="showEq" lines="full">
                 <ion-icon :icon="barcode" slot="start"></ion-icon>
-                <ion-label>Ecualizador</ion-label>
+                <ion-label>{{ t('tab4.eq') }}</ion-label>
               </ion-item>
               <ion-item button @click="showLang" lines="full">
                 <ion-icon :icon="language" slot="start"></ion-icon>
-                <ion-label>Idioma</ion-label>
+                <ion-label>{{ t('tab4.lang') }}</ion-label>
               </ion-item>
               <ion-item-divider />
               <ion-item button lines="full" @click="showCreateUser">
                 <ion-icon :icon="personAdd" slot="start" />
-                <ion-label>Crear usuario</ion-label>
+                <ion-label>{{ t('tab4.create.user') }}</ion-label>
               </ion-item>
               <ion-item button lines="full" @click="showListUsers">
                 <ion-icon :icon="person" slot="start" />
-                <ion-label>Gestionar usuarios</ion-label>
+                <ion-label>{{ t('tab4.manage.users') }}</ion-label>
               </ion-item>
               <ion-item-divider />
               <ion-item button @click="doLogout" lines="full">
                 <ion-icon :icon="logOut" slot="start"></ion-icon>
-                <ion-label>Cerrar sesión</ion-label>
+                <ion-label>{{ t('tab4.logout') }}</ion-label>
               </ion-item>
             </ion-list>
           </ion-col>
@@ -53,14 +53,16 @@ import { useAuth } from '@/store/useAuth';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonGrid, IonRow, IonCol, IonList, IonItem, IonItemDivider, IonIcon, IonLabel, modalController } from '@ionic/vue';
 import { barcode, language, logOut, person, personAdd, settings } from 'ionicons/icons';
 import Equalizer from '@/components/Equalizer.vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n()
 const { logout } = useAuth()
 const doLogout = async () => {
   await logout()
   router.push('/')
 }
-const showEq = async() => { 
-  const modal=await modalController.create({
-    component:Equalizer
+const showEq = async () => {
+  const modal = await modalController.create({
+    component: Equalizer
   })
   await modal.present()
 }

@@ -2,7 +2,7 @@
     <ion-page>
         <ion-header>
             <ion-toolbar>
-                <ion-title>Create Playlist</ion-title>
+                <ion-title>{{ t('create.playlist') }}</ion-title>
                 <ion-buttons slot="end">
                     <ion-button @click="dismiss">
                         <ion-icon :icon="close" slot="icon-only" />
@@ -15,13 +15,14 @@
                 <form @submit.prevent="submitForm">
                     <ion-row>
                         <ion-col>
-                            <ion-input label="Nombre" label-placement="floating" v-model="nombre" />
+                            <ion-input :label="t('name')" label-placement="floating" v-model="nombre" />
                         </ion-col>
                     </ion-row>
                     <ion-row>
                         <ion-col class="ion-text-center">
-                            <ion-button type="submit">
-                                <ion-icon :icon="add" slot="icon-only" />
+                            <ion-button type="submit" expand="block">
+                                <ion-icon :icon="add" slot="start" />
+                                {{ t('create.playlist') }}
                             </ion-button>
                         </ion-col>
                     </ion-row>
@@ -32,15 +33,16 @@
 </template>
 <script lang="ts" setup>
 import Playlist from '@/APIService/playlist';
-import { IonContent, IonHeader, IonToolbar, IonTitle, IonInput, IonPage, IonButton, IonButtons, modalController } from '@ionic/vue';
+import { IonContent, IonHeader, IonIcon, IonToolbar, IonGrid, IonCol, IonRow, IonTitle, IonInput, IonPage, IonButton, IonButtons, modalController } from '@ionic/vue';
 import { add, close } from 'ionicons/icons';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n()
 const nombre = ref("")
 const dismiss = () => {
     modalController.dismiss({}, "cancel")
 }
 const submitForm = async () => {
-    console.log(`Submit con nombre ${nombre.value}`);
     await Playlist.createPlaylist(nombre.value)
     modalController.dismiss({ nombre: nombre.value }, "submit")
 }

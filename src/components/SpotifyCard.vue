@@ -12,15 +12,15 @@
         </ion-card-header>
 
         <ion-card-content>
-            <p><strong>Álbum:</strong> {{ song.album.name }}</p>
-            <p><strong>Duración:</strong> {{ formattedDuration }}</p>
-            <p><strong>Popularidad:</strong> {{ song.popularity }}/100</p>
+            <p><strong>{{ t('album') }}:</strong> {{ song.album.name }}</p>
+            <p><strong>{{ t('duration') }}:</strong> {{ formattedDuration }}</p>
+            <p><strong>{{ t('popularity') }}:</strong> {{ song.popularity }}/100</p>
             <div class="flex-align-center">
                 <ion-button fill="outline" shape="round" v-if="!song.isDownloaded" @click="openSongModal(song)"
                     color="primary">
                     <ion-icon :icon="download" slot="icon-only" />
                 </ion-button>
-                <ion-badge v-else color="danger">Descargado</ion-badge>
+                <ion-badge v-else color="danger">{{ t('downloaded') }}</ion-badge>
             </div>
         </ion-card-content>
     </ion-card>
@@ -32,6 +32,9 @@ import { IonCard, IonCardContent, IonBadge, modalController, IonCardHeader, IonC
 import { computed } from 'vue';
 import SongModal from '@/components/SongModal.vue';
 import { download } from 'ionicons/icons';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
 
 const props = defineProps<{ song: SpotifyTrack }>();
 

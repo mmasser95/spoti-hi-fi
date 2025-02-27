@@ -25,15 +25,25 @@
 <script lang="ts" setup>
 import Playlist from '@/APIService/playlist';
 import { LocalPlaylist } from '@/types/Playlist';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonButton, IonButtons, IonIcon, IonContent, modalController, IonGrid, IonRow, IonCol } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonButton, IonButtons, IonIcon, IonContent, modalController, IonGrid, IonRow, IonCol, toastController } from '@ionic/vue';
 import { close } from 'ionicons/icons';
 import { onMounted, ref } from 'vue';
 import LocalCard from '../LocalCard.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n()
 const playlist = ref<LocalPlaylist>()
 const props = defineProps<{ id: number }>()
 onMounted(async () => {
-    playlist.value = await Playlist.getPlaylist(props.id)
+    try {
+        playlist.value = await Playlist.getPlaylist(props.id)
+    } catch (error) {
+        const toast = await toastController.create({
+            message: t('server.error.get.playlist'),
+            color: 'danger',
+            duration: 2000
+        })
+        await toast.present()
+    }
 })
 const dismiss = () => {
     modalController.dismiss()

@@ -7,7 +7,7 @@
             <!-- Input de búsqueda con selector -->
             <ion-row class="ion-justify-content-center ion-align-items-center">
                 <ion-col size="12" size-md="4">
-                    <ion-input v-model="query" placeholder="Buscar canción"></ion-input>
+                    <ion-input v-model="query" :placeholder="t('search.song')"></ion-input>
                 </ion-col>
             </ion-row>
 
@@ -30,7 +30,9 @@ import { ref, watch } from 'vue';
 import SpotifyCard from '@/components/SpotifyCard.vue';
 import { SpotifyTrack } from '@/types/SpotifySearch';
 import { YoutubeTrack } from '@/types/YoutubeSearch';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n()
 const query = ref("");
 const searchSource = ref<"spotify" | "youtube">("spotify"); // Controla la fuente de búsqueda
 const resultsSpotify = ref<(SpotifyTrack)[]>([]);

@@ -1,25 +1,26 @@
 <template>
-    <Modal title="Crear usuario">
+    <Modal :title="t('tab4.create.user')">
         <form @submit.prevent="createUser">
             <ion-grid>
                 <ion-row class="ion-justify-content-center">
                     <ion-col>
                         <ion-item>
-                            <ion-input label="Email" label-placement="floating" v-model="data.email" />
+                            <ion-input :label="t('login.email')" label-placement="floating" v-model="data.email" />
                         </ion-item>
                         <ion-item>
-                            <ion-input label="Password" type="password" label-placement="floating"
+                            <ion-input :label="t('login.password')" type="password" label-placement="floating"
                                 v-model="data.password" />
                         </ion-item>
                         <ion-item>
-                            <ion-input label="Repeat password" type="password" label-placement="floating"
+                            <ion-input :label="t('signin.repeat.pass')" type="password" label-placement="floating"
                                 v-model="data.repeatedPassword" />
                         </ion-item>
                         <ion-item>
-                            <ion-input label="Full Name" label-placement="floating" v-model="data.fullName" />
+                            <ion-input :label="t('signin.username')" label-placement="floating"
+                                v-model="data.fullName" />
                         </ion-item>
                         <div class="w-100 flex-align-center">
-                            <ion-button type="submit">Crear</ion-button>
+                            <ion-button expand="block" type="submit">{{ t('tab4.create.user') }}</ion-button>
                         </div>
                     </ion-col>
                 </ion-row>
@@ -30,8 +31,11 @@
 <script lang="ts" setup>
 import Auth from '@/APIService/auth';
 import Modal from '@/layout/modal.vue';
-import { IonButton, IonIcon, IonGrid, IonRow, IonCol, IonInput, modalController, IonItem, toastController } from '@ionic/vue';
+import { IonButton, IonList, IonLabel, IonGrid, IonRow, IonCol, IonInput, modalController, IonItem, toastController } from '@ionic/vue';
 import { reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
 
 const data = reactive({
     fullName: '',

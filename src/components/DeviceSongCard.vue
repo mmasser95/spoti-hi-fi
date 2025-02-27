@@ -6,7 +6,7 @@
             <ion-card-subtitle>{{ song.artist }}</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content class="flex-align-center">
-            <ion-badge v-if="isInPlaylist" color="warning">Añadida</ion-badge>
+            <ion-badge v-if="isInPlaylist" color="warning">{{ t('badge.added') }}</ion-badge>
             <ion-button shape="round" fill="outline" v-else @click="addIt">
                 <ion-icon slot="icon-only" :icon="add" />
             </ion-button>
@@ -20,7 +20,9 @@ import { Song } from '@/types/Song';
 import { IonCard, IonImg, IonCardTitle, IonIcon, IonCardContent, IonCardHeader, IonCardSubtitle, IonBadge, IonButton } from '@ionic/vue';
 import { add } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n()
 const store = usePlaylist()
 const { addToPlaylist } = store
 const { playlist } = storeToRefs(store)

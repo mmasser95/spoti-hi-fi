@@ -35,15 +35,18 @@ import '@ionic/vue/css/palettes/dark.always.css';
 import './theme/variables.css';
 import { createPinia } from 'pinia';
 import initDb from './initDb';
-
+import { i18n, initI18n } from './plugins/i18n';
 
 const app = createApp(App)
   .use(IonicVue)
   .use(router)
-  .use(createPinia());
+  .use(createPinia())
+  .use(i18n);
 
 router.isReady().then(() => {
   initDb().then(() =>
-    app.mount('#app')
+    initI18n().then(() =>
+      app.mount('#app')
+    )
   ).catch(err => alert(err))
 });

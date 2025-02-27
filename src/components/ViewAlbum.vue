@@ -1,42 +1,44 @@
 <template>
-        <Modal :title="album.name">
-            <ion-card>
-                <ion-img :src="album.coverImage" alt="Album Cover" />
-                <ion-card-header>
-                    <ion-card-title>{{ album.name }}</ion-card-title>
-                    <ion-card-subtitle>
-                        {{ artistsNames }}
-                    </ion-card-subtitle>
-                </ion-card-header>
-                <ion-card-content>
-                    <p>{{ album.description }}</p>
-                </ion-card-content>
-            </ion-card>
-            <!-- Lista de canciones -->
-            <ion-list>
-                <ion-item v-for="song in album.songs" :key="song.id">
-                    <ion-label>
-                        <h2>{{ song.title }}</h2>
-                    </ion-label>
-                    <ion-badge v-if="isInPlaylist(song)" color="success">En playlist</ion-badge>
-                    <ion-button fill="clear" @click="addIt(song)">
-                        <ion-icon :icon="addCircleOutline" />
-                    </ion-button>
-                </ion-item>
-            </ion-list>
-        </Modal>
+    <Modal :title="album.name">
+        <ion-card>
+            <ion-img :src="album.coverImage" alt="Album Cover" />
+            <ion-card-header>
+                <ion-card-title>{{ album.name }}</ion-card-title>
+                <ion-card-subtitle>
+                    {{ artistsNames }}
+                </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <p>{{ album.description }}</p>
+            </ion-card-content>
+        </ion-card>
+        <!-- Lista de canciones -->
+        <ion-list>
+            <ion-item v-for="song in album.songs" :key="song.id">
+                <ion-label>
+                    <h2>{{ song.title }}</h2>
+                </ion-label>
+                <ion-badge v-if="isInPlaylist(song)" color="success">{{ t('badge.added') }}</ion-badge>
+                <ion-button fill="clear" @click="addIt(song)">
+                    <ion-icon :icon="addCircleOutline" />
+                </ion-button>
+            </ion-item>
+        </ion-list>
+    </Modal>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonImg, IonList, IonItem, IonLabel, IonButton, IonBadge, modalController, IonIcon} from '@ionic/vue';
+import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonImg, IonList, IonItem, IonLabel, IonButton, IonBadge, modalController, IonIcon } from '@ionic/vue';
 import { addCircleOutline } from 'ionicons/icons';
 import { AlbumResult } from '@/types/SearchResults';
 import { usePlaylist } from '@/store/usePlaylist';
 import { storeToRefs } from 'pinia';
 import { useAuth } from '@/store/useAuth';
 import Modal from '@/layout/modal.vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n()
 const { addToPlaylist } = usePlaylist()
 const { url } = storeToRefs(useAuth())
 // Props

@@ -9,10 +9,10 @@
       <ion-row class="player-header">
         <ion-col>
           <ion-text color="primary">
-            <h3 class="track-title">{{ currentSong?.title || "Sin título" }}</h3>
+            <h3 class="track-title">{{ currentSong?.title || t('no.title') }}</h3>
           </ion-text>
           <ion-text color="medium">
-            <p class="track-artist">{{ currentSong?.artist || "Desconocido" }}</p>
+            <p class="track-artist">{{ currentSong?.artist || t('unknown') }}</p>
           </ion-text>
         </ion-col>
       </ion-row>
@@ -62,6 +62,9 @@ import { play, pause, playSkipBack, playSkipForward, shuffle, repeat, options } 
 import { usePlaylist } from "@/store/usePlaylist";
 import { storeToRefs } from "pinia";
 import MyPlaylist from "@/components/MyPlaylist.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n()
 const store = usePlaylist();
 const { isPlaying, currentSong, duration, currentTime, isShuffling, isRepeating } = storeToRefs(store);
 const { prev, playAudio, pauseAudio, next, toggleShuffle, toggleRepeat, seek } = store;
@@ -100,7 +103,7 @@ const showPlaylist = async () => {
   /* background: #1e1e1e; */
   color: white;
   text-align: center;
-  margin: 30px ;
+  margin: 30px;
 }
 
 .album-cover {

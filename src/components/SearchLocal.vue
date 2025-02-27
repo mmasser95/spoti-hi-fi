@@ -11,23 +11,23 @@
             <ion-row class="ion-justify-content-center ion-align-items-center">
                 <ion-col size="12" size-md="4">
                     <ion-input v-if="!serverError" v-model="query" :placeholder="searchPlaceHolder"></ion-input>
-                    <ion-toggle v-model="serverError" :enable-on-off-labels="true">Local</ion-toggle>
+                    <ion-toggle v-model="serverError" :enable-on-off-labels="true">{{ t('local') }}</ion-toggle>
                 </ion-col>
             </ion-row>
             <ion-row class="ion-justify-content-center ion-align-items-center" v-if="!serverError">
                 <ion-col size="12" size-md="4">
                     <ion-segment value="song" v-model="searchType">
                         <ion-segment-button value="song" content-id="song">
-                            <ion-label>Song</ion-label>
+                            <ion-label>{{ t('song') }}</ion-label>
                         </ion-segment-button>
                         <ion-segment-button value="artist" content-id="artist">
-                            <ion-label>Artist</ion-label>
+                            <ion-label>{{ t('artist') }}</ion-label>
                         </ion-segment-button>
                         <ion-segment-button value="album" content-id="album">
-                            <ion-label>Album</ion-label>
+                            <ion-label>{{ t('album') }}</ion-label>
                         </ion-segment-button>
                         <ion-segment-button value="playlist" content-id="playlist">
-                            <ion-label>Playlist</ion-label>
+                            <ion-label>{{ t('playlist') }}</ion-label>
                         </ion-segment-button>
                     </ion-segment>
                 </ion-col>
@@ -73,7 +73,7 @@
                 </ion-col>
             </ion-row>
         </ion-grid>
-        <ion-fab v-if="searchType == 'playlist'" slot="fixed" horizontal="end" vertical="bottom">
+        <ion-fab v-if="searchType == 'playlist' && !serverError" slot="fixed" horizontal="end" vertical="bottom">
             <ion-fab-button @click="showCreatePlaylist">
                 <ion-icon :icon="add" />
             </ion-fab-button>
@@ -83,7 +83,7 @@
 
 <script lang="ts" setup>
 import { External } from '@/APIService/external';
-import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton, IonLabel, IonSegmentContent, IonSegmentView, RefresherCustomEvent, IonRefresher, IonRefresherContent, IonToggle, IonFab, IonFabButton, IonIcon, modalController } from '@ionic/vue';
+import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton, IonLabel, IonSegmentContent, IonSegmentView, RefresherCustomEvent, IonRefresher, IonRefresherContent, IonToggle, IonFab, IonFabButton, IonIcon, modalController, toastController } from '@ionic/vue';
 import debounce from 'lodash/debounce';
 import { computed, onMounted, ref, watch } from 'vue';
 import LocalCard from '@/components/LocalCard.vue';
@@ -98,6 +98,8 @@ import Playlist from '@/APIService/playlist';
 import { add } from 'ionicons/icons';
 import Create from '@/components/Playlist/create.vue';
 import Card from './Playlist/card.vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n()
 const query = ref("");
 const resultsSongs = ref<LocalSong[]>()
 const localSongs = ref<Song[]>()
@@ -107,12 +109,12 @@ const resultsPlaylists = ref<any[]>()
 const serverError = ref<boolean>(false)
 const searchPlaceHolder = computed(() =>
     searchType.value == 'song'
-        ? "Buscar canción"
+        ? t('search.song')
         : searchType.value == 'artist'
-            ? "Buscar artista"
+            ? t('search.artist')
             : searchType.value == "album"
-                ? "Buscar album"
-                : "Buscar playlist")
+                ? t('search.album')
+                : t('search.playlist'))
 const searchType = ref<"artist" | "album" | "song" | "playlist">("song")
 
 
@@ -143,7 +145,12 @@ onMounted(async () => {
         resultsArtists.value = await External.searchArtists("")
         resultsPlaylists.value = await Playlist.getAllPlaylists()
     } catch (error) {
-        console.warn("No se pudo conectar al servidor")
+        const toast = await toastController.create({
+            duration: 2000,
+            color: 'warning',
+            message: t('server.error.connect')
+        })
+        await toast.present()
         serverError.value = true
         localSongs.value = await getElements()
     }

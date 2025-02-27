@@ -6,7 +6,7 @@
             <ion-card-subtitle>{{ artistsNames }}</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content class="ion-text-center">
-            <ion-badge v-if="isInPlaylist" color="primary">Añadida</ion-badge>
+            <ion-badge v-if="isInPlaylist" color="primary">{{ t('badge.added') }}</ion-badge>
             <div class="flex-align-center">
                 <ion-button fill="outline" shape="round" @click.stop="addToUserPlaylist">
                     <ion-icon slot="icon-only" :icon="add" />
@@ -30,7 +30,9 @@ import { add, close, download, downloadOutline, list, musicalNote, text } from '
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import useLocal from '@/store/useLocal';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n()
 const store = usePlaylist()
 const { playlist, currentIndex } = storeToRefs(store)
 const { addToPlaylist, changeToLastSongInPlaylist } = store
@@ -60,7 +62,7 @@ const playSong = () => {
 
 const addIt = () => {
     addToPlaylist({
-        id:props.song.id,
+        id: props.song.id,
         artist: artistsNames.value,
         url: myUrl.value,
         title: props.song.title,
@@ -80,22 +82,22 @@ onLongPress(cardRef, async () => {
     const action = await actionSheetController.create({
         buttons: [
             {
-                text: "Reproducir",
+                text: t('action.play'),
                 icon: musicalNote,
                 handler: addIt
             },
             {
-                text: "Descargar",
+                text: t('action.download'),
                 icon: download,
                 handler: descargar
             },
             {
-                text: "Añadir a playlist",
+                text: t('action.add.to.playlist'),
                 icon: list,
                 handler: addToUserPlaylist
             },
             {
-                text: "Cancelar",
+                text: t('cancel'),
                 role: "cancel",
                 icon: close
             }
@@ -121,7 +123,7 @@ const addToUserPlaylist = async () => {
     //     handler:createPlaylist
     // })
     buttons.push({
-        text: "Cancelar",
+        text: t('cancel'),
         role: "cancel"
     })
     const action = await actionSheetController.create({
