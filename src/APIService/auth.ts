@@ -2,6 +2,7 @@ import { useAuth } from "@/store/useAuth";
 import { storeToRefs } from "pinia";
 import { Ref } from "vue";
 import { getAuthHeaders, getHeaders } from "./utils";
+import { User } from "@/types/User";
 
 export default class Auth {
 
@@ -62,6 +63,19 @@ export default class Auth {
             throw new Error(err);
         }
         let data = await res.json()
+        return data
+    }
+
+    public static async listUsers() {
+        const res = await fetch(`${this.url.value}/users`, {
+            method: "GET",
+            headers: getAuthHeaders()
+        })
+        if (!res.ok) {
+            let err = await res.text()
+            throw new Error(err)
+        }
+        let data: User[] = await res.json()
         return data
     }
 }

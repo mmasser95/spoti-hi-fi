@@ -5,19 +5,21 @@
                 <ion-row class="ion-justify-content-center">
                     <ion-col>
                         <ion-item>
-                            <ion-input label="Email" label-placement="floating" />
+                            <ion-input label="Email" label-placement="floating" v-model="data.email" />
                         </ion-item>
                         <ion-item>
-                            <ion-input label="Password" type="password" label-placement="floating" />
+                            <ion-input label="Password" type="password" label-placement="floating"
+                                v-model="data.password" />
                         </ion-item>
                         <ion-item>
-                            <ion-input label="Repeat password" type="password" label-placement="floating" />
+                            <ion-input label="Repeat password" type="password" label-placement="floating"
+                                v-model="data.repeatedPassword" />
                         </ion-item>
                         <ion-item>
-                            <ion-input label="Full Name" label-placement="floating" />
+                            <ion-input label="Full Name" label-placement="floating" v-model="data.fullName" />
                         </ion-item>
                         <div class="w-100 flex-align-center">
-                            <ion-button>Crear</ion-button>
+                            <ion-button type="submit">Crear</ion-button>
                         </div>
                     </ion-col>
                 </ion-row>
@@ -28,7 +30,7 @@
 <script lang="ts" setup>
 import Auth from '@/APIService/auth';
 import Modal from '@/layout/modal.vue';
-import { IonButton, IonIcon, IonGrid, IonRow, IonCol, IonInput, modalController, IonItem } from '@ionic/vue';
+import { IonButton, IonIcon, IonGrid, IonRow, IonCol, IonInput, modalController, IonItem, toastController } from '@ionic/vue';
 import { reactive } from 'vue';
 
 const data = reactive({
@@ -43,9 +45,18 @@ const dismiss = () => {
 }
 
 const createUser = async () => {
-    const user = await Auth.register(data.email, data.password, data.fullName)
-    console.log(user);
-    dismiss()
+    try {
+        const user = await Auth.register(data.email, data.password, data.fullName)
+        console.log(user);
+        dismiss()
+    } catch (error: any) {
+        const toast = await toastController.create({
+            message: error,
+            duration: 2000,
+            color: 'danger'
+        })
+        await toast.present()
+    }
 }
 </script>
 <style>
