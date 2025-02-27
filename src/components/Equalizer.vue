@@ -2,8 +2,9 @@
     <Modal title="Ecualizador">
         <div class="eq-bands">
             <div class="eq-band" v-for="(band, index) in bands" :key="band.id">
-                <KnobFreq v-model="band.frequency" :label="band.label" :min="band.minFreq" :max="band.maxFreq"/>
-                <Knob v-model="band.gain" :min-db="-100" :max-db="7.5" :label="band.label"/>
+                <KnobFreq v-model="band.frequency" :label="band.label" :min="band.minFreq"
+                    :max="band.maxFreq" />
+                <Knob v-model="band.gain" :min-db="0" :max-db="1.2" :label="band.label" />
             </div>
         </div>
     </Modal>
@@ -23,13 +24,13 @@ const { bands } = storeToRefs(useEq())
 .eq-band {
     display: flex;
     flex-flow: row wrap;
-    width:100%;
+    width: 100%;
     justify-content: center;
-    gap:40px;
-    margin: 0px 20px;
+    gap: 40px;
+    margin: 0px;
 }
 
-.eq-bands{
+.eq-bands {
     display: flex;
     flex-flow: column wrap;
     justify-content: center;

@@ -1,5 +1,5 @@
 <template>
-    <div class="knob-container" :style="{ width: `${size}px`, height: `${size}px` }">
+    <div class="knob-container" :style="{ width: `${size}px`, height: `${size}px` }" @dblclick="resetValue">
         <svg :width="size" :height="size" viewBox="0 0 100 100">
             <!-- Fondo del arco -->
             <path d="M 20,80 A 40,40 0 1,1 80,80" stroke="#444" stroke-width="10" fill="transparent" />
@@ -11,21 +11,21 @@
         <div class="knob" @mousedown="startDrag" @touchstart="startDrag">
             <div class="knob-value">
                 <p>{{ label }}</p>
-                {{ (formatValue ?? defaultFormat)(logValue) }}
+                <div v-if="model">{{ (formatValue ?? defaultFormat)(model) }}</div>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, Ref, ref } from "vue";
+import { computed, onMounted, Ref, ref } from "vue";
 
 const props = defineProps<{
     // modelValue: number; // Valor en dB
     minDb?: number; // Mínimo en dB (por defecto -60)
     maxDb?: number; // Máximo en dB (por defecto 5)
     size?: number; // Tamaño en píxeles (por defecto 100)
-    label:string;
+    label: string;
     formatValue?: (value: number) => string; // Formateador opcional
 }>();
 
@@ -48,11 +48,11 @@ const logToLinear = (value: number) =>
     ((Math.pow(10, (value - minDb) / (maxDb - minDb)) - 1) / 9) * 100;
 
 // 📈 **Valor logarítmico computado**
-const logValue = ref(0)
+const logValue = ref(1)
 
 // 🎯 **Arco SVG de progreso**
 const progressArc = computed(() => {
-    if(!model.value) model.value=0
+    if (!model.value) model.value = 0
     // 🔹 Normalizamos el valor en un rango [0,1]
     let percentage = (model.value - minDb) / (maxDb - minDb);
     percentage = Math.max(0, Math.min(1, percentage)); // Limitamos entre 0 y 1
@@ -93,8 +93,8 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
     };
 
     const { y: startY } = getPosition(event);
-    const startValue = model.value??0;
-    
+    const startValue = model.value ?? 0;
+
     const onMove = (moveEvent: MouseEvent | TouchEvent) => {
         const { y: moveY } = getPosition(moveEvent);
         const delta = (startY - moveY) * 0.5;
@@ -123,7 +123,10 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
 };
 
 // 📏 **Formateador por defecto**
-const defaultFormat = (value: number) => `${value.toFixed(1)} dB`;
+const defaultFormat = (value: number) => `${(value*100).toFixed(0)}%`;
+const resetValue = () => {
+    emit("update:modelValue", 1)
+}
 </script>
 
 <style scoped>

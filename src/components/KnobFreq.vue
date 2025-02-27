@@ -1,5 +1,5 @@
 <template>
-    <div class="knob-container" :style="{ width: `${size}px`, height: `${size}px` }">
+    <div class="knob-container" :style="{ width: `${size}px`, height: `${size}px` }" @dblclick="resetValue" >
         <svg :width="size" :height="size" viewBox="0 0 100 100">
             <!-- Fondo del arco -->
             <path d="M 20,80 A 40,40 0 1,1 80,80" stroke="#444" stroke-width="10" fill="transparent" />
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const props = defineProps<{
     min?: number; // Frecuencia mínima (por defecto 20 Hz)
@@ -26,6 +26,8 @@ const props = defineProps<{
     size?: number; // Tamaño en píxeles (por defecto 100)
     label: string;
 }>();
+
+let startValue: number
 
 const model = defineModel({
     type: Number
@@ -117,6 +119,14 @@ const startDrag = (event: MouseEvent | TouchEvent) => {
 const formatFreq = (value: number) => {
     return value >= 1000 ? `${(value / 1000).toFixed(1)} kHz` : `${Math.round(value)} Hz`;
 };
+
+const resetValue = () => {
+    emit("update:modelValue", startValue)
+}
+onMounted(() => {
+    if (model.value)
+        startValue = model.value
+})
 </script>
 
 <style scoped>

@@ -12,23 +12,26 @@ export const useEq = defineStore("Eq", () => {
         minFreq: number,
         maxFreq: number
     }[]>([
-        { id: 0, label: "Bass", maxFreq: 400, minFreq: 20, frequency: 200, type: "lowshelf", gain: 0 },
-        { id: 1, label: "BassMid", maxFreq: 800, minFreq: 400, frequency: 500, type: "peaking", gain: 0 },
-        { id: 2, label: "Mid", maxFreq: 2500, minFreq: 800, frequency: 1000, type: "peaking", gain: 0 },
-        { id: 3, label: "MidHigh", maxFreq: 7500, minFreq: 2500, frequency: 5000, type: "peaking", gain: 0 },
-        { id: 4, label: "High", maxFreq: 20000, minFreq: 7500, frequency: 10000, type: "highshelf", gain: 0 },
+        { id: 0, label: "Bass", maxFreq: 400, minFreq: 20, frequency: 200, type: "lowpass", gain: 1 },
+        { id: 1, label: "BassMid", maxFreq: 800, minFreq: 400, frequency: 500, type: "bandpass", gain: 1 },
+        { id: 2, label: "Mid", maxFreq: 2500, minFreq: 800, frequency: 1000, type: "bandpass", gain: 1 },
+        { id: 3, label: "MidHigh", maxFreq: 7500, minFreq: 2500, frequency: 5000, type: "bandpass", gain: 1 },
+        { id: 4, label: "High", maxFreq: 20000, minFreq: 7500, frequency: 10000, type: "highpass", gain: 1 },
     ]);
 
     watch(bands, (newBands) => {
         newBands.forEach((band, index) => {
             if (filters.value[index]) {
-                filters.value[index].gain.setValueAtTime(band.gain, audioCtx.value!.currentTime)
-                filters.value[index].frequency.setValueAtTime(band.frequency, audioCtx.value!.currentTime)
+                filters.value[index].gain.gain.setValueAtTime(band.gain, audioCtx.value!.currentTime)
+                filters.value[index].filter.frequency.setValueAtTime(band.frequency, audioCtx.value!.currentTime)
             }
         })
     }, { deep: true })
 
-    const filters = ref<BiquadFilterNode[]>([])
+    const filters = ref<{
+        filter: BiquadFilterNode,
+        gain: GainNode
+    }[]>([])
 
     const initFilters = (audioNode: MediaElementAudioSourceNode) => {
         if (!audioCtx.value) return;
@@ -38,27 +41,19 @@ export const useEq = defineStore("Eq", () => {
             const filter = audioCtx.value!.createBiquadFilter();
             filter.type = band.type;
             filter.frequency.value = band.frequency;
-            filter.gain.value = band.gain;
-            return filter;
+            // filter.gain.value = band.gain;
+            const gain = audioCtx.value.createGain();
+            gain.gain.value = band.gain;
+            return { filter, gain };
         });
 
-        // Si no hay filtros, conectar directamente el audioNode al destino
-        if (filters.value.length === 0) {
-            console.warn("No hay filtros, conectando directamente al destino");
-            audioNode.connect(audioCtx.value.destination);
-            return;
-        }
+        // Conectar vias en paralelo
 
-        // Conectar audioNode al primer filtro
-        audioNode.connect(filters.value[0]);
-
-        // Conectar filtros en cadena
-        for (let i = 0; i < filters.value.length - 1; i++) {
-            filters.value[i].connect(filters.value[i + 1]);
-        }
-
-        // Conectar el último filtro a la salida de audio
-        filters.value[filters.value.length - 1].connect(audioCtx.value.destination);
+        filters.value.forEach(filter => {
+            audioNode.connect(filter.filter)
+            filter.filter.connect(filter.gain)
+            filter.gain.connect(audioCtx.value.destination)
+        })
     }
 
 
