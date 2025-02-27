@@ -54,6 +54,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonGri
 import { barcode, language, logOut, person, personAdd, settings } from 'ionicons/icons';
 import Equalizer from '@/components/Equalizer.vue';
 import { useI18n } from 'vue-i18n';
+import Languages from '@/components/Languages.vue';
 const { t } = useI18n()
 const { logout } = useAuth()
 const doLogout = async () => {
@@ -66,7 +67,12 @@ const showEq = async () => {
   })
   await modal.present()
 }
-const showLang = () => { }
+const showLang = async () => {
+  const modal = await modalController.create({
+    component: Languages
+  })
+  await modal.present()
+}
 const showCreateUser = async () => {
   const modal = await modalController.create({
     component: Create
