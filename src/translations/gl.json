@@ -48,5 +48,19 @@
     "no": "Non",
     "create.playlist": "Crear lista de reprodución",
     "name": "Nome",
-    "server.error.get.playlist": "Erro ao recibir os datos da lista de reprodución"
+    "server.error.get.playlist": "Erro ao recibir os datos da lista de reprodución",
+    "tab4.manage.libraries": "Xestionar bibliotecas",
+    "create.library": "Crear Biblioteca",
+    "server.error.get.libraries": "Erro ao obter as bibliotecas do servidor",
+    "server.error.create.library": "Erro ao crear a biblioteca",
+    "folder.name": "Nome da carpeta",
+    "server.error.create.user": "Erro ao crear o usuario",
+    "server.error.edit.user": "Erro ao editar o usuario",
+    "server.error.get.users": "Erro ao obter os usuarios",
+    "server.error.get.user": "Erro ao obter o usuario",
+    "user.delete.header": "Eliminar usuario?",
+    "user.delete.subheader": "Estás seguro?",
+    "user.delete.message": "Esta acción non se pode desfacer e eliminaranse as listas de reprodución creadas polo usuario",
+    "server.error.delete.user": "Non se puido eliminar o usuario",
+    "edit.user": "Editar Usuario"
 }

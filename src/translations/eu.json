@@ -48,5 +48,19 @@
     "no": "Ez",
     "create.playlist": "Erreprodukzio-zerrenda sortu",
     "name": "Izena",
-    "server.error.get.playlist": "Errorea erreprodukzio-zerrendaren datuak jasotzean"
+    "server.error.get.playlist": "Errorea erreprodukzio-zerrendaren datuak jasotzean",
+    "tab4.manage.libraries": "Liburutegiak kudeatu",
+    "create.library": "Liburutegia sortu",
+    "server.error.get.libraries": "Errore bat gertatu da zerbitzariatik liburutegiak jasotzerakoan",
+    "server.error.create.library": "Errore bat gertatu da liburutegia sortzerakoan",
+    "folder.name": "Karpetaren izena",
+    "server.error.create.user": "Errore bat gertatu da erabiltzailea sortzerakoan",
+    "server.error.edit.user": "Errore bat gertatu da erabiltzailea editatzerakoan",
+    "server.error.get.users": "Errore bat gertatu da erabiltzaileak jasotzerakoan",
+    "server.error.get.user": "Errore bat gertatu da erabiltzailea jasotzerakoan",
+    "user.delete.header": "Ezabatu erabiltzailea?",
+    "user.delete.subheader": "Ziur al zaude?",
+    "user.delete.message": "Ekintza hau ezingo da atzera egin eta erabiltzaileak sortutako erreproduzketa-zerrendak ezabatuko dira",
+    "server.error.delete.user": "Ezin izan da erabiltzailea ezabatu.",
+    "edit.user": "Editatu Erabiltzailea"
 }

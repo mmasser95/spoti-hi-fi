@@ -48,5 +48,19 @@
     "no": "No",
     "create.playlist": "Create Playlist",
     "name": "Name",
-    "server.error.get.playlist": "Error receiving playlist data"
+    "server.error.get.playlist": "Error receiving playlist data",
+    "tab4.manage.libraries": "Manage Libraries",
+    "create.library": "Create Library",
+    "server.error.get.libraries": "Error retrieving libraries from the server",
+    "server.error.create.library": "Error creating the library",
+    "folder.name": "Folder Name",
+    "server.error.create.user": "Error creating the user",
+    "server.error.edit.user": "Error editing the user",
+    "server.error.get.users": "Error retrieving users",
+    "server.error.get.user": "Error retrieving the user",
+    "user.delete.header": "Delete user?",
+    "user.delete.subheader": "Are you sure?",
+    "user.delete.message": "This action cannot be undone and the playlists created by the user will be deleted",
+    "server.error.delete.user": "Could not delete the user",
+    "edit.user": "Edit User"
 }

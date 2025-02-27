@@ -48,5 +48,19 @@
     "no": "Não",
     "create.playlist": "Criar lista de reprodução",
     "name": "Nome",
-    "server.error.get.playlist": "Erro ao receber os dados da lista de reprodução"
+    "server.error.get.playlist": "Erro ao receber os dados da lista de reprodução",
+    "tab4.manage.libraries": "Gerenciar Bibliotecas",
+    "create.library": "Criar Biblioteca",
+    "server.error.get.libraries": "Erro ao obter bibliotecas do servidor",
+    "server.error.create.library": "Erro ao criar a biblioteca",
+    "folder.name": "Nome da pasta",
+    "server.error.create.user": "Erro ao criar o usuário",
+    "server.error.edit.user": "Erro ao editar o usuário",
+    "server.error.get.users": "Erro ao obter os usuários",
+    "server.error.get.user": "Erro ao obter o usuário",
+    "user.delete.header": "Excluir usuário?",
+    "user.delete.subheader": "Tem certeza?",
+    "user.delete.message": "Esta ação não pode ser desfeita e as listas de reprodução criadas pelo usuário serão excluídas",
+    "server.error.delete.user": "Não foi possível excluir o usuário",
+    "edit.user": "Editar Usuário"
 }

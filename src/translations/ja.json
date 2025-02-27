@@ -48,5 +48,19 @@
     "no": "いいえ",
     "create.playlist": "プレイリストを作成",
     "name": "名前",
-    "server.error.get.playlist": "プレイリストのデータ取得エラー"
+    "server.error.get.playlist": "プレイリストのデータ取得エラー",
+    "tab4.manage.libraries": "ライブラリを管理",
+    "create.library": "ライブラリを作成",
+    "server.error.get.libraries": "サーバーからライブラリを取得中にエラーが発生しました",
+    "server.error.create.library": "ライブラリの作成中にエラーが発生しました",
+    "folder.name": "フォルダー名",
+    "server.error.create.user": "ユーザーの作成中にエラーが発生しました",
+    "server.error.edit.user": "ユーザーの編集中にエラーが発生しました",
+    "server.error.get.users": "ユーザーの取得中にエラーが発生しました",
+    "server.error.get.user": "ユーザーの取得中にエラーが発生しました",
+    "user.delete.header": "ユーザーを削除しますか？",
+    "user.delete.subheader": "本当によろしいですか？",
+    "user.delete.message": "この操作は元に戻せません。ユーザーが作成したプレイリストは削除されます。",
+    "server.error.delete.user": "ユーザーを削除できませんでした",
+    "edit.user": "ユーザーを編集"
 }

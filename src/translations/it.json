@@ -48,5 +48,19 @@
     "no": "No",
     "create.playlist": "Creare lista di riproduzione",
     "name": "Nome",
-    "server.error.get.playlist": "Errore nel ricevere i dati della lista di riproduzione"
+    "server.error.get.playlist": "Errore nel ricevere i dati della lista di riproduzione",
+    "tab4.manage.libraries": "Gestisci Biblioteche",
+    "create.library": "Crea Biblioteca",
+    "server.error.get.libraries": "Errore nel recupero delle biblioteche dal server",
+    "server.error.create.library": "Errore nella creazione della biblioteca",
+    "folder.name": "Nome della cartella",
+    "server.error.create.user": "Errore nella creazione dell'utente",
+    "server.error.edit.user": "Errore nella modifica dell'utente",
+    "server.error.get.users": "Errore nel recupero degli utenti",
+    "server.error.get.user": "Errore nel recupero dell'utente",
+    "user.delete.header": "Eliminare utente?",
+    "user.delete.subheader": "Sei sicuro?",
+    "user.delete.message": "Questa azione non può essere annullata e le playlist create dall'utente saranno eliminate",
+    "server.error.delete.user": "Impossibile eliminare l'utente",
+    "edit.user": "Modifica Utente"
 }

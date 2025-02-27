@@ -48,5 +48,19 @@
     "no": "No",
     "create.playlist": "Crear llista de reproducció",
     "name": "Nom",
-    "server.error.get.playlist": "Error en rebre les dades de la llista de reproducció"
+    "server.error.get.playlist": "Error en rebre les dades de la llista de reproducció",
+    "tab4.manage.libraries": "Gestionar biblioteques",
+    "create.library": "Crear Biblioteca",
+    "server.error.get.libraries": "Error en rebre les biblioteques del servidor",
+    "server.error.create.library": "Error en crear la biblioteca",
+    "folder.name": "Nom de la carpeta",
+    "server.error.create.user": "Error en crear l'usuari",
+    "server.error.edit.user": "Error en editar l'usuari",
+    "server.error.get.users": "Error en obtenir els usuaris",
+    "server.error.get.user": "Error en obtenir l'usuari",
+    "user.delete.header": "Esborrar usuari?",
+    "user.delete.subheader": "N'estàs segur?",
+    "user.delete.message": "Aquesta acció no es pot desfer i s'eliminaràn les llistes de reproducció creades per l'usuari",
+    "server.error.delete.user": "No s'ha pogut esborrar l'usuari",
+    "edit.user": "Editar Usuari"
 }

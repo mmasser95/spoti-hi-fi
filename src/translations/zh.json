@@ -48,5 +48,19 @@
     "no": "否",
     "create.playlist": "创建播放列表",
     "name": "名称",
-    "server.error.get.playlist": "获取播放列表数据出错"
+    "server.error.get.playlist": "获取播放列表数据出错",
+    "tab4.manage.libraries": "管理库",
+    "create.library": "创建库",
+    "server.error.get.libraries": "从服务器获取库时出错",
+    "server.error.create.library": "创建库时出错",
+    "folder.name": "文件夹名称",
+    "server.error.create.user": "创建用户时出错",
+    "server.error.edit.user": "编辑用户时出错",
+    "server.error.get.users": "获取用户时出错",
+    "server.error.get.user": "获取用户信息时出错",
+    "user.delete.header": "删除用户？",
+    "user.delete.subheader": "确定吗？",
+    "user.delete.message": "此操作无法撤销，并且用户创建的播放列表将被删除",
+    "server.error.delete.user": "无法删除用户",
+    "edit.user": "编辑用户"
 }

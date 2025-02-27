@@ -48,5 +48,19 @@
     "no": "Nein",
     "create.playlist": "Wiedergabeliste erstellen",
     "name": "Name",
-    "server.error.get.playlist": "Fehler beim Abrufen der Wiedergabelistendaten"
+    "server.error.get.playlist": "Fehler beim Abrufen der Wiedergabelistendaten",
+    "tab4.manage.libraries": "Bibliotheken verwalten",
+    "create.library": "Bibliothek erstellen",
+    "server.error.get.libraries": "Fehler beim Abrufen der Bibliotheken vom Server",
+    "server.error.create.library": "Fehler beim Erstellen der Bibliothek",
+    "folder.name": "Ordnername",
+    "server.error.create.user": "Fehler beim Erstellen des Benutzers",
+    "server.error.edit.user": "Fehler beim Bearbeiten des Benutzers",
+    "server.error.get.users": "Fehler beim Abrufen der Benutzer",
+    "server.error.get.user": "Fehler beim Abrufen des Benutzers",
+    "user.delete.header": "Benutzer löschen?",
+    "user.delete.subheader": "Bist du sicher?",
+    "user.delete.message": "Diese Aktion kann nicht rückgängig gemacht werden und die vom Benutzer erstellten Wiedergabelisten werden gelöscht",
+    "server.error.delete.user": "Der Benutzer konnte nicht gelöscht werden",
+    "edit.user": "Benutzer bearbeiten"
 }

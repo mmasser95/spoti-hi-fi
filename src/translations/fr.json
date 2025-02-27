@@ -48,5 +48,19 @@
     "no": "Non",
     "create.playlist": "Créer une liste de lecture",
     "name": "Nom",
-    "server.error.get.playlist": "Erreur lors de la réception des données de la liste de lecture"
+    "server.error.get.playlist": "Erreur lors de la réception des données de la liste de lecture",
+    "tab4.manage.libraries": "Gérer les Bibliothèques",
+    "create.library": "Créer une Bibliothèque",
+    "server.error.get.libraries": "Erreur lors de la récupération des bibliothèques du serveur",
+    "server.error.create.library": "Erreur lors de la création de la bibliothèque",
+    "folder.name": "Nom du dossier",
+    "server.error.create.user": "Erreur lors de la création de l'utilisateur",
+    "server.error.edit.user": "Erreur lors de la modification de l'utilisateur",
+    "server.error.get.users": "Erreur lors de la récupération des utilisateurs",
+    "server.error.get.user": "Erreur lors de la récupération de l'utilisateur",
+    "user.delete.header": "Supprimer l'utilisateur?",
+    "user.delete.subheader": "Êtes-vous sûr?",
+    "user.delete.message": "Cette action est irréversible et les playlists créées par l'utilisateur seront supprimées",
+    "server.error.delete.user": "Impossible de supprimer l'utilisateur",
+    "edit.user": "Modifier l'Utilisateur"
 }
