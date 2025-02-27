@@ -11,8 +11,6 @@ export class External {
     private static url: Ref<string> = storeToRefs(useAuth()).url
 
     public static async searchYoutube(query: string) {
-        console.log(this.url.value);
-
         let req = await fetch(`${this.url.value}/youtube/search`, {
             method: "POST",
             headers: getHeaders(),
@@ -22,7 +20,7 @@ export class External {
         })
         if (!req.ok) {
             let err = await req.text()
-            throw new Error(`Error: ${err}`);
+            throw new Error(err);
         }
         let data: YoutubeTrack[] = await req.json()
         return data
@@ -38,7 +36,7 @@ export class External {
         })
         if (!req.ok) {
             let err = await req.text()
-            throw new Error(`Error: ${err}`);
+            throw new Error(err);
         }
         let data: { items: SpotifyTrack[] } = await req.json()
         return data
@@ -48,7 +46,7 @@ export class External {
         let req = await fetch(`${this.url.value}/songs`)
         if (!req.ok) {
             let err = await req.text()
-            throw new Error(`Error: ${err}`);
+            throw new Error(err);
         }
         let data: LocalSong[] = await req.json()
         return data
@@ -80,7 +78,7 @@ export class External {
         })
         if (!req.ok) {
             let err = await req.text()
-            throw new Error(`Error: ${err}`);
+            throw new Error(err);
         }
         let data = await req.json()
         return data

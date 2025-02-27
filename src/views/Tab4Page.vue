@@ -33,6 +33,11 @@
                 <ion-label>{{ t('tab4.manage.users') }}</ion-label>
               </ion-item>
               <ion-item-divider />
+              <ion-item button lines="full" @click="showLibraries">
+                <ion-icon :icon="library" slot="start" />
+                <ion-label>{{ t('tab4.manage.libraries') }}</ion-label>
+              </ion-item>
+              <ion-item-divider />
               <ion-item button @click="doLogout" lines="full">
                 <ion-icon :icon="logOut" slot="start"></ion-icon>
                 <ion-label>{{ t('tab4.logout') }}</ion-label>
@@ -51,10 +56,11 @@ import List from '@/components/Users/list.vue';
 import router from '@/router';
 import { useAuth } from '@/store/useAuth';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonGrid, IonRow, IonCol, IonList, IonItem, IonItemDivider, IonIcon, IonLabel, modalController } from '@ionic/vue';
-import { barcode, language, logOut, person, personAdd, settings } from 'ionicons/icons';
+import { barcode, language, library, logOut, person, personAdd, settings } from 'ionicons/icons';
 import Equalizer from '@/components/Equalizer.vue';
 import { useI18n } from 'vue-i18n';
 import Languages from '@/components/Languages.vue';
+import ListLibrary from '@/components/Library/ListLibrary.vue';
 const { t } = useI18n()
 const { logout } = useAuth()
 const doLogout = async () => {
@@ -82,6 +88,12 @@ const showCreateUser = async () => {
 const showListUsers = async () => {
   const modal = await modalController.create({
     component: List
+  })
+  await modal.present()
+}
+const showLibraries = async () => {
+  const modal = await modalController.create({
+    component: ListLibrary
   })
   await modal.present()
 }
