@@ -78,4 +78,47 @@ export default class Auth {
         let data: User[] = await res.json()
         return data
     }
+
+    public static async getUser(id:number) {
+        const res = await fetch(`${this.url.value}/users/${id}`, {
+            method: "GET",
+            headers: getAuthHeaders()
+        })
+        if (!res.ok) {
+            let err = await res.text()
+            throw new Error(err)
+        }
+        let data: User = await res.json()
+        return data
+    }
+
+    public static async updateUser(id: number, userData: Partial<{
+        email: string,
+        password: string,
+        fullName: string
+    }>) {
+        const res = await fetch(`${this.url.value}/users/${id}`, {
+            method: "PATCH",
+            headers: getAuthHeaders(),
+            body: JSON.stringify(userData)
+        })
+        if (!res.ok) {
+            let err = await res.text()
+            throw new Error(err);
+        }
+        let data = await res.json()
+        return data
+    }
+
+    public static async deleteUser(id: number) {
+        const res = await fetch(`${this.url.value}/users/${id}`, {
+            method: 'DELETE',
+            headers: getAuthHeaders()
+        })
+        if (!res.ok) {
+            let err = await res.text()
+            throw new Error(err);
+        }
+        return true
+    }
 }
