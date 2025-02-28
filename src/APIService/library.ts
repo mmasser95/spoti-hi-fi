@@ -2,6 +2,7 @@ import { useAuth } from "@/store/useAuth";
 import { storeToRefs } from "pinia";
 import { Ref } from "vue";
 import { getAuthHeaders } from "./utils";
+import { Library as LibraryType } from "@/types/Library";
 
 export default class Library {
     private static url: Ref<string> = storeToRefs(useAuth()).url
@@ -14,7 +15,7 @@ export default class Library {
             let err = await res.text()
             throw new Error(err);
         }
-        let data = await res.json()
+        let data: LibraryType[] = await res.json()
         return data
     }
     public static async getLibrary(id: number) {
@@ -25,16 +26,16 @@ export default class Library {
             let err = await res.text()
             throw new Error(err);
         }
-        let data = await res.json()
+        let data: LibraryType = await res.json()
         return data
     }
-    public static async createLibrary(name: string, folderName: string) {
+    public static async createLibrary(name: string, paths: string) {
         const res = await fetch(`${this.url.value}/libraries`, {
             method: "POST",
             headers: getAuthHeaders(),
             body: JSON.stringify({
                 name,
-                folderName
+                paths
             })
         })
         if (!res.ok) {
@@ -46,10 +47,10 @@ export default class Library {
     }
     public static async updateLibrary(id: number, libData: Partial<{
         name: string,
-        folderName: string
+        paths: string
     }>) {
         const res = await fetch(`${this.url.value}/libraries/${id}`, {
-            method: "PATCH",
+            method: "PUT",
             headers: getAuthHeaders(),
             body: JSON.stringify(libData)
         })
