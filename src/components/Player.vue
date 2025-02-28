@@ -45,9 +45,12 @@
         </ion-button>
       </ion-row>
       <ion-row class="modal-button-container">
-        <ion-col class="ion-text-center">
+        <ion-col class="ion-text-center gap-2">
           <ion-button fill="outline" shape="round" @click="showPlaylist">
             <ion-icon slot="icon-only" :icon="options"></ion-icon>
+          </ion-button>
+          <ion-button fill="outline" shape="round" @click="showLyrics">
+            <ion-icon slot="icon-only" :icon="languageOutline"></ion-icon>
           </ion-button>
         </ion-col>
       </ion-row>
@@ -58,11 +61,12 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from "vue";
 import { IonButton, IonCard, IonGrid, IonText, IonRange, IonRow, IonCol, IonIcon, IonImg, modalController } from "@ionic/vue";
-import { play, pause, playSkipBack, playSkipForward, shuffle, repeat, options } from "ionicons/icons";
+import { play, pause, playSkipBack, playSkipForward, shuffle, repeat, options, musicalNoteOutline, languageOutline } from "ionicons/icons";
 import { usePlaylist } from "@/store/usePlaylist";
 import { storeToRefs } from "pinia";
 import MyPlaylist from "@/components/MyPlaylist.vue";
 import { useI18n } from "vue-i18n";
+import ViewLyrics from "@/components/ViewLyrics.vue";
 
 const { t } = useI18n()
 const store = usePlaylist();
@@ -88,6 +92,20 @@ const formatTime = (time: number) => {
 const showPlaylist = async () => {
   const modal = await modalController.create({
     component: MyPlaylist,
+    breakpoints: [0, 0.33, 0.66, 1],
+    initialBreakpoint: 0.66,
+  })
+  await modal.present()
+}
+
+const showLyrics = async () => {
+  if(!currentSong.value) return
+  const modal = await modalController.create({
+    component: ViewLyrics,
+    componentProps: {
+      artists: currentSong.value.artist,
+      title: currentSong.value.title
+    },
     breakpoints: [0, 0.33, 0.66, 1],
     initialBreakpoint: 0.66,
   })
@@ -199,5 +217,10 @@ const showPlaylist = async () => {
   background: #1db954;
   height: 6px;
   border-radius: 5px;
+}
+.gap-2{
+  display: flex;
+  justify-content: center;
+  gap:2em
 }
 </style>

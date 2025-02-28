@@ -150,4 +150,19 @@ export class External {
         let data: LocalSong[] = await req.json()
         return data
     }
+
+    public static async getLyrics(artist: string, title: string) {
+        const req = await fetch(`${this.url.value}/lyrics`, {
+            method: "POST",
+            body: JSON.stringify({
+                title,
+                artist
+            }),
+            headers: getHeaders()
+        })
+        if (!req.ok)
+            throw new Error(await req.text())
+        let data: string = await req.text()
+        return data
+    }
 }
