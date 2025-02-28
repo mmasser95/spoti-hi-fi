@@ -62,5 +62,8 @@
     "user.delete.subheader": "Ziur al zaude?",
     "user.delete.message": "Ekintza hau ezingo da atzera egin eta erabiltzaileak sortutako erreproduzketa-zerrendak ezabatuko dira",
     "server.error.delete.user": "Ezin izan da erabiltzailea ezabatu.",
-    "edit.user": "Editatu Erabiltzailea"
+    "edit.user": "Editatu Erabiltzailea",
+    "lyrics.modal": "Abestiaren letra",
+    "lyrics.loading": "Abestiaren letra kargatzen",
+    "lyrics.not.found": "Ez da abestiaren letra aurkitu"
 }

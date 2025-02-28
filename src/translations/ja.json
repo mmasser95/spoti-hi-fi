@@ -62,5 +62,8 @@
     "user.delete.subheader": "本当によろしいですか？",
     "user.delete.message": "この操作は元に戻せません。ユーザーが作成したプレイリストは削除されます。",
     "server.error.delete.user": "ユーザーを削除できませんでした",
-    "edit.user": "ユーザーを編集"
+    "edit.user": "ユーザーを編集",
+    "lyrics.modal": "歌詞",
+    "lyrics.loading": "歌詞を読み込み中",
+    "lyrics.not.found": "歌詞が見つかりません"
 }

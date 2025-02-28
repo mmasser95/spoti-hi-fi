@@ -62,5 +62,8 @@
     "user.delete.subheader": "¿Estás seguro?",
     "user.delete.message": "Esta acción no se puede deshacer y se eliminarán las listas de reproducción creadas por el usuario",
     "server.error.delete.user": "No se pudo eliminar el usuario",
-    "edit.user": "Editar Usuario"
+    "edit.user": "Editar Usuario",
+    "lyrics.modal": "Letra de la canción",
+    "lyrics.loading": "Cargando la letra de la canción",
+    "lyrics.not.found": "No se ha encontrado la letra de la canción"
 }

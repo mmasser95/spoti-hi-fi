@@ -62,5 +62,8 @@
     "user.delete.subheader": "Are you sure?",
     "user.delete.message": "This action cannot be undone and the playlists created by the user will be deleted",
     "server.error.delete.user": "Could not delete the user",
-    "edit.user": "Edit User"
+    "edit.user": "Edit User",
+    "lyrics.modal": "Song Lyrics",
+    "lyrics.loading": "Loading song lyrics",
+    "lyrics.not.found": "Lyrics not found"
 }

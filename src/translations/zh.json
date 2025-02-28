@@ -62,5 +62,8 @@
     "user.delete.subheader": "确定吗？",
     "user.delete.message": "此操作无法撤销，并且用户创建的播放列表将被删除",
     "server.error.delete.user": "无法删除用户",
-    "edit.user": "编辑用户"
+    "edit.user": "编辑用户",
+    "lyrics.modal": "歌曲歌词",
+    "lyrics.loading": "正在加载歌曲歌词",
+    "lyrics.not.found": "未找到歌曲歌词"
 }

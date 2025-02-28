@@ -62,5 +62,8 @@
     "user.delete.subheader": "Bist du sicher?",
     "user.delete.message": "Diese Aktion kann nicht rückgängig gemacht werden und die vom Benutzer erstellten Wiedergabelisten werden gelöscht",
     "server.error.delete.user": "Der Benutzer konnte nicht gelöscht werden",
-    "edit.user": "Benutzer bearbeiten"
+    "edit.user": "Benutzer bearbeiten",
+    "lyrics.modal": "Liedtext",
+    "lyrics.loading": "Liedtext wird geladen",
+    "lyrics.not.found": "Liedtext nicht gefunden"
 }
