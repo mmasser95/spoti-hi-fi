@@ -36,7 +36,8 @@ const lyrics = ref<string[]>()
 const loading = ref<boolean>(true)
 onMounted(async () => {
     try {
-        let lyricsWithoutTags = await External.getLyrics(props.artists, props.title)
+        let principalArtist=props.artists.split(', ')[0]
+        let lyricsWithoutTags = await External.getLyrics(principalArtist, props.title)
         lyrics.value = lyricsWithoutTags.split('\n')
     } catch (error) {
         const toast = await toastController.create({

@@ -70,6 +70,7 @@ const deleteUser = async (id: number) => {
         if (role === 'si') {
             try {
                 await Auth.deleteUser(id)
+                await showUsers()
             } catch (error) {
                 const toast = await toastController.create({
                     message: t('server.error.delete.user'),
