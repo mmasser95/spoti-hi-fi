@@ -36,12 +36,15 @@ import './theme/variables.css';
 import { createPinia } from 'pinia';
 import initDb from './initDb';
 import { i18n, initI18n } from './plugins/i18n';
+import providers from './plugins/providers';
 
 const app = createApp(App)
   .use(IonicVue)
   .use(router)
   .use(createPinia())
   .use(i18n);
+
+providers()
 
 router.isReady().then(() => {
   initDb().then(() =>
