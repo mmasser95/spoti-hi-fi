@@ -84,72 +84,72 @@ export class External {
         return data
     }
 
-    public static async searchSongs(query: string) {
-        let req = await fetch(`${this.url.value}/songs/search`, {
-            method: 'POST',
-            headers: getHeaders(),
-            body: JSON.stringify({
-                query
-            })
-        })
-        if (!req.ok) {
-            let err = await req.text()
-            throw new Error(err);
-        }
-        let data: LocalSong[] = await req.json()
-        return data
-    }
+    // public static async searchSongs(query: string) {
+    //     let req = await fetch(`${this.url.value}/songs/search`, {
+    //         method: 'POST',
+    //         headers: getHeaders(),
+    //         body: JSON.stringify({
+    //             query
+    //         })
+    //     })
+    //     if (!req.ok) {
+    //         let err = await req.text()
+    //         throw new Error(err);
+    //     }
+    //     let data: LocalSong[] = await req.json()
+    //     return data
+    // }
 
-    public static async searchArtists(query: string) {
-        let req = await fetch(`${this.url.value}/artists/search`, {
-            method: 'POST',
-            headers: getHeaders(),
-            body: JSON.stringify({
-                query
-            })
-        })
-        if (!req.ok) {
-            let err = await req.text()
-            throw new Error(err);
-        }
-        let data: ArtistResult[] = await req.json()
-        return data
-    }
+    // public static async searchArtists(query: string) {
+    //     let req = await fetch(`${this.url.value}/artists/search`, {
+    //         method: 'POST',
+    //         headers: getHeaders(),
+    //         body: JSON.stringify({
+    //             query
+    //         })
+    //     })
+    //     if (!req.ok) {
+    //         let err = await req.text()
+    //         throw new Error(err);
+    //     }
+    //     let data: ArtistResult[] = await req.json()
+    //     return data
+    // }
 
-    public static async searchAlbums(query: string) {
-        let req = await fetch(`${this.url.value}/albums/search`, {
-            method: 'POST',
-            headers: getHeaders(),
-            body: JSON.stringify({
-                query
-            })
-        })
-        if (!req.ok) {
-            let err = await req.text()
-            throw new Error(err);
-        }
-        let data: AlbumResult[] = await req.json()
-        return data
-    }
-    public static async getSongsOfAlbum(id: number) {
-        let req = await fetch(`${this.url.value}/albums/${id}`)
-        if (!req.ok) {
-            let err = await req.text()
-            throw new Error(err);
-        }
-        let data: AlbumResult = await req.json()
-        return data
-    }
+    // public static async searchAlbums(query: string) {
+    //     let req = await fetch(`${this.url.value}/albums/search`, {
+    //         method: 'POST',
+    //         headers: getHeaders(),
+    //         body: JSON.stringify({
+    //             query
+    //         })
+    //     })
+    //     if (!req.ok) {
+    //         let err = await req.text()
+    //         throw new Error(err);
+    //     }
+    //     let data: AlbumResult[] = await req.json()
+    //     return data
+    // }
+    // public static async getSongsOfAlbum(id: number) {
+    //     let req = await fetch(`${this.url.value}/albums/${id}`)
+    //     if (!req.ok) {
+    //         let err = await req.text()
+    //         throw new Error(err);
+    //     }
+    //     let data: AlbumResult = await req.json()
+    //     return data
+    // }
 
-    public static async getSongsOfArtist(id: number) {
-        let req = await fetch(`${this.url.value}/artist/${id}/songs`)
-        if (!req.ok) {
-            let err = await req.text()
-            throw new Error(err);
-        }
-        let data: LocalSong[] = await req.json()
-        return data
-    }
+    // public static async getSongsOfArtist(id: number) {
+    //     let req = await fetch(`${this.url.value}/artist/${id}/songs`)
+    //     if (!req.ok) {
+    //         let err = await req.text()
+    //         throw new Error(err);
+    //     }
+    //     let data: LocalSong[] = await req.json()
+    //     return data
+    // }
 
     public static async getLyrics(artist: string, title: string) {
         const req = await fetch(`${this.url.value}/lyrics`, {
