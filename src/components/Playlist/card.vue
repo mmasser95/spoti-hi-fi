@@ -15,7 +15,6 @@
     </ion-card>
 </template>
 <script lang="ts" setup>
-import Playlist from '@/APIService/playlist';
 import { LocalPlaylist } from '@/types/Playlist';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, IonButtons, IonIcon, alertController, modalController } from '@ionic/vue';
 import { musicalNoteOutline, trashOutline } from 'ionicons/icons';
@@ -24,7 +23,10 @@ import { usePlaylist } from '@/store/usePlaylist';
 import { storeToRefs } from 'pinia';
 import { useAuth } from '@/store/useAuth';
 import { useI18n } from 'vue-i18n';
+import { inject } from 'vue';
+import { PlaylistRepository } from '@/APIService/core/PlaylistRepository';
 const { t } = useI18n()
+const Playlist: PlaylistRepository = inject('Playlist')!
 const { addToPlaylist } = usePlaylist()
 const { url } = storeToRefs(useAuth())
 const props = defineProps<{ playlist: LocalPlaylist }>()

@@ -85,7 +85,7 @@
 import { External } from '@/APIService/external';
 import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton, IonLabel, IonSegmentContent, IonSegmentView, RefresherCustomEvent, IonRefresher, IonRefresherContent, IonToggle, IonFab, IonFabButton, IonIcon, modalController, toastController } from '@ionic/vue';
 import debounce from 'lodash/debounce';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import LocalCard from '@/components/LocalCard.vue';
 import { LocalSong } from '@/types/LocalElements';
 import ArtistCard from '@/components/ArtistCard.vue';
@@ -94,13 +94,16 @@ import AlbumCard from '@/components/AlbumCard.vue';
 import { getElements } from '@/composables/useLocalSystem';
 import { Song } from '@/types/Song';
 import DeviceSongCard from '@/components/DeviceSongCard.vue';
-import Playlist from '@/APIService/playlist';
 import { add } from 'ionicons/icons';
 import Create from '@/components/Playlist/create.vue';
 import Card from './Playlist/card.vue';
 import { useI18n } from 'vue-i18n';
+import { InternalRepository } from '@/APIService/core/InternalRepository';
+import { PlaylistRepository } from '@/APIService/core/PlaylistRepository';
 const { t } = useI18n()
 const query = ref("");
+const Internal: InternalRepository = inject('Internal')!
+const Playlist: PlaylistRepository = inject('Playlist')!
 const resultsSongs = ref<LocalSong[]>()
 const localSongs = ref<Song[]>()
 const resultsArtists = ref<ArtistResult[]>()
@@ -120,11 +123,11 @@ const searchType = ref<"artist" | "album" | "song" | "playlist">("song")
 
 const searchWithoutDebounce = async (v: string) => {
     if (searchType.value == 'song')
-        resultsSongs.value = await External.searchSongs(v)
+        resultsSongs.value = await Internal.searchSongs(v)
     if (searchType.value == 'artist')
-        resultsArtists.value = await External.searchArtists(v)
+        resultsArtists.value = await Internal.searchArtists(v)
     if (searchType.value == 'album')
-        resultsAlbums.value = await External.searchAlbums(v)
+        resultsAlbums.value = await Internal.searchAlbums(v)
     if (searchType.value == "playlist")
         resultsPlaylists.value = await Playlist.getAllPlaylists()
 }
@@ -140,9 +143,9 @@ watch(searchType, () => query.value = "")
 
 onMounted(async () => {
     try {
-        resultsSongs.value = await External.searchSongs("")
-        resultsAlbums.value = await External.searchAlbums("")
-        resultsArtists.value = await External.searchArtists("")
+        resultsSongs.value = await Internal.searchSongs("")
+        resultsAlbums.value = await Internal.searchAlbums("")
+        resultsArtists.value = await Internal.searchArtists("")
         resultsPlaylists.value = await Playlist.getAllPlaylists()
     } catch (error) {
         const toast = await toastController.create({

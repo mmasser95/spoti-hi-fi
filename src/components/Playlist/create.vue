@@ -32,13 +32,14 @@
     </ion-page>
 </template>
 <script lang="ts" setup>
-import Playlist from '@/APIService/playlist';
+import { PlaylistRepository } from '@/APIService/core/PlaylistRepository';
 import { IonContent, IonHeader, IonIcon, IonToolbar, IonGrid, IonCol, IonRow, IonTitle, IonInput, IonPage, IonButton, IonButtons, modalController } from '@ionic/vue';
 import { add, close } from 'ionicons/icons';
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n()
 const nombre = ref("")
+const Playlist: PlaylistRepository = inject('Playlist')!
 const dismiss = () => {
     modalController.dismiss({}, "cancel")
 }

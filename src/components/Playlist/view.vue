@@ -23,14 +23,15 @@
     </ion-page>
 </template>
 <script lang="ts" setup>
-import Playlist from '@/APIService/playlist';
 import { LocalPlaylist } from '@/types/Playlist';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonButton, IonButtons, IonIcon, IonContent, modalController, IonGrid, IonRow, IonCol, toastController } from '@ionic/vue';
 import { close } from 'ionicons/icons';
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import LocalCard from '../LocalCard.vue';
 import { useI18n } from 'vue-i18n';
+import { PlaylistRepository } from '@/APIService/core/PlaylistRepository';
 const { t } = useI18n()
+const Playlist: PlaylistRepository = inject('Playlist')!
 const playlist = ref<LocalPlaylist>()
 const props = defineProps<{ id: number }>()
 onMounted(async () => {
