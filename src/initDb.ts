@@ -30,18 +30,84 @@ export default async () => {
   await db.open();
   console.log("Base de datos abierta.");
 
+  //   await db.run(`
+  // DROP TABLE IF EXISTS playlist_songs;
+  // DROP TABLE IF EXISTS playlists;
+  // DROP TABLE IF EXISTS libraries;
+  // DROP TABLE IF EXISTS song_artists;
+  // DROP TABLE IF EXISTS songs;
+  // DROP TABLE IF EXISTS albums;
+  // DROP TABLE IF EXISTS artists;`)
   // Crear tabla si no existe
 
+  // await db.run(`
+  //     CREATE TABLE IF NOT EXISTS songs (
+  //       id INTEGER PRIMARY KEY AUTOINCREMENT,
+  //       title TEXT NOT NULL,
+  //       artist TEXT NOT NULL,
+  //       url TEXT NOT NULL,
+  //       artwork TEXT NOT NULL
+  //     );
+  //   `);
+
   await db.run(`
-      CREATE TABLE IF NOT EXISTS songs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        artist TEXT NOT NULL,
-        url TEXT NOT NULL,
-        artwork TEXT NOT NULL
-      );
-    `);
-  console.log("Tabla songs verificada/creada.");
+CREATE TABLE IF NOT EXISTS artists (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    spotifyId TEXT,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS albums (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    coverImage TEXT,
+    description TEXT,
+    spotifyId TEXT,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS songs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    filePath TEXT NOT NULL,
+    spotifyId TEXT,
+    youtubeId TEXT,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL,
+    albumId INTEGER,
+    FOREIGN KEY (albumId) REFERENCES albums(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS song_artists (
+    songId INTEGER,
+    artistId INTEGER,
+    PRIMARY KEY (songId, artistId),
+    FOREIGN KEY (songId) REFERENCES songs(id),
+    FOREIGN KEY (artistId) REFERENCES artists(id)
+);
+
+CREATE TABLE IF NOT EXISTS playlists (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    userId INTEGER NOT NULL,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL    
+);
+
+CREATE TABLE IF NOT EXISTS playlist_songs (
+    playlistId INTEGER,
+    songId INTEGER,
+    PRIMARY KEY (playlistId, songId),
+    FOREIGN KEY (playlistId) REFERENCES playlists(id),
+    FOREIGN KEY (songId) REFERENCES songs(id)
+);
+`)
+
+  console.log("Tablas creadas/verificadas.");
 
   // Cerrar conexión para evitar fugas de memoria
   await sqlite.closeConnection('songsDb', false);

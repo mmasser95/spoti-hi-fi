@@ -7,15 +7,6 @@ export interface ArtistResult {
     createdAt: Date,
     updatedAt: Date,
     songs: LocalSong[]
-    // songs: {
-    //     id: number,
-    //     title: string,
-    //     filePath: string,
-    //     spotifyId: string,
-    //     youtubeId: string,
-    //     createdAt: Date,
-    //     updatedAt: Date,
-    // }[]
 }
 
 export interface AlbumResult {
@@ -33,5 +24,5 @@ export interface AlbumResult {
         createdAt: Date,
         updatedAt: Date,
     }[],
-    songs:LocalSong[]
+    songs: LocalSong[]
 }
