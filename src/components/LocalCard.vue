@@ -19,7 +19,7 @@
     </ion-card>
 </template>
 <script lang="ts" setup>
-import Playlist from '@/APIService/playlist';
+// import Playlist from '@/APIService/playlist';
 import { getElements, insertSong, saveSong } from '@/composables/useLocalSystem';
 import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
@@ -28,10 +28,11 @@ import { IonCard, IonImg, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardC
 import { onLongPress } from '@vueuse/core';
 import { add, close, download, downloadOutline, list, musicalNote, text } from 'ionicons/icons';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import useLocal from '@/store/useLocal';
 import { useI18n } from 'vue-i18n';
-
+import { PlaylistRepository } from '@/APIService/core/PlaylistRepository';
+const Playlist: PlaylistRepository = inject('Playlist')!
 const { t } = useI18n()
 const store = usePlaylist()
 const { playlist, currentIndex } = storeToRefs(store)
