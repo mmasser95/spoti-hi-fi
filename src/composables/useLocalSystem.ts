@@ -1,3 +1,4 @@
+import { LocalSong } from "@/types/LocalElements";
 import { CapacitorSQLite, SQLiteConnection } from "@capacitor-community/sqlite";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 
@@ -29,9 +30,103 @@ export const insertSong = async (id: number, title: string, artist: string, file
         alert(`Error: ${error}`)
     } finally {
         await sqlite.closeAllConnections()
-        // await db.close()
     }
 }
+
+export const insertLocalSong = async (song: LocalSong) => {
+    const sqlite = new SQLiteConnection(CapacitorSQLite);
+    const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false);
+    try {
+        await db.open();
+
+        // 1. Insertar o enlazar el álbum
+        let albumId: number;
+        const albumResult = await db.query(
+            "SELECT id FROM albums WHERE spotifyId = ?;",
+            [song.album.spotifyId]
+        );
+        const existingAlbum = albumResult.values?.[0];
+
+        if (existingAlbum) {
+            // Si el álbum ya existe, usar su ID
+            albumId = existingAlbum.id;
+        } else {
+            // Si el álbum no existe, insertarlo
+            const insertAlbumResult = await db.run(
+                `INSERT INTO albums (name, coverImage, description, spotifyId, createdAt, updatedAt)
+                 VALUES (?, ?, ?, ?, ?, ?);`,
+                [
+                    song.album.name,
+                    song.album.coverImage,
+                    song.album.description,
+                    song.album.spotifyId,
+                    new Date().toISOString(),
+                    new Date().toISOString(),
+                ]
+            );
+            albumId = insertAlbumResult.changes?.lastId!;
+        }
+
+        // 2. Insertar o enlazar los artistas
+        const artistIds: number[] = [];
+        for (const artist of song.artists) {
+            const artistResult = await db.query(
+                "SELECT id FROM artists WHERE spotifyId = ?;",
+                [artist.spotifyId]
+            );
+            const existingArtist = artistResult.values?.[0];
+
+            if (existingArtist) {
+                // Si el artista ya existe, usar su ID
+                artistIds.push(existingArtist.id);
+            } else {
+                // Si el artista no existe, insertarlo
+                const insertArtistResult = await db.run(
+                    `INSERT INTO artists (name, spotifyId, createdAt, updatedAt)
+                     VALUES (?, ?, ?, ?);`,
+                    [
+                        artist.name,
+                        artist.spotifyId,
+                        new Date().toISOString(),
+                        new Date().toISOString(),
+                    ]
+                );
+                artistIds.push(insertArtistResult.changes?.lastId!);
+            }
+        }
+
+        // 3. Insertar la canción
+        const insertSongResult = await db.run(
+            `INSERT INTO songs (title, filePath, spotifyId, youtubeId, createdAt, updatedAt, albumId)
+             VALUES (?, ?, ?, ?, ?, ?, ?);`,
+            [
+                song.title,
+                song.filePath,
+                song.spotifyId,
+                song.youtubeId,
+                new Date().toISOString(),
+                new Date().toISOString(),
+                albumId,
+            ]
+        );
+        const songId = insertSongResult.changes?.lastId!;
+
+        // 4. Enlazar la canción con los artistas
+        for (const artistId of artistIds) {
+            await db.run(
+                `INSERT INTO song_artists (songId, artistId)
+                 VALUES (?, ?);`,
+                [songId, artistId]
+            );
+        }
+
+        console.log("Canción insertada correctamente.");
+    } catch (error) {
+        alert(`Error: ${error}`);
+    } finally {
+        await sqlite.closeAllConnections();
+    }
+};
 
 export const getElements = async () => {
     const sqlite = new SQLiteConnection(CapacitorSQLite)
