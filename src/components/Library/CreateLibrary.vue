@@ -1,6 +1,6 @@
 <template>
     <Modal :title="editing ? t('edit.library') : t('create.library')">
-        <form @submit.prevent="()=>editing ? editLibrary() : submitLibrary()">
+        <form @submit.prevent="() => editing ? editLibrary() : submitLibrary()">
             <ion-item>
                 <ion-input label-placement="floating" :label="t('name')" v-model="name" />
             </ion-item>
@@ -15,12 +15,14 @@
     </Modal>
 </template>
 <script lang="ts" setup>
-import Library from '@/APIService/library';
+// import Library from '@/APIService/library';
+import { LibraryRepository } from '@/APIService/core/LibraryRepository';
 import Modal from '@/layout/modal.vue';
 import { IonItem, IonInput, IonButton, IonIcon, modalController, toastController } from '@ionic/vue';
 import { add, pencilOutline } from 'ionicons/icons';
-import { computed, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+const Library: LibraryRepository = inject('Library')!
 const name = ref<string>("")
 const paths = ref<string>("")
 const props = defineProps<{

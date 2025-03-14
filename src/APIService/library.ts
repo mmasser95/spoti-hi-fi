@@ -3,11 +3,12 @@ import { storeToRefs } from "pinia";
 import { Ref } from "vue";
 import { getAuthHeaders } from "./utils";
 import { Library as LibraryType } from "@/types/Library";
+import { LibraryRepository } from "./core/LibraryRepository";
 
-export default class Library {
-    private static url: Ref<string> = storeToRefs(useAuth()).url
+export default class Library implements LibraryRepository {
+    private url: Ref<string> = storeToRefs(useAuth()).url
 
-    public static async getAllLibraries() {
+    public async getAllLibraries() {
         const res = await fetch(`${this.url.value}/libraries`, {
             headers: getAuthHeaders()
         })
@@ -18,7 +19,7 @@ export default class Library {
         let data: LibraryType[] = await res.json()
         return data
     }
-    public static async getLibrary(id: number) {
+    public async getLibrary(id: number) {
         const res = await fetch(`${this.url.value}/libraries/${id}`, {
             headers: getAuthHeaders()
         })
@@ -29,7 +30,7 @@ export default class Library {
         let data: LibraryType = await res.json()
         return data
     }
-    public static async createLibrary(name: string, paths: string) {
+    public async createLibrary(name: string, paths: string) {
         const res = await fetch(`${this.url.value}/libraries`, {
             method: "POST",
             headers: getAuthHeaders(),
@@ -45,7 +46,7 @@ export default class Library {
         let data = await res.json()
         return data
     }
-    public static async updateLibrary(id: number, libData: Partial<{
+    public async updateLibrary(id: number, libData: Partial<{
         name: string,
         paths: string
     }>) {
@@ -62,7 +63,7 @@ export default class Library {
         return data
     }
 
-    public static async deleteLibrary(id: number) {
+    public async deleteLibrary(id: number) {
         const res = await fetch(`${this.url.value}/libraries/${id}`, {
             method: "DELETE",
             headers: getAuthHeaders()

@@ -35,11 +35,13 @@
 import Modal from '@/layout/modal.vue';
 import { IonItem, IonList, IonButton, IonButtons, IonLabel, IonIcon, IonText, IonFab, IonFabButton, modalController, IonRefresher, IonRefresherContent, RefresherCustomEvent, toastController, alertController } from '@ionic/vue';
 import { add, pencilOutline, trashOutline } from 'ionicons/icons';
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import CreateLibrary from '@/components/Library/CreateLibrary.vue';
 import { Library as LibraryType } from '@/types/Library';
-import Library from '@/APIService/library';
+import { LibraryRepository } from '@/APIService/core/LibraryRepository';
+
+const Library: LibraryRepository = inject('Library')!
 
 const { t } = useI18n()
 

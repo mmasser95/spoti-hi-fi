@@ -8,6 +8,7 @@ import { PlaylistRepository } from "./core/PlaylistRepository";
 
 export default class Playlist implements PlaylistRepository {
     private url: Ref<string> = storeToRefs(useAuth()).url
+    // private static url: Ref<string> = storeToRefs(useAuth()).url
 
     public async getAllPlaylists() {
         const res = await fetch(`${this.url.value}/playlists`, {

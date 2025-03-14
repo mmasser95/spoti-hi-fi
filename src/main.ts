@@ -44,7 +44,7 @@ const app = createApp(App)
   .use(createPinia())
   .use(i18n);
 
-providers()
+providers(app)
 
 router.isReady().then(() => {
   initDb().then(() =>

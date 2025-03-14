@@ -1,8 +1,10 @@
 import InternalWithAPI from "@/APIService/internalWithAPI";
+import Library from "@/APIService/library";
 import Playlist from "@/APIService/playlist";
-import { provide } from "vue";
+import { App, provide } from "vue";
 
-export default () => {
-    provide(`Internal`, new InternalWithAPI())
-    provide(`Playlist`, new Playlist())
+export default (app: App) => {
+    app.provide(`Internal`, new InternalWithAPI())
+    app.provide(`Library`, new Library())
+    app.provide(`Playlist`, new Playlist())
 }

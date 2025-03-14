@@ -82,7 +82,6 @@
 </template>
 
 <script lang="ts" setup>
-import { External } from '@/APIService/external';
 import { IonContent, IonGrid, IonRow, IonCol, IonInput, IonSegment, IonSegmentButton, IonLabel, IonSegmentContent, IonSegmentView, RefresherCustomEvent, IonRefresher, IonRefresherContent, IonToggle, IonFab, IonFabButton, IonIcon, modalController, toastController } from '@ionic/vue';
 import debounce from 'lodash/debounce';
 import { computed, inject, onMounted, ref, watch } from 'vue';
