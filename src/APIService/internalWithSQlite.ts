@@ -5,7 +5,7 @@ import { now } from "lodash";
 import { AlbumResult, ArtistResult } from "@/types/SearchResults";
 
 export default class InternalWithSQlite implements InternalRepository {
-    private sqlite = new SQLiteConnection(CapacitorSQLite);
+
     private selectSongsQuery = `SELECT 
     s.id AS song_id, 
     s.title AS song_title, 
@@ -20,20 +20,21 @@ export default class InternalWithSQlite implements InternalRepository {
     a.coverImage AS album_coverImage, 
     a.description AS album_description, 
     a.spotifyId AS album_spotifyId, 
-    a.createdAt AS album_createdAt, 
-    a.updatedAt AS album_updatedAt,
+    a.createdAt AS album_createdAt,  
+    a.updatedAt AS album_updatedAt,  
 
     ar.id AS artist_id, 
     ar.name AS artist_name, 
     ar.spotifyId AS artist_spotifyId, 
-    ar.createdAt AS artist_createdAt, 
-    ar.updatedAt AS artist_updatedAt
+    ar.createdAt AS artist_createdAt,  
+    ar.updatedAt AS artist_updatedAt   
 
 FROM songs s
 LEFT JOIN albums a ON s.albumId = a.id
 LEFT JOIN song_artists sa ON s.id = sa.songId
 LEFT JOIN artists ar ON sa.artistId = ar.id
-ORDER BY s.id;`
+ORDER BY s.id;
+`
 
     private searchSongsQuery = `SELECT 
     s.id AS song_id, 
@@ -59,14 +60,15 @@ ORDER BY s.id;`
     ar.updatedAt AS artist_updatedAt
 
 FROM songs s
-WHERE UPPER(s.title) like '%[title]%'
 LEFT JOIN albums a ON s.albumId = a.id
 LEFT JOIN song_artists sa ON s.id = sa.songId
 LEFT JOIN artists ar ON sa.artistId = ar.id
+WHERE s.title like '%[title]%'
 ORDER BY s.id;`
 
     async getLocalSongs(): Promise<LocalSong[]> {
-        const db = await this.sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
+        const sqlite = new SQLiteConnection(CapacitorSQLite);
+        const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
         try {
             await db.open()
             const results = await db.query(this.selectSongsQuery)
@@ -77,15 +79,19 @@ ORDER BY s.id;`
         } catch (error) {
             alert(`Error: ${error}`)
         } finally {
-            await this.sqlite.closeAllConnections()
+            await db.close()
         }
         return []
     }
     async searchSongs(query: string): Promise<LocalSong[]> {
-        const db = await this.sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
+        const sqlite = new SQLiteConnection(CapacitorSQLite);
+        const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
         try {
             await db.open()
-            const results = await db.query(this.searchSongsQuery.replace('[title]', query.toUpperCase()));
+            let q = this.searchSongsQuery.replace('[title]', query)
+            console.log(q);
+            const results = await db.query(q);
+
             if (results.values) {
                 let data: LocalSong[] = this.mapSongs(results.values)
                 return data
@@ -93,13 +99,14 @@ ORDER BY s.id;`
         } catch (error) {
             alert(`Error ${error}`)
         } finally {
-            await this.sqlite.closeAllConnections()
+            await db.close()
         }
         return []
     }
 
     async getSongsOfAlbum(id: number): Promise<AlbumResult> {
-        const db = await this.sqlite.createConnection('songsDb', false, 'no-encryption', 1, false);
+        const sqlite = new SQLiteConnection(CapacitorSQLite);
+        const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
         try {
             await db.open();
 
@@ -195,7 +202,8 @@ ORDER BY s.id;`
     }
 
     async getSongsOfArtist(id: number): Promise<LocalSong[]> {
-        const db = await this.sqlite.createConnection('songsDb', false, 'no-encryption', 1, false);
+        const sqlite = new SQLiteConnection(CapacitorSQLite);
+        const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
         try {
             await db.open();
 
@@ -280,7 +288,8 @@ ORDER BY s.id;`
     }
 
     async searchArtists(query: string): Promise<ArtistResult[]> {
-        const db = await this.sqlite.createConnection('songsDb', false, 'no-encryption', 1, false);
+        const sqlite = new SQLiteConnection(CapacitorSQLite);
+        const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
         try {
             await db.open();
 
@@ -382,7 +391,8 @@ ORDER BY s.id;`
     }
 
     async searchAlbums(query: string): Promise<AlbumResult[]> {
-        const db = await this.sqlite.createConnection('songsDb', false, 'no-encryption', 1, false);
+        const sqlite = new SQLiteConnection(CapacitorSQLite);
+        const db = await sqlite.createConnection('songsDb', false, 'no-encryption', 1, false)
         try {
             await db.open();
 

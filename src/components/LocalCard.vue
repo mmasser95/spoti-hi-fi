@@ -20,7 +20,7 @@
 </template>
 <script lang="ts" setup>
 // import Playlist from '@/APIService/playlist';
-import { getElements, insertSong, saveSong } from '@/composables/useLocalSystem';
+import { getElements, insertLocalSong, insertSong, saveSong } from '@/composables/useLocalSystem';
 import { useAuth } from '@/store/useAuth';
 import { usePlaylist } from '@/store/usePlaylist';
 import { LocalSong } from '@/types/LocalElements';
@@ -75,7 +75,8 @@ const descargar = async () => {
     const req = await fetch(myUrl.value)
     const blob = await req.blob()
     await saveSong(fileName.value, blob)
-    await insertSong(props.song.id, props.song.title, artistsNames.value, fileName.value, props.song.album.coverImage)
+    // await insertSong(props.song.id, props.song.title, artistsNames.value, fileName.value, props.song.album.coverImage)
+    await insertLocalSong(props.song)
     addIdToDownloaded(props.song.id)
 }
 

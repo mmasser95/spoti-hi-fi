@@ -97,9 +97,10 @@ export const insertLocalSong = async (song: LocalSong) => {
 
         // 3. Insertar la canción
         const insertSongResult = await db.run(
-            `INSERT INTO songs (title, filePath, spotifyId, youtubeId, createdAt, updatedAt, albumId)
-             VALUES (?, ?, ?, ?, ?, ?, ?);`,
+            `INSERT INTO songs (id, title, filePath, spotifyId, youtubeId, createdAt, updatedAt, albumId)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
             [
+                song.id,
                 song.title,
                 song.filePath,
                 song.spotifyId,
