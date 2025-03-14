@@ -33,10 +33,11 @@ import '@ionic/vue/css/palettes/dark.always.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { createPinia } from 'pinia';
+import { createPinia, storeToRefs } from 'pinia';
 import initDb from './initDb';
 import { i18n, initI18n } from './plugins/i18n';
 import providers from './plugins/providers';
+import useApp from './store/useApp';
 
 const app = createApp(App)
   .use(IonicVue)
@@ -44,12 +45,15 @@ const app = createApp(App)
   .use(createPinia())
   .use(i18n);
 
-providers(app)
+providers(app, false)
 
 router.isReady().then(() => {
   initDb().then(() =>
-    initI18n().then(() =>
+    initI18n().then(() => {
       app.mount('#app')
+      const { myApp } = storeToRefs(useApp())
+      myApp.value = app
+    }
     )
   ).catch(err => alert(err))
 });
